@@ -228,19 +228,19 @@
                                     <nav class="main-menu d-none d-lg-block">
                                         <ul>
                                             <li>
-                                                <a href="contact.html">Home</a>
+                                                <a href="{{ route('home') }}">Home</a>
                                             </li>
                                             <li>
-                                                <a href="contact.html">Products</a>
+                                                <a href="{{ route('produk') }}">Products</a>
                                             </li>
                                             <li>
-                                                <a href="contact.html">About Us</a>
+                                                <a href="{{ route('about') }}">About Us</a>
                                             </li>
                                             <li>
-                                                <a href="contact.html">Wrokflow</a>
+                                                <a href="{{ route('workflow') }}">Workflow</a>
                                             </li>
                                             <li>
-                                                <a href="contact.html">Pricing Request</a>
+                                                <a href="">Get a Quote</a>
                                             </li>
                                             <li>
                                                 <a href="contact.html">Contact Us</a>

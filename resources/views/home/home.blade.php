@@ -73,6 +73,7 @@
         .hero-layout1 .slick-arrow {
             display: none !important;
         }
+
         .service-area .slick-arrow {
             display: none !important;
         }
@@ -142,8 +143,8 @@
         </div>
     </div>
     <!--==============================
-                                                                                 Service Area
-                                                                                 ==============================-->
+         Service Area
+     ==============================-->
     <section class="space service-area">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -232,8 +233,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                 Shop Area
-                                                                                 ==============================-->
+                                                                                         Shop Area
+                                                                                         ==============================-->
     <section class="bg-title space">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -286,8 +287,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                 Sertificate Area
-                                                                                 ==============================-->
+                                                                                         Sertificate Area
+                                                                                         ==============================-->
     <section class="space sertificate">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -321,8 +322,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                 Team Galeri
-                                                                                 ==============================-->
+                                                                                         Team Galeri
+                                                                                         ==============================-->
     <section class="space bg-smoke">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -349,8 +350,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                 BLog Area
-                                                                                 ==============================-->
+                                                                                         BLog Area
+                                                                                         ==============================-->
     <section class="space blog">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">

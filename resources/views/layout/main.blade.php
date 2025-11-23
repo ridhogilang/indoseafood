@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Marino HTML Template - Home One</title>
+    <title>IndoSeafood - {{ $title }}</title>
     <meta name="author" content="vecuro">
     <meta name="description" content="Marino HTML Template">
     <meta name="keywords" content="Marino HTML Template">
@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Favicons - Place favicon.ico in the root directory -->
-    <link rel="icon" type="image/png" href="{{ asset('home/img/favicons/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('home/img/logo icon.png') }}">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
 
