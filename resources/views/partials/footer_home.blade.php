@@ -13,7 +13,7 @@
                         </p>
                         <div class="social-media3">
                             <a href="#"><i class="fa fa-facebook-f"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
                             <a href="#"><i class="fa-brands fa-linkedin"></i></a>
                             <a href="#"><i class="fa fa-pinterest-p"></i></a>
                         </div>
@@ -26,19 +26,19 @@
                         <div class="vs-mobile-menu style2 pb-0 mt-n2 overflow-hidden">
                             <ul class="px-0">
                                 <li>
-                                    <a href="properties.html">Properties</a>
+                                    <a href="{{ route('about') }}">About</a>
                                 </li>
                                 <li>
-                                    <a href="about.html">About</a>
+                                    <a href="{{ route('produk') }}">Products</a>
                                 </li>
                                 <li>
-                                    <a href="properties.html">Properties</a>
+                                    <a href="{{ route('workflow') }}">Workflow</a>
                                 </li>
                                 <li>
-                                    <a href="service.html">Service</a>
+                                    <a href="{{ route('quote') }}">Get a Qoute</a>
                                 </li>
                                 <li>
-                                    <a href="shop.html">Shop</a>
+                                    <a href="{{ route('contact') }}">Contact Us</a>
                                 </li>
                             </ul>
                         </div>
@@ -49,14 +49,13 @@
                         <h3 class="widget_title">Contact</h3>
                         <div class="sec-line2"></div>
                         <div class="vs-widget-about">
-                            <p class="footer-address"><i class="fa fa-map-marker-alt"></i>Fifth Avenue 550, Broadway,
-                                New York Morris Street London 64395</p>
-                            <p class="footer-address"><a class="text-inherit" href="mailto:info@example.com"><i
-                                        class="fa fa-envelope"></i>info@example.com</a>
+                            <p class="footer-address"><i class="fa fa-map-marker-alt"></i>Penjaringan, Jakarta Utara, DKI Jakarta
+                                    14440</p>
+                            <p class="footer-address"><a class="text-inherit" href="mailto:info@indoseafood.com"><i
+                                        class="fa fa-envelope"></i>info@indoseafood.com</a>
                             </p>
                             <p class="footer-address">
-                                <a class="text-inherit" href="tel:++11234562228"><i class="fa fa-phone-alt"></i>+1 123
-                                    4562228 </a>
+                                <a class="text-inherit" href="https://wa.me/6285771876270"><i class="fa-brands fa-whatsapp"></i>(+62) 857-7187-6270 </a>
                             </p>
                         </div>
                     </div>

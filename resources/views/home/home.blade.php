@@ -77,6 +77,32 @@
         .service-area .slick-arrow {
             display: none !important;
         }
+
+        /* Default (desktop/laptop) */
+        .explore-text {
+            padding: 0 100px;
+        }
+
+        /* Tablet */
+        @media (max-width: 991px) {
+            .explore-text {
+                padding: 0 80px;
+            }
+        }
+
+        /* HP besar */
+        @media (max-width: 767px) {
+            .explore-text {
+                padding: 0 30px;
+            }
+        }
+
+        /* HP kecil */
+        @media (max-width: 480px) {
+            .explore-text {
+                padding: 0 20px;
+            }
+        }
     </style>
 @endpush
 
@@ -143,8 +169,8 @@
         </div>
     </div>
     <!--==============================
-         Service Area
-     ==============================-->
+                 Service Area
+             ==============================-->
     <section class="space service-area">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -233,8 +259,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                         Shop Area
-                                                                                         ==============================-->
+                                                                                                 Shop Area
+                                                                                                 ==============================-->
     <section class="bg-title space">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -287,17 +313,20 @@
         </div>
     </section>
     <!--==============================
-                                                                                         Sertificate Area
-                                                                                         ==============================-->
+                                                                                                 Sertificate Area
+                                                                                                 ==============================-->
     <section class="space sertificate">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
                 <h2 class="sec-title">Our Business Certifications</h2>
                 <div class="sec-line"></div>
-                <p class="explore-text" style="padding: 0 200px;">
-                    Blienum nhaedrum torquatos nec eul, vis detraxit periculis ex, nihil is in mei.
-                    Xei an periculaeuripidis, fincartem ei est. Dlienum phaed is in mei. Lei an Hericulaeuripidis,
-                    hincartem ei est.
+                <p class="explore-text">
+                    “Our seafood export operations are supported by complete and internationally recognized certifications,
+                    ensuring full compliance with global import requirements. We provide all mandatory export documents such
+                    as Health Certificates, Catch Certificates, Certificates of Origin, laboratory test reports, and other
+                    official documents required for international seafood trade. These certifications demonstrate our
+                    commitment to product safety, traceability, and regulatory standards, allowing importers, wholesalers,
+                    and distributors to confidently source Indonesian pelagic fish and frozen seafood from us.
                 </p>
 
             </div>
@@ -322,8 +351,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                         Team Galeri
-                                                                                         ==============================-->
+                                                                                                 Team Galeri
+                                                                                                 ==============================-->
     <section class="space bg-smoke">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -350,8 +379,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                         BLog Area
-                                                                                         ==============================-->
+                                                                                                 BLog Area
+                                                                                                 ==============================-->
     <section class="space blog">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">

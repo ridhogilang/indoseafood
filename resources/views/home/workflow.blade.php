@@ -23,7 +23,7 @@
     <!--==============================
                  Service Details Area
                 ==============================-->
-    <section class="space">
+    <section class="space-top">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">

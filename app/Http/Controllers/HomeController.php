@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inquiry;
 use App\Models\Product;
-use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use App\Models\ProductCategory;
 
 class HomeController extends Controller
 {
@@ -69,8 +70,38 @@ class HomeController extends Controller
 
     public function quote()
     {
-        return view('home.workflow', [
-            "title"  => "Workflow",
+        return view('home.qoute', [
+            "title"  => "Qoute",
+        ]);
+    }
+
+    public function quote_store(Request $request)
+    {
+        $validated = $request->validate([
+            'company_name'        => 'required|string|max:255',
+            'email'               => 'required|email|max:255',
+            'whatsapp'            => 'required|string|max:50',
+            'phone'               => 'nullable|string|max:50',
+            'fish_name'           => 'required|string|max:255',
+            'latin_name'          => 'nullable|string|max:255',
+            'freezing_method'     => 'nullable|string|max:255',
+            'size'                => 'required|string|max:255',
+            'qty'                 => 'required|integer',
+            'port_of_destination' => 'required|string|max:255',
+            'note'                => 'nullable|string',
+        ]);
+
+        Inquiry::create($validated);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Your inquiry has been submitted successfully.');
+    }
+
+    public function contact()
+    {
+        return view('home.contact', [
+            "title"  => "Contact Us",
         ]);
     }
 }
