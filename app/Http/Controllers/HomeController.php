@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Inquiry;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\ArticleCategory;
 use App\Models\ProductCategory;
 
 class HomeController extends Controller
@@ -17,9 +19,15 @@ class HomeController extends Controller
             ->limit(7)
             ->get();
 
+        $articles = Article::with('category')
+            ->orderBy('created_at', 'desc')
+            ->take(7)
+            ->get();
+
         return view('home.home', [
             "title"  => "Home",
             "produk" => $produk,
+            "articles" => $articles,
         ]);
     }
 
@@ -102,6 +110,59 @@ class HomeController extends Controller
     {
         return view('home.contact', [
             "title"  => "Contact Us",
+        ]);
+    }
+
+    public function article()
+    {
+        $articles = Article::with('category')
+            ->orderByDesc('published_at')
+            ->orderByDesc('created_at')
+            ->paginate(8); // 8 artikel per halaman
+
+        return view('home.article', [
+            "title"  => "Article",
+            'articles' => $articles,
+
+        ]);
+    }
+
+    public function article_show($slug)
+    {
+        // Ambil artikel berdasarkan slug
+        $article = Article::with('category')->where('slug', $slug)->firstOrFail();
+
+        // Format tanggal
+        $date = optional($article->created_at)->isoFormat('D MMMM YYYY');
+
+        // prev & next (kalau kamu sudah pakai ini sebelumnya)
+        $prev = Article::where('id', '<', $article->id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $next = Article::where('id', '>', $article->id)
+            ->orderBy('id', 'asc')
+            ->first();
+
+        // CATEGORIES + JUMLAH ARTIKEL
+        $categories = ArticleCategory::withCount('articles')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        // RECENT POSTS (kecuali artikel yang sedang dibaca)
+        $recentPosts = Article::where('id', '!=', $article->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
+
+        return view('home.articleshow', [
+            "title" => $article->title,
+            "article" => $article,
+            "date" => $date,
+            "prev" => $prev,
+            "next" => $next,
+            'categories'   => $categories,
+            'recentPosts'  => $recentPosts,
         ]);
     }
 }

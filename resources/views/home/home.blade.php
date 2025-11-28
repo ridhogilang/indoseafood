@@ -169,8 +169,8 @@
         </div>
     </div>
     <!--==============================
-                 Service Area
-             ==============================-->
+                     Service Area
+                 ==============================-->
     <section class="space service-area">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -259,8 +259,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                                 Shop Area
-                                                                                                 ==============================-->
+                                                                                                     Shop Area
+                                                                                                     ==============================-->
     <section class="bg-title space">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -305,7 +305,7 @@
                 @endforeach
             </div><br><br>
             <div class="hero-btns" style="display:flex; justify-content:center; align-items:center;">
-                <a href="about.html" class="vs-btn me-1">
+                <a href="{{ route('produk') }}" class="vs-btn me-1">
                     All Products
                 </a>
             </div>
@@ -313,8 +313,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                                 Sertificate Area
-                                                                                                 ==============================-->
+                                                                                                     Sertificate Area
+                                                                                                     ==============================-->
     <section class="space sertificate">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -351,8 +351,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                                 Team Galeri
-                                                                                                 ==============================-->
+                                                                                                     Team Galeri
+                                                                                                     ==============================-->
     <section class="space bg-smoke">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -379,8 +379,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                                 BLog Area
-                                                                                                 ==============================-->
+                                                                                                     BLog Area
+                                                                                                     ==============================-->
     <section class="space blog">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -392,132 +392,47 @@
                 data-lg-slide-show="2" data-md-slide-show="2" data-center-mode="true" data-xl-center-mode="true"
                 data-ml-center-mode="true" data-lg-center-mode="true" data-md-center-mode="true"
                 data-sm-center-mode="true">
-                <div class="col-lg-4 col-md-6">
-                    <div class="vs-blog blog-style1">
-                        <div class="blog-img">
-                            <img class="w-100" src="{{ asset('') }}home/img/blog/blog-1-1.jpg" alt="Blog Img">
-                            <div class="blog-meta2">
-                                <span class="day">07</span>
-                                <span class="month">January</span>
+                @foreach ($articles as $article)
+                    <div class="col-lg-4 col-md-6">
+
+                        <div class="vs-blog blog-style1">
+                            <div class="blog-img">
+
+                                <img class="w-100" src="{{ Storage::url($article->thumbnail) }}"
+                                    alt="{{ $article->title }}">
+
+                                <div class="blog-meta2">
+                                    <span class="day">{{ $article->created_at->format('d') }}</span>
+                                    <span class="month">{{ $article->created_at->format('F') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="blog-content">
+                                <div class="blog-meta">
+                                    <a><i class="fa fa-user"></i>Admin</a>
+                                    <a><i class="fa fa-folder"></i>{{ $article->category->name ?? 'Uncategorized' }}</a>
+                                </div>
+
+                                <h4 class="blog-title">
+                                    <a href="{{ route('article_show', $article->slug) }}">
+                                        {{ $article->title }}
+                                    </a>
+                                </h4>
+
+                                <a href="{{ route('article_show', $article->slug) }}" class="link-btn">
+                                    Read More <i class="fa fa-arrow-right"></i>
+                                </a>
                             </div>
                         </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <a href="blog.html"><i class="fa fa-user"></i>Rodja Heartmman</a>
-                                <a href="blog.html"><i class="fa fa-comment-dots"></i>Comments (3)</a>
-                            </div>
-                            <h4 class="blog-title">
-                                <a href="blog-details.html">Sharing Their Group Of Students Ideas</a>
-                            </h4>
-                            <a href="blog-details.html" class="link-btn">Read More <i class="fa fa-arrow-right"></i></a>
-                        </div>
+
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="vs-blog blog-style1">
-                        <div class="blog-img">
-                            <img class="w-100" src="{{ asset('') }}home/img/blog/blog-1-2.jpg" alt="Blog Img">
-                            <div class="blog-meta2">
-                                <span class="day">08</span>
-                                <span class="month">January</span>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <a href="blog.html"><i class="fa fa-user"></i>Rodja Heartmman</a>
-                                <a href="blog.html"><i class="fa fa-comment-dots"></i>Comments (3)</a>
-                            </div>
-                            <h4 class="blog-title">
-                                <a href="blog-details.html">Students Group Of Sharing Their Ideas</a>
-                            </h4>
-                            <a href="blog-details.html" class="link-btn">Read More <i class="fa fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="vs-blog blog-style1">
-                        <div class="blog-img">
-                            <img class="w-100" src="{{ asset('') }}home/img/blog/blog-1-3.jpg" alt="Blog Img">
-                            <div class="blog-meta2">
-                                <span class="day">09</span>
-                                <span class="month">January</span>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <a href="blog.html"><i class="fa fa-user"></i>Rodja Heartmman</a>
-                                <a href="blog.html"><i class="fa fa-comment-dots"></i>Comments (3)</a>
-                            </div>
-                            <h4 class="blog-title">
-                                <a href="blog-details.html">consectetur ipsum dolor sit amet adipisicing elit</a>
-                            </h4>
-                            <a href="blog-details.html" class="link-btn">Read More <i class="fa fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="vs-blog blog-style1">
-                        <div class="blog-img">
-                            <img class="w-100" src="{{ asset('') }}home/img/blog/blog-1-4.jpg" alt="Blog Img">
-                            <div class="blog-meta2">
-                                <span class="day">07</span>
-                                <span class="month">January</span>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <a href="blog.html"><i class="fa fa-user"></i>Rodja Heartmman</a>
-                                <a href="blog.html"><i class="fa fa-comment-dots"></i>Comments (3)</a>
-                            </div>
-                            <h4 class="blog-title">
-                                <a href="blog-details.html">Lorem ipsum dolor sit amet consectetur.</a>
-                            </h4>
-                            <a href="blog-details.html" class="link-btn">Read More <i class="fa fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="vs-blog blog-style1">
-                        <div class="blog-img">
-                            <img class="w-100" src="{{ asset('') }}home/img/blog/blog-1-5.jpg" alt="Blog Img">
-                            <div class="blog-meta2">
-                                <span class="day">08</span>
-                                <span class="month">January</span>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <a href="blog.html"><i class="fa fa-user"></i>Rodja Heartmman</a>
-                                <a href="blog.html"><i class="fa fa-comment-dots"></i>Comments (3)</a>
-                            </div>
-                            <h4 class="blog-title">
-                                <a href="blog-details.html">adipisicing ipsum dolor sit amet consectetur elit.</a>
-                            </h4>
-                            <a href="blog-details.html" class="link-btn">Read More <i class="fa fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="vs-blog blog-style1">
-                        <div class="blog-img">
-                            <img class="w-100" src="{{ asset('') }}home/img/blog/blog-1-6.jpg" alt="Blog Img">
-                            <div class="blog-meta2">
-                                <span class="day">09</span>
-                                <span class="month">January</span>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <a href="blog.html"><i class="fa fa-user"></i>Rodja Heartmman</a>
-                                <a href="blog.html"><i class="fa fa-comment-dots"></i>Comments (3)</a>
-                            </div>
-                            <h4 class="blog-title">
-                                <a href="blog-details.html">a group of students exchanging concepts</a>
-                            </h4>
-                            <a href="blog-details.html" class="link-btn">Read More <i class="fa fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+
+            </div><br><br>
+            <div class="hero-btns" style="display:flex; justify-content:center; align-items:center;">
+                <a href="{{ route('article') }}" class="vs-btn me-1">
+                    All Article
+                </a>
             </div>
         </div>
     </section>

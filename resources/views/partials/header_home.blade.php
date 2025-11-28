@@ -63,13 +63,76 @@
                 <div class="col-md-auto d-flex align-items-center text-center">
                     <div class="dropdown">
                         <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-globe"></i> English
+                            data-bs-toggle="dropdown" aria-expanded="false"
+                            style="display:flex; align-items:center; gap:8px;">
+
+                            <!-- English Flag -->
+                            <span style="width:20px; display:inline-block;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30">
+                                    <clipPath id="t">
+                                        <path d="M0,0 v30 h60 v-30 z" />
+                                    </clipPath>
+                                    <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
+                                    <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6" />
+                                    <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4" />
+                                    <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10" />
+                                    <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6" />
+                                </svg>
+                            </span>
+                            English
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="margin: 0px;">
-                            <li><a class="dropdown-item" href="#">English</a></li>
-                            <li><a class="dropdown-item" href="#">Bangla</a></li>
+
+                        <ul class="dropdown-menu" style="margin:0;">
+                            <li>
+                                <a class="dropdown-item" href="#"
+                                    style="display:flex; align-items:center; gap:8px;">
+                                    <!-- EN -->
+                                    <span style="width:20px; display:inline-block;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30">
+                                            <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
+                                            <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6" />
+                                            <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4" />
+                                            <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10" />
+                                            <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6" />
+                                        </svg>
+                                    </span>
+                                    English
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="#"
+                                    style="display:flex; align-items:center; gap:8px;">
+                                    <!-- CN -->
+                                    <span style="width:20px; display:inline-block;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20">
+                                            <rect width="30" height="20" fill="#DE2910" />
+                                            <polygon fill="#FFDE00" points="4,2 5,6 1,3 7,3 3,6" />
+                                            <polygon fill="#FFDE00" points="10,2.5 11,3 10.2,3.2 10.5,4" />
+                                            <polygon fill="#FFDE00" points="11,5 12,5.5 11.2,5.7 11.5,6.5" />
+                                            <polygon fill="#FFDE00" points="11,8 12,8.5 11.2,8.7 11.5,9.5" />
+                                            <polygon fill="#FFDE00" points="10,10 11,10.5 10.2,10.7 10.5,11.5" />
+                                        </svg>
+                                    </span>
+                                    Chinese
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="#"
+                                    style="display:flex; align-items:center; gap:8px;">
+                                    <!-- ID -->
+                                    <span style="width:20px; display:inline-block;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20">
+                                            <rect width="30" height="10" fill="#CE1126" />
+                                            <rect width="30" height="10" y="10" fill="#FFFFFF" />
+                                        </svg>
+                                    </span>
+                                    Indonesian
+                                </a>
+                            </li>
                         </ul>
+
                     </div>
                     <div class="social-media">
                         <a href="#"><i class="fa fa-facebook-f"></i></a>

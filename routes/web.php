@@ -10,6 +10,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/workflow', 'workflow')->name('workflow');
     Route::get('/getaqoute', 'quote')->name('quote');
     Route::get('/contact', 'contact')->name('contact');
+    Route::get('/article', 'article')->name('article');
+    Route::get('/article/{slug}', 'article_show')->name('article_show');
 
     //Post Route
     Route::post('/getaqoute', 'quote_store')->name('quote.store');

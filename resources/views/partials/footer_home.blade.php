@@ -38,6 +38,9 @@
                                     <a href="{{ route('quote') }}">Get a Qoute</a>
                                 </li>
                                 <li>
+                                    <a href="{{ route('article') }}">Article</a>
+                                </li>
+                                <li>
                                     <a href="{{ route('contact') }}">Contact Us</a>
                                 </li>
                             </ul>
