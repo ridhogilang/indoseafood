@@ -41,5 +41,6 @@ Route::prefix('admin')->group(function () {
 
         //Lead Route
         Route::get('/leads', [LeadController::class, 'index'])->name('leads');
+        Route::post('/leads/import', [LeadController::class, 'import'])->name('leads.import');
     });
 });

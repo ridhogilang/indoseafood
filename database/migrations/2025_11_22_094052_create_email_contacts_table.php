@@ -14,16 +14,15 @@ return new class extends Migration
         Schema::create('email_contacts', function (Blueprint $table) {
             $table->id();
             $table->string('company')->nullable();
-            $table->string('main_product')->nullable(); 
+            $table->string('main_product')->nullable();
             $table->string('website')->nullable();
-            $table->string('email')->unique();
+            $table->string('kirim')->nullable();
             $table->string('country')->nullable();
             $table->string('phone')->nullable();
             $table->string('whatsapp')->nullable();
-            $table->string('contact_person')->nullable(); 
-            $table->text('notes')->nullable();       
+            $table->string('contact_person')->nullable();
+            $table->text('notes')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-
             $table->timestamps();
         });
     }

@@ -25,7 +25,7 @@
 
 <body>
     @include('partials.header_admin')
-    
+
     <main class="nxl-container">
         @yield('main')
         @include('partials.footer_admin')
@@ -34,10 +34,41 @@
     @yield('modal')
 
     <script src="{{ asset('') }}admin/vendors/js/vendors.min.js"></script>
-   
+
     <!--! END: Vendors JS !-->
     <!--! BEGIN: Apps Init  !-->
     @stack('footer')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = @json(session('success'));
+            const errorMessage = @json(session('error'));
+
+            @if ($errors->any())
+                const firstError = @json($errors->first());
+            @else
+                const firstError = null;
+            @endif
+
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                    confirmButtonText: 'OK'
+                });
+            }
+
+            if (errorMessage || firstError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage || firstError,
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    </script>
+
 </body>
 
 </html>
