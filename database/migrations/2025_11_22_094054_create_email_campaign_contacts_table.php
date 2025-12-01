@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('email_campaign_contacts', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('email_campaign_id')
+                ->constrained('email_campaigns')
+                ->onDelete('cascade');
+
+            $table->foreignId('email_contact_id')
+                ->constrained('email_contacts')
+                ->onDelete('cascade');
+
+            $table->enum('status', ['pending', 'sent', 'failed'])
+                ->default('pending');
+
+            $table->timestamp('sent_at')->nullable();
+
             $table->timestamps();
         });
     }
