@@ -30,9 +30,9 @@
                                  class="feather-chevron-right"></i></span>
                      </a>
                      <ul class="nxl-submenu">
-                         <li class="nxl-item"><a class="nxl-link" href="reports-sales.html">Sales Report</a></li>
-                         <li class="nxl-item"><a class="nxl-link" href="reports-leads.html">Leads Report</a></li>
-                         <li class="nxl-item"><a class="nxl-link" href="reports-project.html">Project Report</a></li>
+                         <li class="nxl-item"><a class="nxl-link" href="{{ route('campaign') }}">Campaign Contact</a></li>
+                         <li class="nxl-item"><a class="nxl-link" href="{{ route('status.campaign') }}">Campaign Status</a></li>
+                         <li class="nxl-item"><a class="nxl-link" href="{{ route('mail.campaign') }}">Campaign Mail</a></li>
                          <li class="nxl-item"><a class="nxl-link" href="reports-timesheets.html">Timesheets Report</a>
                          </li>
                      </ul>

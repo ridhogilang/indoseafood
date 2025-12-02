@@ -19,5 +19,12 @@ class EmailContact extends Model
         'contact_person',
         'notes',
         'status',
+        'is_campaign',
+        'is_promotion'
     ];
+
+    public function campaignEntries()
+    {
+        return $this->hasMany(\App\Models\EmailCampaignContact::class);
+    }
 }

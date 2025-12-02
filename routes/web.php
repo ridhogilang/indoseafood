@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LeadController;
 use Illuminate\Support\Facades\Route;
@@ -47,5 +48,14 @@ Route::prefix('admin')->group(function () {
         Route::delete('/leads/{email_contact}', [LeadController::class, 'destroy'])
             ->name('leads.destroy');
         Route::post('/leads/import', [LeadController::class, 'import'])->name('leads.import');
+
+        //Campaign Route
+        Route::get('/campaign', [CampaignController::class, 'index'])->name('campaign');
+        Route::post('/campaign-start', [CampaignController::class, 'start'])
+            ->name('start.campaign');
+        Route::get('/campaign-status', [CampaignController::class, 'status'])->name('status.campaign');
+        Route::get('/campaign-contact', [CampaignController::class, 'mail'])->name('mail.campaign');
+        Route::post('/campaign-mail', [CampaignController::class, 'updateTemplate'])
+            ->name('update_mail.campaign');
     });
 });

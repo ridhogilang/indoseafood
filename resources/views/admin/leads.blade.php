@@ -30,7 +30,7 @@
                     <h5 class="m-b-10">Leads</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item">Leads</li>
                 </ul>
             </div>

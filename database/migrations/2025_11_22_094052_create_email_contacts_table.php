@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('contact_person')->nullable();
             $table->text('notes')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->boolean('is_campaign')->default(false);
+            $table->boolean('is_promotion')->default(false);
             $table->timestamps();
         });
     }

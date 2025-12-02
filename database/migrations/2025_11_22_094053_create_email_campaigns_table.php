@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('title');             // judul campaign
             $table->string('subject');           // subject email
             $table->longText('body_html');       // isi email (HTML)
-            $table->enum('status', ['draft', 'scheduled', 'sent'])->default('draft');
-            $table->timestamp('scheduled_at')->nullable();
             $table->timestamps();
         });
     }
