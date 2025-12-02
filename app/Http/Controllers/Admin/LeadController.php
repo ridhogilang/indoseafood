@@ -21,6 +21,31 @@ class LeadController extends Controller
         ]);
     }
 
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'company'        => ['required', 'string', 'max:255'],        // cuma ini yang wajib
+            'main_product'   => ['nullable', 'string', 'max:255'],
+            'website'        => ['nullable', 'string', 'max:255'],
+            'kirim'          => ['nullable', 'email', 'max:255'],        // email tapi tidak wajib
+            'country'        => ['nullable', 'string', 'max:255'],
+            'phone'          => ['nullable', 'string', 'max:255'],
+            'whatsapp'       => ['nullable', 'string', 'max:255'],
+            'contact_person' => ['nullable', 'string', 'max:255'],
+            'notes'          => ['nullable', 'string'],
+            'main_product'   => ['nullable', 'string'],
+            'status'         => ['required', 'in:active,inactive'],      // default di DB juga 'active'
+        ]);
+
+        if (!empty($validated['kirim'])) {
+            $validated['kirim'] = strtolower(trim($validated['kirim']));
+        }
+
+        EmailContact::create($validated);
+
+        return back()->with('success', 'Lead berhasil ditambahkan.');
+    }
+
     public function import(Request $request)
     {
         $request->validate([
@@ -48,5 +73,37 @@ class LeadController extends Controller
             'success'    => $successMessage,
             'duplicates' => $duplicates,  // bisa dipakai di SweetAlert
         ]);
+    }
+
+    public function update(Request $request, EmailContact $email_contact)
+    {
+        $validated = $request->validate([
+            'company'        => ['required', 'string', 'max:255'],
+            'main_product'   => ['nullable', 'string'],
+            'website'        => ['nullable', 'string', 'max:255'],
+            'kirim'          => ['nullable', 'email', 'max:255'],
+            'country'        => ['nullable', 'string', 'max:255'],
+            'phone'          => ['nullable', 'string', 'max:255'],
+            'whatsapp'       => ['nullable', 'string', 'max:255'],
+            'contact_person' => ['nullable', 'string', 'max:255'],
+            'notes'          => ['nullable', 'string'],
+            'status'         => ['required', 'in:active,inactive'],
+        ]);
+
+        // Normalisasi email ke huruf kecil
+        if (!empty($validated['kirim'])) {
+            $validated['kirim'] = strtolower(trim($validated['kirim']));
+        }
+
+        $email_contact->update($validated);
+
+        return back()->with('success', 'Lead updated successfully.');
+    }
+
+    public function destroy(\App\Models\EmailContact $email_contact)
+    {
+        $email_contact->delete();
+
+        return back()->with('success', 'Contact deleted successfully.');
     }
 }

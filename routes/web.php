@@ -41,6 +41,11 @@ Route::prefix('admin')->group(function () {
 
         //Lead Route
         Route::get('/leads', [LeadController::class, 'index'])->name('leads');
+        Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
+        Route::put('/leads/{email_contact}', [LeadController::class, 'update'])
+            ->name('leads.update');
+        Route::delete('/leads/{email_contact}', [LeadController::class, 'destroy'])
+            ->name('leads.destroy');
         Route::post('/leads/import', [LeadController::class, 'import'])->name('leads.import');
     });
 });
