@@ -34,6 +34,8 @@
     @yield('modal')
 
     <script src="{{ asset('') }}admin/vendors/js/vendors.min.js"></script>
+    <script src="{{ asset('') }}admin/js/common-init.min.js"></script>
+
 
     <!--! END: Vendors JS !-->
     <!--! BEGIN: Apps Init  !-->

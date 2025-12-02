@@ -19,23 +19,14 @@
                                  class="feather-airplay"></i></span>
                          <span class="nxl-mtext">Dashboards</span></a>
                  </li>
+                 <li class="nxl-item"><a class="nxl-link" href="{{ route('leads') }}"><span class="nxl-micon"><i
+                                 class="feather-users"></i></span>
+                         <span class="nxl-mtext">Leads</span></a>
+                 </li>
                  <li class="nxl-item nxl-hasmenu">
                      <a href="javascript:void(0);" class="nxl-link">
-                         <span class="nxl-micon"><i class="feather-users"></i></span>
-                         <span class="nxl-mtext">Leads</span><span class="nxl-arrow"><i
-                                 class="feather-chevron-right"></i></span>
-                     </a>
-                     <ul class="nxl-submenu">
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('leads') }}">Leads</a></li>
-                         <li class="nxl-item"><a class="nxl-link" href="customers-view.html">Customers View</a></li>
-                         <li class="nxl-item"><a class="nxl-link" href="customers-create.html">Customers Create</a>
-                         </li>
-                     </ul>
-                 </li>
-                 {{-- <li class="nxl-item nxl-hasmenu">
-                     <a href="javascript:void(0);" class="nxl-link">
-                         <span class="nxl-micon"><i class="feather-cast"></i></span>
-                         <span class="nxl-mtext">Reports</span><span class="nxl-arrow"><i
+                         <span class="nxl-micon"><i class="feather-mail"></i></span>
+                         <span class="nxl-mtext">Mail</span><span class="nxl-arrow"><i
                                  class="feather-chevron-right"></i></span>
                      </a>
                      <ul class="nxl-submenu">
@@ -45,7 +36,7 @@
                          <li class="nxl-item"><a class="nxl-link" href="reports-timesheets.html">Timesheets Report</a>
                          </li>
                      </ul>
-                 </li> --}}
+                 </li>
                  {{-- <li class="nxl-item nxl-hasmenu">
                      <a href="javascript:void(0);" class="nxl-link">
                          <span class="nxl-micon"><i class="feather-send"></i></span>

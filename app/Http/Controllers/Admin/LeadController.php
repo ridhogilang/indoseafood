@@ -15,9 +15,29 @@ class LeadController extends Controller
     {
         $contacts = EmailContact::orderBy('id', 'asc')->get();
 
+        // 1) Total Leads = all records
+        $totalLeads = EmailContact::count();
+
+        // 2) Potential Leads = company AND kirim are both filled (not null / not empty)
+        $potentialLeads = EmailContact::whereNotNull('company')
+            ->where('company', '!=', '')
+            ->whereNotNull('kirim')
+            ->where('kirim', '!=', '')
+            ->count();
+
+        // 3) Non-potential Leads = all leads minus potential ones
+        $nonPotentialLeads = $totalLeads - $potentialLeads;
+
+        // 4) Inactive Leads = status = 'inactive'
+        $inactiveLeads = EmailContact::where('status', 'inactive')->count();
+
         return view('admin.leads', [
             'title'    => 'Leads',
             'contacts' => $contacts,
+            'totalLeads'        => $totalLeads,
+            'potentialLeads'    => $potentialLeads,
+            'nonPotentialLeads' => $nonPotentialLeads,
+            'inactiveLeads'     => $inactiveLeads,
         ]);
     }
 

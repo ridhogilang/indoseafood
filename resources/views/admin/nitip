@@ -10,14 +10,6 @@
             width: auto !important;
             white-space: nowrap;
         }
-
-        .truncate-text {
-            max-width: 150px;
-            /* atur sesuai kebutuhan */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
     </style>
 @endpush
 
@@ -267,18 +259,7 @@
                                                 </td>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>
-                                                    <a href="javascript:void(0)" class="hstack gap-5 btn-view-contact"
-                                                        data-bs-toggle="modal" data-bs-target="#viewContactModal"
-                                                        data-company="{{ $contact->company }}"
-                                                        data-main_product="{{ $contact->main_product }}"
-                                                        data-website="{{ $contact->website }}"
-                                                        data-kirim="{{ $contact->kirim }}"
-                                                        data-country="{{ $contact->country }}"
-                                                        data-phone="{{ $contact->phone }}"
-                                                        data-whatsapp="{{ $contact->whatsapp }}"
-                                                        data-contact_person="{{ $contact->contact_person }}"
-                                                        data-notes="{{ $contact->notes }}"
-                                                        data-status="{{ $contact->status }}">
+                                                    <a href="leads-view.html" class="hstack gap-5">
                                                         <div>
                                                             <span
                                                                 class="text-truncate-1-line">{{ $contact->company }}</span>
@@ -286,21 +267,9 @@
                                                     </a>
                                                 </td>
                                                 <td>{{ trim($contact->kirim) ?: '-' }}</td>
-                                                <td><a href="javascript:void(0)" class="btn-view-contact" data-bs-toggle="modal"
-                                                        data-bs-target="#viewContactModal"
-                                                        data-company="{{ $contact->company }}"
-                                                        data-main_product="{{ $contact->main_product }}"
-                                                        data-website="{{ $contact->website }}"
-                                                        data-kirim="{{ $contact->kirim }}"
-                                                        data-country="{{ $contact->country }}"
-                                                        data-phone="{{ $contact->phone }}"
-                                                        data-whatsapp="{{ $contact->whatsapp }}"
-                                                        data-contact_person="{{ $contact->contact_person }}"
-                                                        data-notes="{{ $contact->notes }}"
-                                                        data-status="{{ $contact->status }}">{{ $contact->country }}</a>
-                                                </td>
+                                                <td><a href="apps-mail.html">{{ $contact->country }}</a></td>
                                                 <td>{{ $contact->contact ?? '-' }}</td>
-                                                <td class="truncate-text">{{ $contact->main_product ?? '-' }}</td>
+                                                <td>{{ $contact->main_product ?? '-' }}</td>
                                                 @php
                                                     $status = $contact->status; // active / inactive
 
@@ -430,15 +399,12 @@
                                                     import template here, if it doesn't match the template, leads cannot be
                                                     imported.</span>
                                             </h5>
-                                            <a href="{{ asset('admin/download/Template Import Leads.xlsx') }}"
-                                                class="btn btn-light-brand" download="Template_Import_Leads.xlsx">
-                                                Download Template
-                                            </a>
-
+                                            <a href="javascript:void(0);" class="btn btn-light-brand">Create
+                                                Invoice</a>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12 mb-4">
-                                                <label class="form-label">Upload Your Lead (file .xsl .xlsx)</label>
+                                                <label class="form-label">Upload Template Lead</label>
                                                 <input type="file"
                                                     accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                                     class="form-control" name="file" id="contactsFile">
@@ -687,6 +653,7 @@
                                                 <option value="inactive" data-bg="bg-danger">Inactive</option>
                                             </select>
                                         </div>
+
                                         <div class="col-lg-6 mb-4 align-items-center">
                                             <label class="form-label">Main Product</label>
                                             <div class="input-group">
