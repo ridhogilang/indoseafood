@@ -57,5 +57,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/campaign-contact', [CampaignController::class, 'mail'])->name('mail.campaign');
         Route::post('/campaign-mail', [CampaignController::class, 'updateTemplate'])
             ->name('update_mail.campaign');
+        Route::delete('/campaign-contact/{id}', [CampaignController::class, 'deleteCampaignContact'])
+            ->name('delete.campaign');
     });
 });

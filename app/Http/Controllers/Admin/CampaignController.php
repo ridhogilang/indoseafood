@@ -20,9 +20,33 @@ class CampaignController extends Controller
             ->orderBy('id', 'asc')
             ->get();
 
+        $now = Carbon::now();
+
+        $runningCampaign = EmailCampaignContact::where('status', 'pending')
+            ->where('sent_at', '>', $now)
+            ->count();
+
+        $failedCampaign = EmailCampaignContact::where(function ($q) use ($now) {
+
+            $threeMinutesAgo = $now->copy()->subMinutes(3);
+
+            $q->where('status', 'failed')
+                ->orWhere(function ($sub) use ($threeMinutesAgo) {
+                    $sub->where('status', 'pending')
+                        ->where('sent_at', '<=', $threeMinutesAgo);
+                });
+        })
+            ->count();
+
+
+        $newLeads = EmailContact::where('is_campaign', false)->count();
+
         return view('admin.campaign.campaign', [
             'title' => 'Campaign Contact',
             'campaignContacts' => $campaignContacts,
+            'runningCampaign' => $runningCampaign,
+            'failedCampaign'  => $failedCampaign,
+            'newLeads'        => $newLeads,
         ]);
     }
 
@@ -113,8 +137,47 @@ class CampaignController extends Controller
 
     public function status()
     {
+        $nowMinus3 = Carbon::now()->subMinutes(3);
+
+        $campaignContacts = \App\Models\EmailCampaignContact::with(['campaign', 'contact'])
+            ->where(function ($q) use ($nowMinus3) {
+                $q->whereIn('status', ['failed', 'sent'])
+                    ->orWhere(function ($q2) use ($nowMinus3) {
+                        // pending tapi sudah melewati waktu + 3 menit
+                        $q2->where('status', 'pending')
+                            ->where('sent_at', '<', $nowMinus3);
+                    });
+            })
+            ->orderBy('id', 'asc')
+            ->get();
+
+        $now = Carbon::now();
+
+        $runningCampaign = EmailCampaignContact::where('status', 'pending')
+            ->where('sent_at', '>', $now)
+            ->count();
+
+        $failedCampaign = EmailCampaignContact::where(function ($q) use ($now) {
+
+            $threeMinutesAgo = $now->copy()->subMinutes(3);
+
+            $q->where('status', 'failed')
+                ->orWhere(function ($sub) use ($threeMinutesAgo) {
+                    $sub->where('status', 'pending')
+                        ->where('sent_at', '<=', $threeMinutesAgo);
+                });
+        })
+            ->count();
+
+
+        $newLeads = EmailContact::where('is_campaign', false)->count();
+
         return view('admin.campaign.status_campaign', [
             'title' => 'Status Campaign Email',
+            'campaignContacts' => $campaignContacts,
+            'runningCampaign' => $runningCampaign,
+            'failedCampaign'  => $failedCampaign,
+            'newLeads'        => $newLeads,
         ]);
     }
 
@@ -122,9 +185,17 @@ class CampaignController extends Controller
     {
         $campaign = EmailCampaign::findOrFail(1);
 
+        $now = Carbon::now();
+
+        $hasFutureScheduled = EmailCampaignContact::where('email_campaign_id', $campaign->id)
+            ->where('status', 'pending')
+            ->where('sent_at', '>', $now)
+            ->exists();
+
         return view('admin.campaign.mail', [
             'title' => 'Email Campaign',
             'campaign' => $campaign,
+            'hasFutureScheduled' => $hasFutureScheduled,
         ]);
     }
 
@@ -138,14 +209,64 @@ class CampaignController extends Controller
             'body_html' => ['required', 'string'],
         ]);
 
+        // Sedikit normalisasi HTML supaya jarak antar paragraf nggak lebay
+        $cleanBody = $this->normalizeBodyHtml($request->body_html);
+
         $campaign->update([
             'title'     => $request->title,
             'subject'   => $request->subject,
-            'body_html' => $request->body_html,
+            'body_html' => $cleanBody,
         ]);
 
         return redirect()
             ->back()
             ->with('success', 'Email campaign template updated successfully.');
+    }
+
+    protected function normalizeBodyHtml(string $html): string
+    {
+        // Kurangi margin yang terlalu besar (12px → 8px)
+        $html = preg_replace(
+            '/margin:\s*12px 0;/i',
+            'margin:8px 0;',
+            $html
+        );
+
+        // Kurangi line-height sedikit (opsional, biar nggak terlalu renggang)
+        $html = preg_replace(
+            '/line-height:\s*1\.5;/i',
+            'line-height:1.4;',
+            $html
+        );
+
+        // Hapus paragraf kosong (<p>&nbsp;</p> dsb)
+        $html = preg_replace(
+            '/<p[^>]*>(?:&nbsp;|\s)*<\/p>/i',
+            '',
+            $html
+        );
+
+        return $html;
+    }
+
+    public function deleteCampaignContact($id)
+    {
+        // Cari record di email_campaign_contacts
+        $item = EmailCampaignContact::findOrFail($id);
+
+        // Ambil contact id nya
+        $contactId = $item->email_contact_id;
+
+        // Delete item campaign contact
+        $item->delete();
+
+        // Update email_contacts → is_campaign = false
+        $contact = EmailContact::find($contactId);
+        if ($contact) {
+            $contact->is_campaign = false;
+            $contact->save();
+        }
+
+        return back()->with('success', 'Campaign contact has been deleted successfully.');
     }
 }

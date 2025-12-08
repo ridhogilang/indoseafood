@@ -145,7 +145,7 @@
         <div id="collapseOne" class="accordion-collapse collapse page-header-collapse">
             <div class="accordion-body pb-2">
                 <div class="row">
-                    <div class="col-xxl-3 col-md-6">
+                    <div class="col-xxl-4 col-md-6">
                         <div class="card stretch stretch-full">
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -154,15 +154,17 @@
                                             <i class="feather-users"></i>
                                         </div>
                                         <a href="javascript:void(0);" class="fw-bold d-block">
-                                            <span class="d-block">Total Leads</span>
-                                            <span class="fs-24 fw-bolder d-block"></span>
+                                            <span class="d-block">Running Campaign</span>
+                                            <span class="fs-24 fw-bolder d-block">
+                                                {{ number_format($runningCampaign, 0, ',', '.') }}
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xxl-3 col-md-6">
+                    <div class="col-xxl-4 col-md-6">
                         <div class="card stretch stretch-full">
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -171,15 +173,17 @@
                                             <i class="feather-user-check"></i>
                                         </div>
                                         <a href="javascript:void(0);" class="fw-bold d-block">
-                                            <span class="d-block">Potential Leads</span>
-                                            <span class="fs-24 fw-bolder d-block"></span>
+                                            <span class="d-block">Failed Campaign</span>
+                                            <span class="fs-24 fw-bolder d-block">
+                                                {{ number_format($failedCampaign, 0, ',', '.') }}
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xxl-3 col-md-6">
+                    <div class="col-xxl-4 col-md-6">
                         <div class="card stretch stretch-full">
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -188,25 +192,9 @@
                                             <i class="feather-user-plus"></i>
                                         </div>
                                         <a href="javascript:void(0);" class="fw-bold d-block">
-                                            <span class="d-block">Non Potential Leads</span>
-                                            <span class="fs-24 fw-bolder d-block"></span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-3 col-md-6">
-                        <div class="card stretch stretch-full">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="avatar-text avatar-xl rounded">
-                                            <i class="feather-user-minus"></i>
-                                        </div>
-                                        <a href="javascript:void(0);" class="fw-bold d-block">
-                                            <span class="d-block">Inactive Leads</span>
-                                            <span class="fs-24 fw-bolder d-block"></span>
+                                            <span class="d-block">New Leads</span>
+                                            <span
+                                                class="fs-24 fw-bolder d-block">{{ number_format($newLeads, 0, ',', '.') }}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -242,7 +230,7 @@
                                             <th>Country</th>
                                             <th>Schedule</th>
                                             <th>Status</th>
-                                            <th class="text-end">Actions</th>
+                                            <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -274,6 +262,11 @@
                                                 <td>
                                                     @php
                                                         $status = $item->status;
+                                                        $now = \Carbon\Carbon::now();
+                                                        $threshold = $now->copy()->subMinutes(3);
+                                                        $sentAt = $item->sent_at
+                                                            ? \Carbon\Carbon::parse($item->sent_at)
+                                                            : null;
 
                                                         $badgeMap = [
                                                             'pending' => [
@@ -291,76 +284,35 @@
                                                         ];
                                                     @endphp
 
+                                                    {{-- Badge utama --}}
                                                     <div
                                                         class="{{ $badgeMap[$status]['class'] ?? 'badge bg-secondary' }}">
                                                         {{ $badgeMap[$status]['label'] ?? ucfirst($status) }}
                                                     </div>
-                                                </td>
 
+                                                    {{-- Badge tambahan jika pending tapi waktu sudah lewat --}}
+                                                    @if ($status === 'pending' && $sentAt && $sentAt->lt($threshold))
+                                                        <div class="badge bg-soft-danger text-danger ms-1">
+                                                            Failed
+                                                        </div>
+                                                    @endif
+                                                </td>
 
                                                 <!-- Actions -->
                                                 <td class="text-end">
-                                                    <div class="hstack gap-2 justify-content-end">
+                                                    <div class="hstack gap-2 justify-content-center">
 
                                                         <!-- View -->
-                                                        <a href="javascript:void(0);"
-                                                            class="avatar-text avatar-md btn-view-contact"
-                                                            data-bs-toggle="modal" data-bs-target="#viewContactModal"
-                                                            data-company="{{ $item->contact->company }}"
-                                                            data-kirim="{{ $item->contact->kirim }}"
-                                                            data-country="{{ $item->contact->country }}"
-                                                            data-main_product="{{ $item->contact->main_product }}"
-                                                            data-website="{{ $item->contact->website }}"
-                                                            data-phone="{{ $item->contact->phone }}"
-                                                            data-whatsapp="{{ $item->contact->whatsapp }}"
-                                                            data-contact_person="{{ $item->contact->contact_person }}"
-                                                            data-notes="{{ $item->contact->notes }}"
-                                                            data-status="{{ $item->contact->status }}">
-                                                            <i class="feather feather-eye"></i>
-                                                        </a>
+                                                        <form action="{{ route('delete.campaign', $item->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
 
-                                                        <!-- Dropdown -->
-                                                        <div class="dropdown">
-                                                            <a href="javascript:void(0)" class="avatar-text avatar-md"
-                                                                data-bs-toggle="dropdown" data-bs-offset="0,21">
-                                                                <i class="feather feather-more-horizontal"></i>
+                                                            <a href="javascript:void(0);"
+                                                                class="avatar-text avatar-md btn-delete-campaign">
+                                                                <i class="feather feather-trash-2"></i>
                                                             </a>
-
-                                                            <ul class="dropdown-menu">
-                                                                <li>
-                                                                    <a class="dropdown-item btn-edit-contact"
-                                                                        href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#editContactModal"
-                                                                        data-id="{{ $item->contact->id }}"
-                                                                        data-company="{{ $item->contact->company }}"
-                                                                        data-main_product="{{ $item->contact->main_product }}"
-                                                                        data-website="{{ $item->contact->website }}"
-                                                                        data-kirim="{{ $item->contact->kirim }}"
-                                                                        data-country="{{ $item->contact->country }}"
-                                                                        data-phone="{{ $item->contact->phone }}"
-                                                                        data-whatsapp="{{ $item->contact->whatsapp }}"
-                                                                        data-contact_person="{{ $item->contact->contact_person }}"
-                                                                        data-notes="{{ $item->contact->notes }}"
-                                                                        data-status="{{ $item->contact->status }}">
-                                                                        <i class="feather feather-edit-3 me-3"></i>
-                                                                        Edit
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <form action="" method="POST">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <a class="dropdown-item btn-delete-contact"
-                                                                            href="javascript:void(0)">
-                                                                            <i class="feather feather-trash-2 me-3"></i>
-                                                                            Delete
-                                                                        </a>
-                                                                    </form>
-                                                                </li>
-
-                                                            </ul>
-                                                        </div>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -386,4 +338,44 @@
     <script src="{{ asset('') }}admin/vendors/js/select2.min.js"></script>
     <script src="{{ asset('') }}admin/vendors/js/select2-active.min.js"></script>
     <script src="{{ asset('') }}admin/js/leads-init.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-danger me-2',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false
+            });
+
+            const deleteButtons = document.querySelectorAll('.btn-delete-campaign');
+
+            deleteButtons.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const form = this.closest('form');
+                    if (!form) return;
+
+                    swalWithBootstrapButtons.fire({
+                        title: 'Delete Campaign Item?',
+                        text: 'Are you sure you want to delete this campaign contact? This action cannot be undone.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+
+                });
+            });
+
+        });
+    </script>
 @endpush

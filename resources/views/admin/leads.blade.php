@@ -299,7 +299,7 @@
                                                         data-notes="{{ $contact->notes }}"
                                                         data-status="{{ $contact->status }}">{{ $contact->country }}</a>
                                                 </td>
-                                                <td>{{ $contact->contact ?? '-' }}</td>
+                                                <td>{{ $contact->contact_person ?? '-' }}</td>
                                                 <td class="truncate-text">{{ $contact->main_product ?? '-' }}</td>
                                                 @php
                                                     $status = $contact->status; // active / inactive

@@ -33,9 +33,12 @@
                          <li class="nxl-item"><a class="nxl-link" href="{{ route('campaign') }}">Campaign Contact</a></li>
                          <li class="nxl-item"><a class="nxl-link" href="{{ route('status.campaign') }}">Campaign Status</a></li>
                          <li class="nxl-item"><a class="nxl-link" href="{{ route('mail.campaign') }}">Campaign Mail</a></li>
-                         <li class="nxl-item"><a class="nxl-link" href="reports-timesheets.html">Timesheets Report</a>
                          </li>
                      </ul>
+                 </li>
+                   <li class="nxl-item"><a class="nxl-link" href=""><span class="nxl-micon"><i
+                                 class="feather-settings"></i></span>
+                         <span class="nxl-mtext">Setting</span></a>
                  </li>
                  {{-- <li class="nxl-item nxl-hasmenu">
                      <a href="javascript:void(0);" class="nxl-link">

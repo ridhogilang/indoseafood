@@ -38,7 +38,10 @@
                                 <i class="feather-layers me-2"></i>
                                 <span>Save & Send</span>
                             </a>
-                            <button type="submit" class="btn btn-primary"> <i class="feather-send me-2"></i> Update Email
+                            <button type="submit" class="btn btn-primary"
+                                @if ($hasFutureScheduled) disabled @endif>
+                                <i class="feather-send me-2"></i>
+                                Update Email
                             </button>
                         </div>
                     </div>
@@ -91,8 +94,8 @@
                                         <h5 class="card-title">Body Email</h5>
                                     </div>
                                     <div class="card-body p-0">
-                                        <div id="editor-proposal" class="ht-300 font-inter botder-top-0"></div>
-                                        <input type="hidden" name="body_html" id="body-input">
+                                        <textarea id="body-editor" class="form-control" rows="15">{!! old('body_html', $campaign->body_html) !!}</textarea>
+                                        <input type="hidden" name="body_html" id="body-html-hidden">
                                     </div>
                                 </div>
                             </div>
@@ -112,26 +115,73 @@
     <script src="{{ asset('') }}admin/vendors/js/select2.min.js"></script>
     <script src="{{ asset('') }}admin/vendors/js/select2-active.min.js"></script>
     <script src="{{ asset('') }}admin/js/proposal-view-init.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const editorElement = document.querySelector('#editor-proposal');
+    <script src="https://cdn.tiny.cloud/1/xhsi78ltsyv1yceicuk60tx3t06uo2di7mba3isrp20sa4f8/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    @verbatim
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
 
-            const quill = new Quill(editorElement, {
-                theme: 'snow',
-                placeholder: 'Body Email...',
+                tinymce.init({
+                    selector: '#body-editor',
+                    menubar: false,
+                    height: 500,
+                    plugins: 'link lists',
+                    toolbar: 'undo redo | bold italic underline | bullist numlist | link | insertCompany insertName insertEmail insertWhatsapp',
+                    branding: false,
+                    convert_newlines_to_brs: false,
+                    forced_root_block: 'p',
+                    content_style: `
+            body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+            p { margin: 0 0 8px 0; line-height: 1.5; }
+        `,
+
+                    setup: function(editor) {
+                        // {{ company }}
+                        editor.ui.registry.addButton('insertCompany', {
+                            text: 'Company Name',
+                            tooltip: 'Insert {{ company }} placeholder',
+                            onAction: function() {
+                                editor.insertContent('{{ $company }}');
+                            }
+                        });
+
+                        // {{ country }}
+                        editor.ui.registry.addButton('insertName', {
+                            text: 'Country',
+                            tooltip: 'Insert {{ country }} placeholder',
+                            onAction: function() {
+                                editor.insertContent('{{ $country }}');
+                            }
+                        });
+
+                        // {{ contact }}
+                        editor.ui.registry.addButton('insertEmail', {
+                            text: 'Contact',
+                            tooltip: 'Insert {{ contact }} placeholder',
+                            onAction: function() {
+                                editor.insertContent('{{ $contact }}');
+                            }
+                        });
+
+                        // {{ whatsapp }}
+                        editor.ui.registry.addButton('insertWhatsapp', {
+                            text: 'Whatsapp',
+                            tooltip: 'Insert {{ whatsapp }} placeholder',
+                            onAction: function() {
+                                editor.insertContent('{{ $whatsapp }}');
+                            }
+                        });
+                    },
+                });
+
+                // Saat submit → ambil HTML dari TinyMCE, masukkan ke hidden input
+                const form = document.getElementById('campaign-form');
+                form.addEventListener('submit', function() {
+                    const html = tinymce.get('body-editor').getContent();
+                    document.getElementById('body-html-hidden').value = html;
+                });
+
             });
-
-            // ISI AWAL DARI DATABASE (ID = 1)
-            const initialBody = @json(old('body_html', $campaign->body_html));
-            if (initialBody) {
-                quill.root.innerHTML = initialBody;
-            }
-
-            const form = document.getElementById('campaign-form');
-            form.addEventListener('submit', function() {
-                const hiddenInput = document.getElementById('body-input');
-                hiddenInput.value = quill.root.innerHTML;
-            });
-        });
-    </script>
+        </script>
+    @endverbatim
 @endpush

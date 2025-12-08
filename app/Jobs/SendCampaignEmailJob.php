@@ -52,7 +52,7 @@ class SendCampaignEmailJob implements ShouldQueue
 
             $bodyHtml = Blade::render($template, [
                 'company' => $contact->company,
-                'contact' => $contact,
+                'country' => $contact->country,
             ]);
 
             Mail::html($bodyHtml, function ($message) use ($contact, $subject) {
