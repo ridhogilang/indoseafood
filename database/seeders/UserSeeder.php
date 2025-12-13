@@ -18,7 +18,8 @@ class UserSeeder extends Seeder
             'name' => 'Ridho',
             'email' => 'ridhoendorse@gmail.com',
             'password' => Hash::make('admin'), 
-            'email_verified_at' => null
+            // 'email_verified_at' => null,
+            'is_superadmin' => true,
         ]);
 
         User::factory()->create([
@@ -32,9 +33,7 @@ class UserSeeder extends Seeder
             'name' => 'Rafly',
             'email' => 'raflyistiadi27@gmail.com',
             'password' => Hash::make('password'), 
-            'email_verified_at' => null
+            // 'email_verified_at' => null
         ]);
-
-
     }
 }

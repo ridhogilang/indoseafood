@@ -15,8 +15,8 @@
                  <li class="nxl-item nxl-caption">
                      <label>Navigation</label>
                  </li>
-                 <li class="nxl-item"><a class="nxl-link" href="{{ route('admin.dashboard') }}"><span class="nxl-micon"><i
-                                 class="feather-airplay"></i></span>
+                 <li class="nxl-item"><a class="nxl-link" href="{{ route('admin.dashboard') }}"><span
+                             class="nxl-micon"><i class="feather-airplay"></i></span>
                          <span class="nxl-mtext">Dashboards</span></a>
                  </li>
                  <li class="nxl-item"><a class="nxl-link" href="{{ route('leads') }}"><span class="nxl-micon"><i
@@ -30,17 +30,38 @@
                                  class="feather-chevron-right"></i></span>
                      </a>
                      <ul class="nxl-submenu">
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('campaign') }}">Campaign Contact</a></li>
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('status.campaign') }}">Campaign Status</a></li>
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('mail.campaign') }}">Campaign Mail</a></li>
+                         <li class="nxl-item"><a class="nxl-link" href="{{ route('campaign') }}">Campaign Contact</a>
+                         </li>
+                         <li class="nxl-item"><a class="nxl-link" href="{{ route('status.campaign') }}">Campaign
+                                 Status</a></li>
+                         <li class="nxl-item"><a class="nxl-link" href="{{ route('mail.campaign') }}">Campaign Mail</a>
                          </li>
                      </ul>
                  </li>
-                   <li class="nxl-item"><a class="nxl-link" href=""><span class="nxl-micon"><i
-                                 class="feather-settings"></i></span>
-                         <span class="nxl-mtext">Setting</span></a>
-                 </li>
-                 {{-- <li class="nxl-item nxl-hasmenu">
+                 @if (auth()->check() && auth()->user()->is_superadmin == 1)
+                     <li class="nxl-item nxl-hasmenu">
+                         <a href="javascript:void(0);" class="nxl-link">
+                             <span class="nxl-micon"><i class="feather-settings"></i></span>
+                             <span class="nxl-mtext">Setting</span><span class="nxl-arrow"><i
+                                     class="feather-chevron-right"></i></span>
+                         </a>
+                         <ul class="nxl-submenu">
+                             <li class="nxl-item"><a class="nxl-link" href="{{ route('user.setting') }}">Setting</a></li>
+                             <li class="nxl-item"><a class="nxl-link" href="{{ route('user.list') }}">List User</a></li>
+                         </ul>
+                     </li>
+                 @else
+                     <li class="nxl-item">
+                         <a class="nxl-link" href="">
+                             <span class="nxl-micon">
+                                 <i class="feather-settings"></i>
+                             </span>
+                             <span class="nxl-mtext">Setting</span>
+                         </a>
+                     </li>
+                 @endif
+             </ul>
+             {{-- <li class="nxl-item nxl-hasmenu">
                      <a href="javascript:void(0);" class="nxl-link">
                          <span class="nxl-micon"><i class="feather-send"></i></span>
                          <span class="nxl-mtext">Applications</span><span class="nxl-arrow"><i
@@ -263,7 +284,6 @@
                          <li class="nxl-item"><a class="nxl-link" href="#">Documentations</a></li>
                      </ul>
                  </li> --}}
-             </ul>
          </div>
      </div>
  </nav>
@@ -316,7 +336,8 @@
                              <span class="input-group-text">
                                  <i class="feather-search fs-6 text-muted"></i>
                              </span>
-                             <input type="text" class="form-control search-input-field" placeholder="Search...." />
+                             <input type="text" class="form-control search-input-field"
+                                 placeholder="Search...." />
                              <span class="input-group-text">
                                  <button type="button" class="btn-close"></button>
                              </span>

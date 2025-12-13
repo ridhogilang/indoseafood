@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LeadController;
+use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\OTPController;
@@ -59,5 +60,14 @@ Route::prefix('admin')->group(function () {
             ->name('update_mail.campaign');
         Route::delete('/campaign-contact/{id}', [CampaignController::class, 'deleteCampaignContact'])
             ->name('delete.campaign');
+
+
+        //Settings Route
+        Route::get('/list-user', [SettingController::class, 'list'])->name('user.list');
+        Route::get('/setting', [SettingController::class, 'index'])->name('user.setting');
+        Route::post('/users/update-status', [SettingController::class, 'updateStatus'])
+            ->name('users.update-status');
+        Route::post('/users/add', [SettingController::class, 'store'])->name('user.add');
+        Route::put('/users/{id}', [SettingController::class, 'updateAdmin'])->name('users.updateAdmin');
     });
 });
