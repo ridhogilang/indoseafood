@@ -201,7 +201,7 @@
                                                 <label class="form-label">Email</label>
                                                 <div class="input-group">
                                                     <div class="input-group-text"><i class="feather-mail"></i></div>
-                                                    <input type="text" class="form-control" id="email"
+                                                    <input type="email" class="form-control" id="email"
                                                         name="email" placeholder="Email">
                                                 </div>
                                             </div>
@@ -210,9 +210,6 @@
                                                 <div class="input-group">
                                                     <input type="password" class="form-control password" id="newPassword"
                                                         name="password" placeholder="Password Confirm">
-                                                    <div class="input-group-text c-pointer gen-pass"
-                                                        data-bs-toggle="tooltip" title="Generate Password"><i
-                                                            class="feather-hash"></i></div>
                                                     <div class="input-group-text border-start bg-gray-2 c-pointer show-pass1"
                                                         data-bs-toggle="tooltip" title="Show/Hide Password"><i
                                                             class="feather-eye"></i></div>
@@ -345,7 +342,6 @@
                                                         data-bs-toggle="tooltip" title="Show/Hide Password">
                                                         <i class="feather-eye"></i>
                                                     </div>
-
                                                 </div>
                                             </div>
 

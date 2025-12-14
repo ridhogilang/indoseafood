@@ -8,16 +8,9 @@
     <meta name="description" content="" />
     <meta name="keyword" content="" />
     <meta name="author" content="flexilecode" />
-    <!--! The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags !-->
-    <!--! BEGIN: Apps Title-->
     <title>{{ $title }}</title>
-  
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('home/img/logo icon.png') }}">
-    <!--! END: Favicon-->
-    <!--! BEGIN: Bootstrap CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}admin/css/bootstrap.min.css" />
-    <!--! END: Bootstrap CSS-->
-    <!--! BEGIN: Vendors CSS-->
     @stack('header')
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}admin/css/theme.min.css" />
 </head>
@@ -34,10 +27,6 @@
 
     <script src="{{ asset('') }}admin/vendors/js/vendors.min.js"></script>
     <script src="{{ asset('') }}admin/js/common-init.min.js"></script>
-
-
-    <!--! END: Vendors JS !-->
-    <!--! BEGIN: Apps Init  !-->
     @stack('footer')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -69,6 +58,38 @@
             }
         });
     </script>
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const successMessage = @json(session('success'));
+
+            @if ($errors->any())
+                const firstError = @json($errors->first());
+            @else
+                const firstError = null;
+            @endif
+
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                    confirmButtonText: 'OK'
+                });
+            }
+
+            if (firstError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: firstError,
+                    confirmButtonText: 'OK'
+                });
+            }
+
+        });
+    </script> --}}
+
 
 </body>
 

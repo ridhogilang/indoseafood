@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
     public function index()
     {
-        return view('admin.settings', [
+        return view('admin.user.setting', [
             'title' => 'Settings',
+            'user' => Auth::user(),
         ]);
     }
 
@@ -105,5 +108,86 @@ class SettingController extends Controller
         return redirect()
             ->back()
             ->with('success', 'User berhasil diperbarui');
+    }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        // =========================
+        // VALIDATION
+        // =========================
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'surname' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'wa' => 'nullable|string|max:20',
+            'birth' => 'nullable|string|max:50',
+            'lokasi' => 'nullable|string|max:255',
+
+            // avatar
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:3048',
+
+            // password
+            'current_password' => 'nullable',
+            'password' => 'nullable|min:8|confirmed',
+        ], [
+            'avatar.image' => 'Avatar must be an image',
+            'avatar.max' => 'Avatar max size is 3MB',
+            'password.confirmed' => 'Password confirmation does not match',
+        ]);
+
+        $user->name = $request->name;
+        $user->surname = $request->surname;
+        $user->wa = $request->wa;
+        $user->birth = $request->birth;
+        $user->lokasi = $request->lokasi;
+
+        // =========================
+        // AVATAR UPLOAD
+        // =========================
+        if ($request->hasFile('avatar')) {
+
+            // hapus avatar lama (jika ada)
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+
+            $path = $request->file('avatar')->store(
+                'avatars',
+                'public'
+            );
+
+            $user->avatar = $path;
+        }
+
+        if ($request->filled('password')) {
+
+            // previous password wajib
+            if (!$request->filled('current_password')) {
+                return back()->withErrors([
+                    'current_password' => 'Previous password is required'
+                ])->withInput();
+            }
+
+            // cek password lama
+            if (!Hash::check($request->current_password, $user->password)) {
+                return back()->withErrors([
+                    'current_password' => 'Previous password is incorrect'
+                ])->withInput();
+            }
+
+            // simpan password baru
+            $user->password = Hash::make($request->password);
+        }
+
+        // =========================
+        // SAVE
+        // =========================
+        $user->save();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Profile updated successfully');
     }
 }

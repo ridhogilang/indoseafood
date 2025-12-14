@@ -26,6 +26,11 @@ class User extends Authenticatable
         'email_verified_at',
         'is_superadmin',
         'is_active',
+        'surname',
+        'wa',
+        'lokasi',
+        'birth',
+        'avatar',
     ];
 
     /**

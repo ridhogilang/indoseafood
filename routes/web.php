@@ -69,5 +69,7 @@ Route::prefix('admin')->group(function () {
             ->name('users.update-status');
         Route::post('/users/add', [SettingController::class, 'store'])->name('user.add');
         Route::put('/users/{id}', [SettingController::class, 'updateAdmin'])->name('users.updateAdmin');
+        Route::put('/profile/update', [SettingController::class, 'update'])
+            ->name('profile.update');
     });
 });
