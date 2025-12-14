@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InquiryController;
 use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -63,7 +64,7 @@ Route::prefix('admin')->group(function () {
 
 
         //Settings Route
-        Route::get('/list-user', [SettingController::class, 'list'])->name('user.list');
+        Route::get('/user-list', [SettingController::class, 'list'])->name('user.list');
         Route::get('/setting', [SettingController::class, 'index'])->name('user.setting');
         Route::post('/users/update-status', [SettingController::class, 'updateStatus'])
             ->name('users.update-status');
@@ -71,5 +72,9 @@ Route::prefix('admin')->group(function () {
         Route::put('/users/{id}', [SettingController::class, 'updateAdmin'])->name('users.updateAdmin');
         Route::put('/profile/update', [SettingController::class, 'update'])
             ->name('profile.update');
+
+        //Inquiry Route
+        Route::get('/inquiry-list', [InquiryController::class, 'index'])->name('inquiry.list');
+        Route::get('/inquiry-archived', [InquiryController::class, 'archived'])->name('inquiry.archived');
     });
 });

@@ -91,13 +91,12 @@ class HomeController extends Controller
             'whatsapp'            => 'required|string|max:50',
             'phone'               => 'nullable|string|max:50',
             'fish_name'           => 'required|string|max:255',
-            'latin_name'          => 'nullable|string|max:255',
-            'freezing_method'     => 'nullable|string|max:255',
-            'size'                => 'required|string|max:255',
             'qty'                 => 'required|integer',
             'port_of_destination' => 'required|string|max:255',
             'note'                => 'nullable|string',
         ]);
+
+        $validated['status'] = 'new';
 
         Inquiry::create($validated);
 

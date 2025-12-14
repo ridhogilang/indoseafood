@@ -19,6 +19,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('article_categories')
                 ->nullOnDelete();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // siapa penulis
 
             $table->string('title');                 // judul artikel
             $table->string('slug')->unique();        // untuk URL
@@ -28,6 +29,8 @@ return new class extends Migration
             $table->string('thumbnail')->nullable(); // path gambar
             $table->boolean('is_published')->default(false);
             $table->timestamp('published_at')->nullable();
+
+            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
 
             // optional SEO (kalau mau dipakai nanti enak)
             $table->string('meta_title')->nullable();

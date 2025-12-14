@@ -21,6 +21,8 @@ class Article extends Model
         'published_at',
         'meta_title',
         'meta_description',
+        'user_id',
+        'status',
     ];
 
     // Relasi: setiap artikel punya 1 kategori
@@ -47,5 +49,10 @@ class Article extends Model
         if (!isset($this->attributes['excerpt']) || empty($this->attributes['excerpt'])) {
             $this->attributes['excerpt'] = Str::limit(strip_tags($value), 160);
         }
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

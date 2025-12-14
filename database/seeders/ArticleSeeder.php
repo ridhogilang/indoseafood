@@ -1014,6 +1014,7 @@ HTML;
             ],
             [
                 'article_category_id' => $category->id,
+                'user_id'     => 1,
                 'title'               => 'Exporting Barramundi Fillets to Australia: Indonesia Seafood’s Surabaya Processing',
                 'body'                => $body,
                 'is_published'        => true,
@@ -1030,6 +1031,7 @@ HTML;
             ],
             [
                 'article_category_id' => $category->id,
+                'user_id'             => 1,
                 'title'               => "Processing Leatherjacket Fish for China: Indonesia Seafood’s Brondong Operations",
                 'body'                => $body2,
                 'is_published'        => true,
@@ -1047,6 +1049,7 @@ HTML;
             ],
             [
                 'article_category_id' => $category->id,
+                'user_id'     => 1,
                 'title'               => "Processing Silver Moonfish in Ambon, Maluku for Jakarta Distribution",
                 'body'                => $body3,
                 'is_published'        => true,

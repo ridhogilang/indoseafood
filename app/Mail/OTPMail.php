@@ -33,6 +33,7 @@ class OTPMail extends Mailable
         $data['judul']        = 'Kode OTP Anda';
         $data['kata-kata'] = 'Below is your One-Time Password (OTP) for email verification or secure login to your account. Please enter this code to complete your authentication process and ensure the protection of your account and personal information.';
         $data['kode']         = $data['otp']; // ini yang ditampilkan
+        $data['name']       = $data['name'];
 
         return $this->subject('OTP Verifikasi')
             ->view('auth.otpmail')

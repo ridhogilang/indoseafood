@@ -169,7 +169,7 @@
                         <div class="row">
 
                             {{-- FISH NAME (required) --}}
-                            <div class="col-12 form-group">
+                            <div class="col-6 form-group">
                                 <input type="text" name="fish_name"
                                     class="form-control @error('fish_name') is-invalid @enderror"
                                     placeholder="Fish Name (e.g. Yellowfin Tuna)" value="{{ old('fish_name') }}" required>
@@ -178,35 +178,7 @@
                                 @enderror
                             </div>
 
-                            {{-- LATIN NAME (optional) --}}
-                            <div class="col-12 form-group">
-                                <input type="text" name="latin_name"
-                                    class="form-control @error('latin_name') is-invalid @enderror"
-                                    placeholder="Latin Name (e.g. Thunnus albacares)" value="{{ old('latin_name') }}">
-                                @error('latin_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            {{-- FREEZING METHOD (optional) --}}
-                            <div class="col-md-6 form-group">
-                                <input type="text" name="freezing_method"
-                                    class="form-control @error('freezing_method') is-invalid @enderror"
-                                    placeholder="Freezing Method (e.g. IQF, -22°C)" value="{{ old('freezing_method') }}">
-                                @error('freezing_method')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            {{-- SIZE (required) --}}
-                            <div class="col-md-6 form-group">
-                                <input type="text" name="size"
-                                    class="form-control @error('size') is-invalid @enderror"
-                                    placeholder="Size (e.g. 1–3 kg)" value="{{ old('size') }}" required>
-                                @error('size')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                          
 
                             {{-- QUANTITY (required) --}}
                             <div class="col-md-6 form-group">
@@ -219,7 +191,7 @@
 
                             {{-- NOTE (optional) --}}
                             <div class="col-12 form-group">
-                                <textarea name="note" cols="20" rows="5" class="form-control @error('note') is-invalid @enderror"
+                                <textarea name="note" cols="25" rows="8" class="form-control @error('note') is-invalid @enderror"
                                     placeholder="Notes">{{ old('note') }}</textarea>
                                 @error('note')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -227,7 +199,7 @@
                             </div>
 
                             {{-- SUBMIT --}}
-                            <div class="col-12 form-group text-end">
+                            <div class="col-12 form-group text-end mt-5">
                                 <button type="submit" class="vs-btn">
                                     Submit Inquiry
                                 </button>

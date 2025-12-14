@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('admin'), 
             // 'email_verified_at' => null,
             'is_superadmin' => true,
+            'is_notification' => true,
         ]);
 
         User::factory()->create([

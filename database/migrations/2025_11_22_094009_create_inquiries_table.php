@@ -35,7 +35,13 @@ return new class extends Migration
             $table->string('port_of_destination')->nullable();
 
             $table->text('note')->nullable();
-
+            $table->enum('status', [
+                'new',
+                'read',
+                'potential',
+                'archived'
+            ])->default('new');
+            $table->boolean('is_arsip')->default(false);
             $table->timestamps();
         });
     }

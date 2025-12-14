@@ -38,6 +38,19 @@
                          </li>
                      </ul>
                  </li>
+                 <li class="nxl-item nxl-hasmenu">
+                     <a href="javascript:void(0);" class="nxl-link">
+                         <span class="nxl-micon"><i class="feather-clipboard"></i></span>
+                         <span class="nxl-mtext">Inquiries</span><span class="nxl-arrow"><i
+                                 class="feather-chevron-right"></i></span>
+                     </a>
+                     <ul class="nxl-submenu">
+                         <li class="nxl-item"><a class="nxl-link" href="">New</a>
+                         </li>
+                         <li class="nxl-item"><a class="nxl-link" href="">Archive</a></li>
+                         </li>
+                     </ul>
+                 </li>
                  @if (auth()->check() && auth()->user()->is_superadmin == 1)
                      <li class="nxl-item nxl-hasmenu">
                          <a href="javascript:void(0);" class="nxl-link">

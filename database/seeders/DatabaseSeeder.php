@@ -22,11 +22,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            UserSeeder::class,
             ProductCategorySeeder::class,
             ProductSeeder::class,
             ArticleSeeder::class,
             ProductProcessingSeeder::class,
-            UserSeeder::class,
             EmailCampaignSeeder::class,
         ]);
     }

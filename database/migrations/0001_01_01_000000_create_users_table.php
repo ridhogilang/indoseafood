@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('lokasi')->nullable();
             $table->boolean('is_superadmin')->default(false);
             $table->boolean('is_active')->default(true);
+            $table->boolean('is_notification')->default(false);
              $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -45,6 +45,7 @@ class LoginController extends Controller
             Mail::to($user->email)->send(new OTPMail([
                 'id'  => $user->id,
                 'otp' => $otp,
+                'name' => $user->name,
             ]));
 
             $request->session()->put('otp_user_id', $user->id);
