@@ -27,11 +27,11 @@
         <div class="page-header">
             <div class="page-header-left d-flex align-items-center">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Campaign</h5>
+                    <h5 class="m-b-10">Inquiry</h5>
                 </div>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item">Campaign</li>
+                    <li class="breadcrumb-item">New Inquiry</li>
                 </ul>
             </div>
             <div class="page-header-right ms-auto">
@@ -148,7 +148,7 @@
                                         <a href="javascript:void(0);" class="fw-bold d-block">
                                             <span class="d-block">Running Campaign</span>
                                             <span class="fs-24 fw-bolder d-block">
-                                                
+
                                             </span>
                                         </a>
                                     </div>
@@ -167,7 +167,7 @@
                                         <a href="javascript:void(0);" class="fw-bold d-block">
                                             <span class="d-block">Failed Campaign</span>
                                             <span class="fs-24 fw-bolder d-block">
-                                                
+
                                             </span>
                                         </a>
                                     </div>
@@ -185,8 +185,7 @@
                                         </div>
                                         <a href="javascript:void(0);" class="fw-bold d-block">
                                             <span class="d-block">New Leads</span>
-                                            <span
-                                                class="fs-24 fw-bolder d-block"></span>
+                                            <span class="fs-24 fw-bolder d-block"></span>
                                         </a>
                                     </div>
                                 </div>
@@ -219,14 +218,90 @@
                                             <th>No</th>
                                             <th>Company</th>
                                             <th>Email</th>
-                                            <th>Country</th>
-                                            <th>Schedule</th>
+                                            <th>Fish Name</th>
+                                            <th>Quantity</th>
+                                            <th>Destination</th>
+                                            <th>Date</th>
                                             <th>Status</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                     
+                                        @foreach ($inquiries as $item)
+                                            <tr>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox ms-1">
+                                                        <input type="checkbox" class="custom-control-input checkbox"
+                                                            id="checkBox_{{ $item->id }}">
+                                                        <label class="custom-control-label"
+                                                            for="checkBox_{{ $item->id }}"></label>
+                                                    </div>
+                                                </td>
+
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>
+                                                    {{ $item->company_name ?? '-' }}
+                                                    @if ($item->status === 'new')
+                                                        <span class="badge bg-soft-success text-success ms-1">New</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $item->email ?? '-' }}</td>
+                                                <td>{{ $item->fish_name ?? '-' }}</td>
+                                                <td>{{ $item->qty ? number_format($item->qty, 0, ',', '.') : '-' }} Kg</td>
+                                                <td>{{ $item->port_of_destination ?? '-' }}</td>
+                                                <td>
+                                                    {{ $item->created_at->format('d M Y') }}
+                                                </td>
+                                                <td>
+                                                    <select class="form-control status-select"
+                                                        data-select2-selector="status" data-id="{{ $item->id }}"
+                                                        data-current="{{ $item->status }}">
+
+                                                        <option value="new" data-bg="bg-success"
+                                                            {{ $item->status == 'new' ? 'selected' : '' }}>
+                                                            New
+                                                        </option>
+
+                                                        <option value="read" data-bg="bg-warning"
+                                                            {{ $item->status == 'read' ? 'selected' : '' }}>
+                                                            Read
+                                                        </option>
+
+                                                        <option value="potential" data-bg="bg-primary"
+                                                            {{ $item->status == 'potential' ? 'selected' : '' }}>
+                                                            Lead Potential
+                                                        </option>
+
+                                                        <option value="archived" data-bg="bg-danger"
+                                                            {{ $item->status == 'archived' ? 'selected' : '' }}>
+                                                            Archived
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                    <div class="hstack gap-2 justify-content-center">
+                                                        <a href="javascript:void(0)"
+                                                            class="avatar-text avatar-md btn-view-inquiry"
+                                                            data-bs-toggle="modal" data-bs-target="#ViewInquiryModal"
+                                                            data-id="{{ $item->id }}"
+                                                            data-company_name="{{ $item->company_name }}"
+                                                            data-email="{{ $item->email }}"
+                                                            data-whatsapp="{{ $item->whatsapp }}"
+                                                            data-phone="{{ $item->phone }}"
+                                                            data-fish_name="{{ $item->fish_name }}"
+                                                            data-latin_name="{{ $item->latin_name }}"
+                                                            data-freezing_method="{{ $item->freezing_method }}"
+                                                            data-size="{{ $item->size }}"
+                                                            data-qty="{{ $item->qty }}"
+                                                            data-port_of_destination="{{ $item->port_of_destination }}"
+                                                            data-status="{{ $item->status }}"
+                                                            data-note="{{ $item->note }}">
+                                                            <i class="feather-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -235,11 +310,166 @@
                 </div>
             </div>
         </div>
-        <!-- [ Main Content ] end -->
     </div>
 @endsection
 
 @section('modal')
+    <div class="modal fade-scale" id="ViewInquiryModal" tabindex="-1" aria-labelledby="ViewInquiryModal"
+        aria-hidden="true" data-bs-dismiss="ou">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <!--! BEGIN: [modal-header] !-->
+                <div class="modal-header">
+                    <h2 class="d-flex flex-column mb-0">
+                        <span class="fs-18 fw-bold mb-1">Inquiry</span>
+                        <small class="d-block fs-11 fw-normal text-muted">Inquiry Form</small>
+                    </h2>
+                    <a href="javascript:void(0)" class="avatar-text avatar-md bg-soft-danger close-icon"
+                        data-bs-dismiss="modal">
+                        <i class="feather-x text-danger"></i>
+                    </a>
+                </div>
+                <!--! BEGIN: [modal-body] !-->
+                <div class="modal-body p-0">
+                    <form action="" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card stretch">
+                                    <div class="card-body lead-status">
+                                        <div class="row">
+                                            <div class="col-lg-6 mb-4 align-items-center">
+                                                <label class="form-label">Company Name</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="company_name"
+                                                        name="company_name" placeholder="Company Name" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mb-4 align-items-center">
+                                                <label class="form-label">Email</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i class="feather-mail"></i></div>
+                                                    <input type="email" class="form-control" id="email"
+                                                        name="email" placeholder="Email" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mb-4 align-items-center">
+                                                <label class="form-label">Whatsapp</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="whatsapp"
+                                                        name="whatsapp" placeholder="Whatsapp Number">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mb-4 align-items-center">
+                                                <label class="form-label">Phone</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="phone"
+                                                        name="phone" placeholder="Phone Number">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mb-4 align-items-center">
+                                                <label class="form-label">Fish Name</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="fish_name"
+                                                        name="fish_name" placeholder="Fish Name">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mb-4 align-items-center">
+                                                <label class="form-label">Latin Name</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="latin_name"
+                                                        name="latin_name" placeholder="Latin Fish Name">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mb-4 align-items-center">
+                                                <label class="form-label">Freezing Method</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="freezing_method"
+                                                        name="freezing_method" placeholder="Freezing Method">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mb-4 align-items-center">
+                                                <label class="form-label">Size</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="size"
+                                                        name="size" placeholder="Size of Fish">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mb-4 align-items-center">
+                                                <label class="form-label">Quantity</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="qty"
+                                                        name="qty" placeholder="Quantity of Fish">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mb-4 align-items-center">
+                                                <label class="form-label">Port Destination</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="port_of_destination"
+                                                        name="port_of_destination" placeholder="Port Destination">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mb-4">
+                                                <label class="form-label">Status</label>
+                                                <select class="form-control" name="status"
+                                                    data-select2-selector="status">
+                                                    <option value="new" data-bg="bg-success">New</option>
+                                                    <option value="read" data-bg="bg-warning">Read</option>
+                                                    <option value="potential" data-bg="bg-primary">Lead Potential</option>
+                                                    <option value="archived" data-bg="bg-danger">Archived</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6 mb-4">
+                                                <label class="form-label">Note</label>
+                                                <textarea rows="6" class="form-control" id="InquiryNote" placeholder="Note"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex align-items-center justify-content-between">
+                            <!--! BEGIN: [mail-editor-action-left] !-->
+                            <div class="d-flex align-items-center">
+                            </div>
+                            <!--! BEGIN: [mail-editor-action-right] !-->
+                            <div class="d-flex align-items-center gap-2">
+                                <a href="">
+                                    <span class="btn btn-light-danger" data-bs-trigger="hover"
+                                        title="Send Message">Close</span>
+                                </a>
+                                <button type="button" id="btn-mark-read" class="btn btn-success d-none">
+                                    Mark as Read
+                                </button>
+                                <button type="submit" id="btn-submit" class="btn btn-primary">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('footer')
@@ -286,6 +516,148 @@
                 });
             });
 
+        });
+    </script>
+    <script>
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-view-inquiry');
+            if (!btn) return;
+
+            const form = document.querySelector('#ViewInquiryModal form');
+            if (form && btn.dataset.id) {
+                form.action = `/admin/inquiry/update/${btn.dataset.id}`;
+            }
+
+            document.getElementById('company_name').value = btn.dataset.company_name ?? '';
+            document.getElementById('email').value = btn.dataset.email ?? '';
+            document.getElementById('whatsapp').value = btn.dataset.whatsapp ?? '';
+            document.getElementById('phone').value = btn.dataset.phone ?? '';
+            document.getElementById('fish_name').value = btn.dataset.fish_name ?? '';
+            document.getElementById('latin_name').value = btn.dataset.latin_name ?? '';
+            document.getElementById('freezing_method').value = btn.dataset.freezing_method ?? '';
+            document.getElementById('size').value = btn.dataset.size ?? '';
+            document.getElementById('qty').value = btn.dataset.qty ?? '';
+            document.getElementById('port_of_destination').value = btn.dataset.port_of_destination ?? '';
+            document.getElementById('InquiryNote').value = btn.dataset.note ?? '';
+
+            const statusSelect = document.querySelector('select[name="status"]');
+            if (statusSelect) {
+                statusSelect.value = btn.dataset.status ?? 'read';
+                statusSelect.dispatchEvent(new Event('change'));
+            }
+
+            toggleActionButtons(btn.dataset.status);
+        });
+    </script>
+    <script>
+        $(document).on('change', '.status-select', function() {
+
+            const select = $(this);
+            const inquiryId = select.data('id');
+            const newStatus = select.val();
+            const oldStatus = select.data('current');
+
+            Swal.fire({
+                title: 'Change status?',
+                text: 'Are you sure you want to update this inquiry status?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, update',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+
+                if (!result.isConfirmed) {
+                    select.val(oldStatus).trigger('change.select2');
+                    return;
+                }
+
+                $.ajax({
+                    url: `/admin/inquiry/${inquiryId}/status`,
+                    type: 'PUT',
+                    data: {
+                        status: newStatus,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(res) {
+                        select.data('current', newStatus);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Updated!',
+                            text: res.message,
+                            timer: 1200,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function() {
+                        select.val(oldStatus).trigger('change.select2');
+                        Swal.fire('Error', 'Failed to update status', 'error');
+                    }
+                });
+
+            });
+        });
+    </script>
+    <script>
+        function toggleActionButtons(status) {
+            const btnSubmit = document.getElementById('btn-submit');
+            const btnMarkRead = document.getElementById('btn-mark-read');
+
+            if (status === 'new') {
+                btnSubmit.classList.add('d-none');
+                btnMarkRead.classList.remove('d-none');
+            } else {
+                btnSubmit.classList.remove('d-none');
+                btnMarkRead.classList.add('d-none');
+            }
+        }
+    </script>
+    <script>
+        document.getElementById('btn-mark-read')?.addEventListener('click', function() {
+
+            const inquiryId = document.querySelector('.btn-view-inquiry').dataset.id;
+
+            Swal.fire({
+                title: 'Mark as Read?',
+                text: 'This inquiry will be marked as read.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, mark as read'
+            }).then((result) => {
+
+                if (!result.isConfirmed) return;
+
+                fetch(`/admin/inquiry/${inquiryId}/status`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document
+                                .querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            status: 'read'
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Updated',
+                            text: 'Inquiry marked as read',
+                            timer: 1200,
+                            showConfirmButton: false
+                        });
+
+                        toggleActionButtons('read');
+
+                        // update select status if exists
+                        const statusSelect = document.querySelector('select[name="status"]');
+                        if (statusSelect) {
+                            statusSelect.value = 'read';
+                            statusSelect.dispatchEvent(new Event('change'));
+                        }
+                    });
+            });
         });
     </script>
 @endpush

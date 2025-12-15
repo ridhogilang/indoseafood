@@ -76,5 +76,9 @@ Route::prefix('admin')->group(function () {
         //Inquiry Route
         Route::get('/inquiry-list', [InquiryController::class, 'index'])->name('inquiry.list');
         Route::get('/inquiry-archived', [InquiryController::class, 'archived'])->name('inquiry.archived');
+        Route::put('/inquiry/update/{inquiry}', [InquiryController::class, 'update'])
+            ->name('inquiry.update');
+        Route::put('/inquiry/{inquiry}/status', [InquiryController::class, 'updateStatus'])
+            ->name('inquiry.updateStatus');
     });
 });

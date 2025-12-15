@@ -272,7 +272,7 @@
                 <div class="modal-header">
                     <h2 class="d-flex flex-column mb-0">
                         <span class="fs-18 fw-bold mb-1">Edit Lead</span>
-                        <small class="d-block fs-11 fw-normal text-muted">Update your lead information</small>
+                        <small class="d-block fs-11 fw-normal text-muted">Update your user information</small>
                     </h2>
                     <a href="javascript:void(0)" class="avatar-text avatar-md bg-soft-danger close-icon"
                         data-bs-dismiss="modal">

@@ -11,7 +11,6 @@ class Inquiry extends Model
         'email',
         'whatsapp',
         'phone',
-        'product_id',          // kalau ada
         'fish_name',
         'latin_name',
         'freezing_method',
@@ -19,5 +18,7 @@ class Inquiry extends Model
         'qty',
         'port_of_destination',
         'note',
+        'status',
+        'is_arsip',
     ];
 }

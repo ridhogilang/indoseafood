@@ -8,6 +8,7 @@
     <meta name="description" content="" />
     <meta name="keyword" content="" />
     <meta name="author" content="flexilecode" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }}</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('home/img/logo icon.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}admin/css/bootstrap.min.css" />
@@ -28,6 +29,7 @@
     <script src="{{ asset('') }}admin/vendors/js/vendors.min.js"></script>
     <script src="{{ asset('') }}admin/js/common-init.min.js"></script>
     @stack('footer')
+    <script src="{{ asset('') }}admin/js/theme-customizer-init.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const successMessage = @json(session('success'));
