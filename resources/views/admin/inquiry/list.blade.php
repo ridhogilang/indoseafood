@@ -146,9 +146,8 @@
                                             <i class="feather-users"></i>
                                         </div>
                                         <a href="javascript:void(0);" class="fw-bold d-block">
-                                            <span class="d-block">Running Campaign</span>
-                                            <span class="fs-24 fw-bolder d-block">
-
+                                            <span class="d-block">New Inquiry</span>
+                                            <span class="fs-24 fw-bolder d-block">{{ $newCount ?? 0 }}
                                             </span>
                                         </a>
                                     </div>
@@ -165,9 +164,8 @@
                                             <i class="feather-user-check"></i>
                                         </div>
                                         <a href="javascript:void(0);" class="fw-bold d-block">
-                                            <span class="d-block">Failed Campaign</span>
-                                            <span class="fs-24 fw-bolder d-block">
-
+                                            <span class="d-block">Potential Inquiry</span>
+                                            <span class="fs-24 fw-bolder d-block">{{ $potentialCount ?? 0 }}
                                             </span>
                                         </a>
                                     </div>
@@ -184,8 +182,8 @@
                                             <i class="feather-user-plus"></i>
                                         </div>
                                         <a href="javascript:void(0);" class="fw-bold d-block">
-                                            <span class="d-block">New Leads</span>
-                                            <span class="fs-24 fw-bolder d-block"></span>
+                                            <span class="d-block">Archived Inquiry</span>
+                                            <span class="fs-24 fw-bolder d-block">{{ $archivedCount ?? 0 }}</span>
                                         </a>
                                     </div>
                                 </div>

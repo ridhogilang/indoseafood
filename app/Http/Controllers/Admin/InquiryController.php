@@ -15,9 +15,41 @@ class InquiryController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $counts = Inquiry::selectRaw("
+            SUM(CASE WHEN status = 'new' THEN 1 ELSE 0 END) as new_count,
+            SUM(CASE WHEN status = 'potential' THEN 1 ELSE 0 END) as potential_count,
+            SUM(CASE WHEN status = 'archived' OR is_arsip = 1 THEN 1 ELSE 0 END) as archived_count
+        ")
+            ->first();
+
         return view('admin.inquiry.list', [
             'title' => 'Inquiry List',
             'inquiries' => $inquiries,
+            'newCount'     => $counts->new_count,
+            'potentialCount' => $counts->potential_count,
+            'archivedCount'  => $counts->archived_count,
+        ]);
+    }
+
+    public function archived()
+    {
+        $inquiries = Inquiry::where('is_arsip', 1)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $counts = Inquiry::selectRaw("
+            SUM(CASE WHEN status = 'new' THEN 1 ELSE 0 END) as new_count,
+            SUM(CASE WHEN status = 'potential' THEN 1 ELSE 0 END) as potential_count,
+            SUM(CASE WHEN status = 'archived' OR is_arsip = 1 THEN 1 ELSE 0 END) as archived_count
+        ")
+            ->first();
+
+        return view('admin.inquiry.list', [
+            'title' => 'Inquiry List',
+            'inquiries' => $inquiries,
+            'newCount'     => $counts->new_count,
+            'potentialCount' => $counts->potential_count,
+            'archivedCount'  => $counts->archived_count,
         ]);
     }
 

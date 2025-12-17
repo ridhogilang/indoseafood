@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ArticleCategory;
 use App\Models\ProductCategory;
+use App\Jobs\SendInquiryNotificationJob;
 
 class HomeController extends Controller
 {
@@ -88,7 +89,7 @@ class HomeController extends Controller
         $validated = $request->validate([
             'company_name'        => 'required|string|max:255',
             'email'               => 'required|email|max:255',
-            'whatsapp'            => 'required|string|max:50',
+            'whatsapp'            => 'nullable|string|max:50',
             'phone'               => 'nullable|string|max:50',
             'fish_name'           => 'required|string|max:255',
             'qty'                 => 'required|integer',
@@ -98,7 +99,9 @@ class HomeController extends Controller
 
         $validated['status'] = 'new';
 
-        Inquiry::create($validated);
+        $inquiry = Inquiry::create($validated);
+
+        SendInquiryNotificationJob::dispatch($inquiry);
 
         return redirect()
             ->back()
