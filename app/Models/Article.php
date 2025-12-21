@@ -21,6 +21,7 @@ class Article extends Model
         'published_at',
         'meta_title',
         'meta_description',
+        'meta_keywords',
         'user_id',
         'status',
     ];

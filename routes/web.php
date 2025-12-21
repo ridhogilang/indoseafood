@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InquiryController;
@@ -80,5 +81,11 @@ Route::prefix('admin')->group(function () {
             ->name('inquiry.update');
         Route::put('/inquiry/{inquiry}/status', [InquiryController::class, 'updateStatus'])
             ->name('inquiry.updateStatus');
+
+        //Article Route
+        Route::get('/article-list', [ArticleController::class, 'index'])->name('article.list');
+        Route::get('/article-new', [ArticleController::class, 'new'])->name('article.new');
+        Route::get('/article/{slug}/edit', [ArticleController::class, 'edit'])->name('article.edit');
+        Route::post('/article/store', [ArticleController::class, 'store'])->name('article.store');
     });
 });

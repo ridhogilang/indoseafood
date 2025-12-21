@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('title');                 // judul artikel
             $table->string('slug')->unique();        // untuk URL
             $table->text('excerpt')->nullable();     // ringkasan
-            $table->longText('body');                // isi artikel
+            $table->longText('body')->nullable();                // isi artikel
 
             $table->string('thumbnail')->nullable(); // path gambar
             $table->boolean('is_published')->default(false);
@@ -35,6 +35,7 @@ return new class extends Migration
             // optional SEO (kalau mau dipakai nanti enak)
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
+            $table->string('meta_keywords')->nullable();
 
             $table->timestamps();
         });

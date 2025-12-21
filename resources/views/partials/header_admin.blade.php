@@ -58,9 +58,9 @@
                                  class="feather-chevron-right"></i></span>
                      </a>
                      <ul class="nxl-submenu">
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('inquiry.list') }}">New Article</a>
+                         <li class="nxl-item"><a class="nxl-link" href="{{ route('article.new') }}">New Article</a>
                          </li>
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('inquiry.archived') }}">Article List</a></li>
+                         <li class="nxl-item"><a class="nxl-link" href="{{ route('article.list') }}">Article List</a></li>
                          </li>
                      </ul>
                  </li>

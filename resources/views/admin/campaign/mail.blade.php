@@ -144,33 +144,6 @@
                                 editor.insertContent('{{ $company }}');
                             }
                         });
-
-                        // {{ country }}
-                        editor.ui.registry.addButton('insertName', {
-                            text: 'Country',
-                            tooltip: 'Insert {{ country }} placeholder',
-                            onAction: function() {
-                                editor.insertContent('{{ $country }}');
-                            }
-                        });
-
-                        // {{ contact }}
-                        editor.ui.registry.addButton('insertEmail', {
-                            text: 'Contact',
-                            tooltip: 'Insert {{ contact }} placeholder',
-                            onAction: function() {
-                                editor.insertContent('{{ $contact }}');
-                            }
-                        });
-
-                        // {{ whatsapp }}
-                        editor.ui.registry.addButton('insertWhatsapp', {
-                            text: 'Whatsapp',
-                            tooltip: 'Insert {{ whatsapp }} placeholder',
-                            onAction: function() {
-                                editor.insertContent('{{ $whatsapp }}');
-                            }
-                        });
                     },
                 });
 
