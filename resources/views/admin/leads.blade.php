@@ -722,130 +722,104 @@
     <script src="https://kit.fontawesome.com/d61a3422c6.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const swalWithBootstrapButtons = Swal.mixin({
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-delete-contact');
+            if (!btn) return;
+
+            e.preventDefault();
+            const form = btn.closest('form');
+            if (!form) return;
+
+            Swal.fire({
+                title: 'Delete contact?',
+                text: 'Are you sure you want to delete this data? This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel',
                 customClass: {
-                    confirmButton: 'btn btn-danger me-2', // margin-right 0.5rem
+                    confirmButton: 'btn btn-danger me-2',
                     cancelButton: 'btn btn-secondary'
                 },
                 buttonsStyling: false
-            });
-
-            const deleteButtons = document.querySelectorAll('.btn-delete-contact');
-
-            deleteButtons.forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    const form = this.closest('form');
-                    if (!form) return;
-
-                    swalWithBootstrapButtons.fire({
-                        title: 'Delete contact?',
-                        text: 'Are you sure you want to delete this data? This action cannot be undone.',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it',
-                        cancelButtonText: 'Cancel',
-                        reverseButtons: false // ubah ke true kalau mau posisi dibalik
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
+            }).then(result => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
             });
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const viewButtons = document.querySelectorAll('.btn-view-contact');
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-view-contact');
+            if (!btn) return;
 
-            viewButtons.forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    const data = this.dataset;
+            const data = btn.dataset;
 
-                    // Simple helper
-                    const setValue = (id, value) => {
-                        const el = document.getElementById(id);
-                        if (!el) return;
-                        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el
-                            .tagName === 'SELECT') {
-                            el.value = value || '';
-                        } else {
-                            el.textContent = value || '';
-                        }
-                    };
+            const setValue = (id, value) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' ?
+                    el.value = value || '' :
+                    el.textContent = value || '';
+            };
 
-                    setValue('view-company', data.company);
-                    setValue('view-country', data.country);
-                    setValue('view-website', data.website);
-                    setValue('view-kirim', data.kirim);
-                    setValue('view-phone', data.phone);
-                    setValue('view-whatsapp', data.whatsapp);
-                    setValue('view-contact_person', data.contact_person);
-                    setValue('view-main_product', data.main_product);
-                    setValue('view-notes', data.notes);
+            setValue('view-company', data.company);
+            setValue('view-country', data.country);
+            setValue('view-website', data.website);
+            setValue('view-kirim', data.kirim);
+            setValue('view-phone', data.phone);
+            setValue('view-whatsapp', data.whatsapp);
+            setValue('view-contact_person', data.contact_person);
+            setValue('view-main_product', data.main_product);
+            setValue('view-notes', data.notes);
 
-                    // Status select
-                    const statusSelect = document.getElementById('view-status');
-                    if (statusSelect) {
-                        statusSelect.value = data.status || 'active';
-
-                        // Kalau pakai select2 atau plugin lain, bisa trigger change:
-                        const event = new Event('change', {
-                            bubbles: true
-                        });
-                        statusSelect.dispatchEvent(event);
-                    }
-                });
-            });
+            const status = document.getElementById('view-status');
+            if (status) {
+                status.value = data.status || 'active';
+                status.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+            }
         });
     </script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const editButtons = document.querySelectorAll('.btn-edit-contact');
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-edit-contact');
+            if (!btn) return;
 
-            editButtons.forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    const data = this.dataset;
-                    const form = document.getElementById('editContactForm');
+            const data = btn.dataset;
+            const form = document.getElementById('editContactForm');
+            if (!form) return;
 
-                    if (!form) return;
+            form.action = data.updateUrl;
 
-                    // Set URL action ke route update yg dikirim dari data-update-url
-                    form.action = data.updateUrl;
+            const setValue = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.value = value || '';
+            };
 
-                    // Helper isi value
-                    const setValue = (id, value) => {
-                        const el = document.getElementById(id);
-                        if (!el) return;
-                        el.value = value || '';
-                    };
+            setValue('edit-company', data.company);
+            setValue('edit-country', data.country);
+            setValue('edit-website', data.website);
+            setValue('edit-kirim', data.kirim);
+            setValue('edit-phone', data.phone);
+            setValue('edit-whatsapp', data.whatsapp);
+            setValue('edit-contact_person', data.contact_person);
+            setValue('edit-main_product', data.main_product);
+            setValue('edit-notes', data.notes);
 
-                    setValue('edit-company', data.company);
-                    setValue('edit-country', data.country);
-                    setValue('edit-website', data.website);
-                    setValue('edit-kirim', data.kirim);
-                    setValue('edit-phone', data.phone);
-                    setValue('edit-whatsapp', data.whatsapp);
-                    setValue('edit-contact_person', data.contact_person);
-                    setValue('edit-main_product', data.main_product);
-                    setValue('edit-notes', data.notes);
-
-                    const statusSelect = document.getElementById('edit-status');
-                    if (statusSelect) {
-                        statusSelect.value = data.status || 'active';
-                        // Kalau pakai select2, trigger change:
-                        const event = new Event('change', {
-                            bubbles: true
-                        });
-                        statusSelect.dispatchEvent(event);
-                    }
-                });
-            });
+            const status = document.getElementById('edit-status');
+            if (status) {
+                status.value = data.status || 'active';
+                status.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+            }
         });
     </script>
+
     <script>
         $(function() {
 

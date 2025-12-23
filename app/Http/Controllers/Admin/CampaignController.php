@@ -6,20 +6,16 @@ use App\Models\EmailContact;
 use Illuminate\Http\Request;
 use App\Models\EmailCampaign;
 use Illuminate\Support\Carbon;
+use App\Jobs\SendCampaignEmailJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\EmailCampaignContact;
-use App\Jobs\SendCampaignEmailJob;
+use Yajra\DataTables\Facades\DataTables;
 
 class CampaignController extends Controller
 {
     public function index()
     {
-        $campaignContacts = \App\Models\EmailCampaignContact::with(['campaign', 'contact'])
-            ->where('status', 'pending') // hanya pending
-            ->orderBy('id', 'asc')
-            ->get();
-
         $now = Carbon::now();
 
         $runningCampaign = EmailCampaignContact::where('status', 'pending')
@@ -43,7 +39,6 @@ class CampaignController extends Controller
 
         return view('admin.campaign.campaign', [
             'title' => 'Campaign Contact',
-            'campaignContacts' => $campaignContacts,
             'runningCampaign' => $runningCampaign,
             'failedCampaign'  => $failedCampaign,
             'newLeads'        => $newLeads,
@@ -268,5 +263,87 @@ class CampaignController extends Controller
         }
 
         return back()->with('success', 'Campaign contact has been deleted successfully.');
+    }
+
+    public function datatable()
+    {
+        $query = EmailCampaignContact::with('contact')
+            ->where('status', 'pending')
+            ->orderBy('id', 'asc');
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+
+            // checkbox
+            ->addColumn('checkbox', fn($c) => '
+            <div class="custom-control custom-checkbox ms-1">
+                <input type="checkbox" class="custom-control-input checkbox" id="checkBox_' . $c->id . '">
+                <label class="custom-control-label" for="checkBox_' . $c->id . '"></label>
+            </div>
+        ')
+
+            ->addColumn(
+                'company',
+                fn($c) =>
+                trim($c->contact->company ?? '') ?: '-'
+            )
+
+            ->addColumn(
+                'email',
+                fn($c) =>
+                trim($c->contact->kirim ?? '') ?: '-'
+            )
+
+            ->addColumn(
+                'country',
+                fn($c) =>
+                trim($c->contact->country ?? '') ?: '-'
+            )
+
+            ->addColumn('schedule', function ($c) {
+                if (!$c->sent_at) return '-';
+
+                $dt = Carbon::parse($c->sent_at);
+                return $dt->format('d M Y') . ' | ' . $dt->format('H.i');
+            })
+
+            ->addColumn('status', function ($c) {
+                $now = Carbon::now();
+                $threshold = $now->copy()->subMinutes(3);
+                $sentAt = $c->sent_at ? Carbon::parse($c->sent_at) : null;
+
+                $badgeMap = [
+                    'pending' => ['Pending', 'badge bg-soft-warning text-warning'],
+                    'sent'    => ['Sent', 'badge bg-soft-success text-success'],
+                    'failed'  => ['Failed', 'badge bg-soft-danger text-danger'],
+                ];
+
+                $html = '<div class="' . $badgeMap[$c->status][1] . '">' . $badgeMap[$c->status][0] . '</div>';
+
+                if ($c->status === 'pending' && $sentAt && $sentAt->lte($threshold)) {
+                    $html .= '<div class="badge bg-soft-danger text-danger ms-1">Failed</div>';
+                }
+
+                return $html;
+            })
+
+            ->addColumn('action', function ($c) {
+                return '
+            <div class="hstack gap-2 justify-content-center">
+                <form action="' . route('delete.campaign', $c->id) . '" method="POST">
+                    ' . csrf_field() . method_field('DELETE') . '
+                    <a href="javascript:void(0)" class="avatar-text avatar-md btn-delete-campaign">
+                        <i class="feather feather-trash-2"></i>
+                    </a>
+                </form>
+            </div>';
+            })
+
+            ->order(function ($query) {
+                $query->orderBy('id', 'asc');
+            })
+
+            ->rawColumns(['checkbox', 'status', 'action'])
+            ->make(true);
     }
 }

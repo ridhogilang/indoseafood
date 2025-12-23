@@ -56,6 +56,8 @@ Route::prefix('admin')->group(function () {
 
         //Campaign Route
         Route::get('/campaign', [CampaignController::class, 'index'])->name('campaign');
+        Route::get('/campaign/datatable', [CampaignController::class, 'datatable'])
+            ->name('campaign.datatable');
         Route::post('/campaign-start', [CampaignController::class, 'start'])
             ->name('start.campaign');
         Route::get('/campaign-status', [CampaignController::class, 'status'])->name('status.campaign');

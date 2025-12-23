@@ -163,28 +163,82 @@ class LeadController extends Controller
             })
 
             ->addColumn('email', fn($c) => trim($c->kirim) ?: '-')
+            ->addColumn('contact_person', fn($c) => trim($c->contact_person) !== '' ? $c->contact_person : '-')
+            ->addColumn('main_product', fn($c) => trim($c->main_product) !== '' ? $c->main_product : '-')
 
             ->addColumn('status', function ($c) {
                 return $c->status === 'active'
-                    ? '<span class="d-inline-flex align-items-center gap-2">
-                        <span class="status-dot bg-success"></span> Active
-                   </span>'
-                    : '<span class="d-inline-flex align-items-center gap-2">
-                        <span class="status-dot bg-danger"></span> Inactive
-                   </span>';
+                    ? '<div class="badge bg-soft-success text-success">Active</div>'
+                    : '<div class="badge bg-soft-danger text-danger">Inactive</div>';
             })
 
             ->addColumn('action', function ($c) {
                 return '
-            <div class="hstack gap-2 justify-content-end">
-                <a href="javascript:void(0)"
-                   class="avatar-text avatar-md btn-view-contact"
+<div class="hstack gap-2 justify-content-end">
+
+    <a href="javascript:void(0)"
+        class="avatar-text avatar-md btn-view-contact"
+        data-bs-toggle="modal"
+        data-bs-target="#viewContactModal"
+        data-company="' . e($c->company) . '"
+        data-main_product="' . e($c->main_product) . '"
+        data-website="' . e($c->website) . '"
+        data-kirim="' . e($c->kirim) . '"
+        data-country="' . e($c->country) . '"
+        data-phone="' . e($c->phone) . '"
+        data-whatsapp="' . e($c->whatsapp) . '"
+        data-contact_person="' . e($c->contact_person) . '"
+        data-notes="' . e($c->notes) . '"
+        data-status="' . e($c->status) . '">
+        <i class="feather feather-eye"></i>
+    </a>
+
+    <div class="dropdown">
+        <a href="javascript:void(0)" class="avatar-text avatar-md"
+            data-bs-toggle="dropdown" data-bs-offset="0,21">
+            <i class="feather feather-more-horizontal"></i>
+        </a>
+
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item btn-edit-contact"
+                   href="javascript:void(0)"
                    data-bs-toggle="modal"
-                   data-bs-target="#viewContactModal">
-                    <i class="feather feather-eye"></i>
+                   data-bs-target="#editContactModal"
+                   data-update-url="' . route('leads.update', $c->id) . '"
+                   data-id="' . $c->id . '"
+                   data-company="' . e($c->company) . '"
+                   data-main_product="' . e($c->main_product) . '"
+                   data-website="' . e($c->website) . '"
+                   data-kirim="' . e($c->kirim) . '"
+                   data-country="' . e($c->country) . '"
+                   data-phone="' . e($c->phone) . '"
+                   data-whatsapp="' . e($c->whatsapp) . '"
+                   data-contact_person="' . e($c->contact_person) . '"
+                   data-notes="' . e($c->notes) . '"
+                   data-status="' . e($c->status) . '">
+                    <i class="feather feather-edit-3 me-3"></i>
+                    <span>Edit</span>
                 </a>
-            </div>';
+            </li>
+
+            <li>
+                <form action="' . route('leads.destroy', $c->id) . '"
+                      method="POST"
+                      class="delete-contact-form m-0 p-0">
+                    ' . csrf_field() . method_field('DELETE') . '
+                    <a href="javascript:void(0)"
+                       class="dropdown-item btn-delete-contact">
+                        <i class="feather feather-trash-2 me-3"></i>
+                        <span>Delete</span>
+                    </a>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>';
             })
+
 
             ->rawColumns(['checkbox', 'company', 'status', 'action'])
             ->make(true);
