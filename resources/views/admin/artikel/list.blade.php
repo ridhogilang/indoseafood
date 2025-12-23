@@ -146,48 +146,56 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-danger me-2',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false
+            });
+
             document.querySelectorAll('.btn-delete-article').forEach(btn => {
                 btn.addEventListener('click', function() {
 
                     const articleId = this.dataset.id;
 
-                    Swal.fire({
+                    swalWithBootstrapButtons.fire({
                         title: 'Delete article?',
                         text: 'This action cannot be undone!',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#d33',
                         confirmButtonText: 'Yes, delete it',
                         cancelButtonText: 'Cancel'
                     }).then(async (result) => {
 
                         if (!result.isConfirmed) return;
 
-                        const response = await fetch(
-                            `/admin/article/${articleId}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
-                                    'Accept': 'application/json'
-                                }
+                        const response = await fetch(`/admin/article/${articleId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                                'Accept': 'application/json'
                             }
-                        );
+                        });
 
                         const data = await response.json();
 
                         if (data.success) {
-                            Swal.fire(
+                            swalWithBootstrapButtons.fire(
                                 'Deleted!',
                                 data.message,
                                 'success'
                             );
 
-                            // reload table / page
                             setTimeout(() => {
                                 window.location.reload();
                             }, 800);
                         } else {
-                            Swal.fire('Error', 'Failed to delete article', 'error');
+                            swalWithBootstrapButtons.fire(
+                                'Error',
+                                'Failed to delete article',
+                                'error'
+                            );
                         }
                     });
 

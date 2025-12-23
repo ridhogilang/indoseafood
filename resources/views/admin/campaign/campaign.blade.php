@@ -255,24 +255,43 @@
     <script src="{{ asset('') }}admin/js/leads-init.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.btn-delete-campaign')) return;
+        document.addEventListener('DOMContentLoaded', function() {
 
-            e.preventDefault();
-            const form = e.target.closest('form');
-
-            Swal.fire({
-                title: 'Delete campaign?',
-                text: 'This action cannot be undone.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-danger me-2',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false
             });
+
+            // EVENT DELEGATION (WAJIB)
+            document.addEventListener('click', function(e) {
+
+                const btn = e.target.closest('.btn-delete-campaign');
+                if (!btn) return;
+
+                e.preventDefault();
+
+                const form = btn.closest('form');
+                if (!form) return;
+
+                swalWithBootstrapButtons.fire({
+                    title: 'Delete Campaign Item?',
+                    text: 'Are you sure you want to delete this campaign contact? This action cannot be undone.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it',
+                    cancelButtonText: 'Cancel',
+                    reverseButtons: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+
+            });
+
         });
     </script>
     <script>

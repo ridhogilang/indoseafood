@@ -274,7 +274,7 @@ class ArticleController extends Controller
 
             // 🔥 HAPUS THUMBNAIL (FILE)
             if ($article->thumbnail) {
-                Storage::disk('public')->delete('articles/' . $article->thumbnail);
+                Storage::disk('public')->delete($article->thumbnail);
             }
 
             // 🔥 HAPUS SEMUA GAMBAR DALAM BODY (1 FOLDER ID)

@@ -290,7 +290,15 @@
 
             const categoryId = btn.dataset.id;
 
-            Swal.fire({
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-danger me-2',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
                 title: 'Delete category?',
                 text: 'This action cannot be undone.',
                 icon: 'warning',
@@ -301,28 +309,37 @@
                 if (!result.isConfirmed) return;
 
                 try {
-                    const response = await fetch(
-                        `/admin/article-category/${categoryId}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json'
-                            }
+                    const response = await fetch(`/admin/article-category/${categoryId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
                         }
-                    );
+                    });
 
                     const data = await response.json();
 
                     if (!response.ok) {
-                        Swal.fire('Failed', data.message, 'error');
+                        swalWithBootstrapButtons.fire(
+                            'Failed',
+                            data.message,
+                            'error'
+                        );
                         return;
                     }
 
-                    Swal.fire('Deleted!', data.message, 'success')
-                        .then(() => location.reload());
+                    swalWithBootstrapButtons.fire(
+                        'Deleted!',
+                        data.message,
+                        'success'
+                    ).then(() => location.reload());
 
                 } catch (err) {
-                    Swal.fire('Error', 'Something went wrong.', 'error');
+                    swalWithBootstrapButtons.fire(
+                        'Error',
+                        'Something went wrong.',
+                        'error'
+                    );
                 }
             });
         });

@@ -204,7 +204,7 @@
                     <div class="card stretch stretch-full">
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="leadList">
+                                <table class="table table-hover" id="StatusCampaignTable">
                                     <thead>
                                         <tr>
                                             <th class="wd-30">
@@ -225,91 +225,6 @@
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach ($campaignContacts as $item)
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox ms-1">
-                                                        <input type="checkbox" class="custom-control-input checkbox"
-                                                            id="checkBox_{{ $item->id }}">
-                                                        <label class="custom-control-label"
-                                                            for="checkBox_{{ $item->id }}"></label>
-                                                    </div>
-                                                </td>
-
-                                                <td>{{ $loop->iteration }}</td>
-
-                                                <!-- Company -->
-                                                <td>{{ $item->contact->company ?? '-' }}</td>
-
-                                                <!-- Email -->
-                                                <td>{{ $item->contact->kirim ?? '-' }}</td>
-
-                                                <!-- Country -->
-                                                <td>{{ $item->contact->country ?? '-' }}</td>
-                                                <td>
-                                                    {{ $item->sent_at ? \Carbon\Carbon::parse($item->sent_at)->format('d M Y') . ' | ' . \Carbon\Carbon::parse($item->sent_at)->format('H.i') : '-' }}
-                                                </td>
-
-                                                <td>
-                                                    @php
-                                                        $status = $item->status;
-                                                        $now = \Carbon\Carbon::now();
-                                                        $threshold = $now->copy()->subMinutes(3);
-                                                        $sentAt = $item->sent_at
-                                                            ? \Carbon\Carbon::parse($item->sent_at)
-                                                            : null;
-
-                                                        $badgeMap = [
-                                                            'pending' => [
-                                                                'label' => 'Pending',
-                                                                'class' => 'badge bg-soft-warning text-warning',
-                                                            ],
-                                                            'sent' => [
-                                                                'label' => 'Sent',
-                                                                'class' => 'badge bg-soft-success text-success',
-                                                            ],
-                                                            'failed' => [
-                                                                'label' => 'Failed',
-                                                                'class' => 'badge bg-soft-danger text-danger',
-                                                            ],
-                                                        ];
-                                                    @endphp
-
-                                                    {{-- Badge utama --}}
-                                                    <div
-                                                        class="{{ $badgeMap[$status]['class'] ?? 'badge bg-secondary' }}">
-                                                        {{ $badgeMap[$status]['label'] ?? ucfirst($status) }}
-                                                    </div>
-
-                                                    {{-- Badge tambahan jika pending tapi waktu sudah lewat --}}
-                                                    @if ($status === 'pending' && $sentAt && $sentAt->lt($threshold))
-                                                        <div class="badge bg-soft-danger text-danger ms-1">
-                                                            Failed
-                                                        </div>
-                                                    @endif
-                                                </td>
-
-                                                <!-- Actions -->
-                                                <td class="text-end">
-                                                    <div class="hstack gap-2 justify-content-center">
-
-                                                        <!-- View -->
-                                                        <form action="{{ route('delete.campaign', $item->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-
-                                                            <a href="javascript:void(0);"
-                                                                class="avatar-text avatar-md btn-delete-campaign">
-                                                                <i class="feather feather-trash-2"></i>
-                                                            </a>
-                                                        </form>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -342,32 +257,76 @@
                 buttonsStyling: false
             });
 
-            const deleteButtons = document.querySelectorAll('.btn-delete-campaign');
+            // EVENT DELEGATION (WAJIB)
+            document.addEventListener('click', function(e) {
 
-            deleteButtons.forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
+                const btn = e.target.closest('.btn-delete-campaign');
+                if (!btn) return;
 
-                    const form = this.closest('form');
-                    if (!form) return;
+                e.preventDefault();
 
-                    swalWithBootstrapButtons.fire({
-                        title: 'Delete Campaign Item?',
-                        text: 'Are you sure you want to delete this campaign contact? This action cannot be undone.',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it',
-                        cancelButtonText: 'Cancel',
-                        reverseButtons: false
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
+                const form = btn.closest('form');
+                if (!form) return;
 
+                swalWithBootstrapButtons.fire({
+                    title: 'Delete Campaign Item?',
+                    text: 'Are you sure you want to delete this campaign contact? This action cannot be undone.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it',
+                    cancelButtonText: 'Cancel',
+                    reverseButtons: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
                 });
+
             });
 
+        });
+    </script>
+    <script>
+        $('#StatusCampaignTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('campaign.status.datatable') }}",
+            order: [
+                [1, 'asc']
+            ],
+            columns: [{
+                    data: 'checkbox',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'company'
+                },
+                {
+                    data: 'email'
+                },
+                {
+                    data: 'country'
+                },
+                {
+                    data: 'schedule'
+                },
+                {
+                    data: 'status',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'action',
+                    orderable: false,
+                    searchable: false
+                }
+            ]
         });
     </script>
 @endpush

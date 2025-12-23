@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class EmailCampaignContact extends Model
 {
+    protected $casts = [
+        'sent_at' => 'datetime',
+    ];
+    
     protected $fillable = [
         'email_campaign_id',
         'email_contact_id',
@@ -20,6 +24,9 @@ class EmailCampaignContact extends Model
 
     public function contact()
     {
-        return $this->belongsTo(\App\Models\EmailContact::class, 'email_contact_id');
+        return $this->belongsTo(
+            EmailContact::class,
+            'email_contact_id', // FK
+        );
     }
 }

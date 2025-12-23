@@ -129,23 +129,8 @@ class CampaignController extends Controller
         return back()->with('success', 'Contacts have been moved to the campaign queue and email jobs have been scheduled.');
     }
 
-
     public function status()
     {
-        $nowMinus3 = Carbon::now()->subMinutes(3);
-
-        $campaignContacts = \App\Models\EmailCampaignContact::with(['campaign', 'contact'])
-            ->where(function ($q) use ($nowMinus3) {
-                $q->whereIn('status', ['failed', 'sent'])
-                    ->orWhere(function ($q2) use ($nowMinus3) {
-                        // pending tapi sudah melewati waktu + 3 menit
-                        $q2->where('status', 'pending')
-                            ->where('sent_at', '<', $nowMinus3);
-                    });
-            })
-            ->orderBy('id', 'asc')
-            ->get();
-
         $now = Carbon::now();
 
         $runningCampaign = EmailCampaignContact::where('status', 'pending')
@@ -153,7 +138,6 @@ class CampaignController extends Controller
             ->count();
 
         $failedCampaign = EmailCampaignContact::where(function ($q) use ($now) {
-
             $threeMinutesAgo = $now->copy()->subMinutes(3);
 
             $q->where('status', 'failed')
@@ -161,15 +145,12 @@ class CampaignController extends Controller
                     $sub->where('status', 'pending')
                         ->where('sent_at', '<=', $threeMinutesAgo);
                 });
-        })
-            ->count();
-
+        })->count();
 
         $newLeads = EmailContact::where('is_campaign', false)->count();
 
         return view('admin.campaign.status_campaign', [
             'title' => 'Status Campaign Email',
-            'campaignContacts' => $campaignContacts,
             'runningCampaign' => $runningCampaign,
             'failedCampaign'  => $failedCampaign,
             'newLeads'        => $newLeads,
@@ -341,6 +322,89 @@ class CampaignController extends Controller
 
             ->order(function ($query) {
                 $query->orderBy('id', 'asc');
+            })
+
+            ->rawColumns(['checkbox', 'status', 'action'])
+            ->make(true);
+    }
+
+    public function statusDatatable()
+    {
+        $nowMinus3 = Carbon::now()->subMinutes(3);
+
+        $query = EmailCampaignContact::with('contact')
+            ->where(function ($q) use ($nowMinus3) {
+                $q->whereIn('status', ['failed', 'sent'])
+                    ->orWhere(function ($q2) use ($nowMinus3) {
+                        $q2->where('status', 'pending')
+                            ->where('sent_at', '<', $nowMinus3);
+                    });
+            });
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+
+            // checkbox
+            ->addColumn('checkbox', fn($c) => '
+            <div class="custom-control custom-checkbox ms-1">
+                <input type="checkbox" class="custom-control-input checkbox" id="checkBox_' . $c->id . '">
+                <label class="custom-control-label" for="checkBox_' . $c->id . '"></label>
+            </div>
+        ')
+
+            // company
+            ->addColumn('company', fn($c) => optional($c->contact)->company ?: '-')
+
+            // email
+            ->addColumn('email', fn($c) => trim(optional($c->contact)->kirim) ?: '-')
+
+            // country
+            ->addColumn('country', fn($c) => optional($c->contact)->country ?: '-')
+
+            // schedule
+            ->addColumn('schedule', function ($c) {
+                return $c->sent_at
+                    ? Carbon::parse($c->sent_at)->format('d M Y') . ' | ' . Carbon::parse($c->sent_at)->format('H.i')
+                    : '-';
+            })
+
+            // status badge (FULL SAMA CSS LAMA)
+            ->addColumn('status', function ($c) {
+                $now = Carbon::now();
+                $threshold = $now->copy()->subMinutes(3);
+                $sentAt = $c->sent_at ? Carbon::parse($c->sent_at) : null;
+
+                $map = [
+                    'pending' => ['Pending', 'badge bg-soft-warning text-warning'],
+                    'sent'    => ['Sent', 'badge bg-soft-success text-success'],
+                    'failed'  => ['Failed', 'badge bg-soft-danger text-danger'],
+                ];
+
+                $html = '<div class="' . $map[$c->status][1] . '">' . $map[$c->status][0] . '</div>';
+
+                if ($c->status === 'pending' && $sentAt && $sentAt->lt($threshold)) {
+                    $html .= '<div class="badge bg-soft-danger text-danger ms-1">Failed</div>';
+                }
+
+                return $html;
+            })
+
+            // action (DELETE – TIDAK DIUBAH)
+            ->addColumn('action', function ($c) {
+                return '
+            <div class="hstack gap-2 justify-content-center">
+                <form action="' . route('delete.campaign', $c->id) . '" method="POST">
+                    ' . csrf_field() . method_field('DELETE') . '
+                    <a href="javascript:void(0)" class="avatar-text avatar-md btn-delete-campaign">
+                        <i class="feather feather-trash-2"></i>
+                    </a>
+                </form>
+            </div>';
+            })
+
+            // FIX ERROR DT_RowIndex
+            ->order(function ($q) {
+                $q->orderBy('id', 'asc');
             })
 
             ->rawColumns(['checkbox', 'status', 'action'])

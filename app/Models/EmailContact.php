@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EmailContact extends Model
 {
     protected $table = 'email_contacts';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'company',
@@ -25,6 +26,6 @@ class EmailContact extends Model
 
     public function campaignEntries()
     {
-        return $this->hasMany(\App\Models\EmailCampaignContact::class);
+        return $this->hasMany(EmailCampaignContact::class);
     }
 }
