@@ -126,7 +126,7 @@ class SettingController extends Controller
             'lokasi' => 'nullable|string|max:255',
 
             // avatar
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:3048',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
 
             // password
             'current_password' => 'nullable',

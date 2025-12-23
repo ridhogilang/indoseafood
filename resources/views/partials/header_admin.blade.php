@@ -4,7 +4,7 @@
  <nav class="nxl-navigation">
      <div class="navbar-wrapper">
          <div class="m-header">
-             <a href="{{ route('admin.dashboard') }}" class="b-brand">
+             <a href="{{ route('admin.dashboard') }}" class="b-brand protect-leave">
                  <!-- ========   change your logo hear   ============ -->
                  <img src="{{ asset('home/img/logo.png') }}" style="width: 80%;" alt="" class="logo logo-lg" />
                  <img src="{{ asset('home/img/logo icon.png') }}" alt="" class="logo logo-sm" />
@@ -15,71 +15,73 @@
                  <li class="nxl-item nxl-caption">
                      <label>Navigation</label>
                  </li>
-                 <li class="nxl-item"><a class="nxl-link" href="{{ route('admin.dashboard') }}"><span
+                 <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('admin.dashboard') }}"><span
                              class="nxl-micon"><i class="feather-airplay"></i></span>
                          <span class="nxl-mtext">Dashboards</span></a>
                  </li>
-                 <li class="nxl-item"><a class="nxl-link" href="{{ route('leads') }}"><span class="nxl-micon"><i
+                 <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('leads') }}"><span class="nxl-micon"><i
                                  class="feather-users"></i></span>
                          <span class="nxl-mtext">Leads</span></a>
                  </li>
                  <li class="nxl-item nxl-hasmenu">
-                     <a href="javascript:void(0);" class="nxl-link">
+                     <a href="javascript:void(0);" class="nxl-link protect-leave">
                          <span class="nxl-micon"><i class="feather-mail"></i></span>
                          <span class="nxl-mtext">Mail</span><span class="nxl-arrow"><i
                                  class="feather-chevron-right"></i></span>
                      </a>
                      <ul class="nxl-submenu">
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('campaign') }}">Campaign Contact</a>
+                         <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('campaign') }}">Campaign Contact</a>
                          </li>
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('status.campaign') }}">Campaign
+                         <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('status.campaign') }}">Campaign
                                  Status</a></li>
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('mail.campaign') }}">Campaign Mail</a>
+                         <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('mail.campaign') }}">Campaign Mail</a>
                          </li>
                      </ul>
                  </li>
                  <li class="nxl-item nxl-hasmenu">
-                     <a href="javascript:void(0);" class="nxl-link">
+                     <a href="javascript:void(0);" class="nxl-link protect-leave">
                          <span class="nxl-micon"><i class="feather-clipboard"></i></span>
                          <span class="nxl-mtext">Inquiries</span><span class="nxl-arrow"><i
                                  class="feather-chevron-right"></i></span>
                      </a>
                      <ul class="nxl-submenu">
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('inquiry.list') }}">New</a>
+                         <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('inquiry.list') }}">New</a>
                          </li>
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('inquiry.archived') }}">Archive</a></li>
+                         <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('inquiry.archived') }}">Archive</a></li>
                          </li>
                      </ul>
                  </li>
                  <li class="nxl-item nxl-hasmenu">
-                     <a href="javascript:void(0);" class="nxl-link">
+                     <a href="javascript:void(0);" class="nxl-link protect-leave">
                          <span class="nxl-micon"><i class="feather-book"></i></span>
                          <span class="nxl-mtext">Article</span><span class="nxl-arrow"><i
                                  class="feather-chevron-right"></i></span>
                      </a>
                      <ul class="nxl-submenu">
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('article.new') }}">New Article</a>
+                         <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('article.new') }}">New Article</a>
                          </li>
-                         <li class="nxl-item"><a class="nxl-link" href="{{ route('article.list') }}">Article List</a></li>
+                         <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('article.list') }}">Article List</a></li>
+                         </li>
+                         <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('article.category') }}">Category Article</a></li>
                          </li>
                      </ul>
                  </li>
                  @if (auth()->check() && auth()->user()->is_superadmin == 1)
                      <li class="nxl-item nxl-hasmenu">
-                         <a href="javascript:void(0);" class="nxl-link">
+                         <a href="javascript:void(0);" class="nxl-link protect-leave">
                              <span class="nxl-micon"><i class="feather-settings"></i></span>
                              <span class="nxl-mtext">Setting</span><span class="nxl-arrow"><i
                                      class="feather-chevron-right"></i></span>
                          </a>
                          <ul class="nxl-submenu">
-                             <li class="nxl-item"><a class="nxl-link" href="{{ route('user.setting') }}">Setting</a>
+                             <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('user.setting') }}">Setting</a>
                              </li>
-                             <li class="nxl-item"><a class="nxl-link" href="{{ route('user.list') }}">List User</a></li>
+                             <li class="nxl-item"><a class="nxl-link protect-leave" href="{{ route('user.list') }}">List User</a></li>
                          </ul>
                      </li>
                  @else
                      <li class="nxl-item">
-                         <a class="nxl-link" href="">
+                         <a class="nxl-link protect-leave" href="">
                              <span class="nxl-micon">
                                  <i class="feather-settings"></i>
                              </span>

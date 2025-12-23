@@ -8,13 +8,12 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Imports\EmailContactsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class LeadController extends Controller
 {
     public function index()
     {
-        $contacts = EmailContact::orderBy('id', 'asc')->get();
-
         // 1) Total Leads = all records
         $totalLeads = EmailContact::count();
 
@@ -33,7 +32,6 @@ class LeadController extends Controller
 
         return view('admin.leads', [
             'title'    => 'Leads',
-            'contacts' => $contacts,
             'totalLeads'        => $totalLeads,
             'potentialLeads'    => $potentialLeads,
             'nonPotentialLeads' => $nonPotentialLeads,
@@ -125,5 +123,70 @@ class LeadController extends Controller
         $email_contact->delete();
 
         return back()->with('success', 'Contact deleted successfully.');
+    }
+
+    public function datatable()
+    {
+        $query = EmailContact::query();
+
+        return DataTables::eloquent($query)
+            ->addIndexColumn()
+
+            ->addColumn('checkbox', function () {
+                return '
+            <div class="item-checkbox ms-1">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input checkbox">
+                    <label class="custom-control-label"></label>
+                </div>
+            </div>';
+            })
+
+            ->addColumn('company', function ($c) {
+                return '
+            <a href="javascript:void(0)" 
+               class="hstack gap-5 btn-view-contact"
+               data-bs-toggle="modal"
+               data-bs-target="#viewContactModal"
+               data-company="' . e($c->company) . '"
+               data-main_product="' . e($c->main_product) . '"
+               data-website="' . e($c->website) . '"
+               data-kirim="' . e($c->kirim) . '"
+               data-country="' . e($c->country) . '"
+               data-phone="' . e($c->phone) . '"
+               data-whatsapp="' . e($c->whatsapp) . '"
+               data-contact_person="' . e($c->contact_person) . '"
+               data-notes="' . e($c->notes) . '"
+               data-status="' . e($c->status) . '">
+                <span class="text-truncate-1-line">' . e($c->company) . '</span>
+            </a>';
+            })
+
+            ->addColumn('email', fn($c) => trim($c->kirim) ?: '-')
+
+            ->addColumn('status', function ($c) {
+                return $c->status === 'active'
+                    ? '<span class="d-inline-flex align-items-center gap-2">
+                        <span class="status-dot bg-success"></span> Active
+                   </span>'
+                    : '<span class="d-inline-flex align-items-center gap-2">
+                        <span class="status-dot bg-danger"></span> Inactive
+                   </span>';
+            })
+
+            ->addColumn('action', function ($c) {
+                return '
+            <div class="hstack gap-2 justify-content-end">
+                <a href="javascript:void(0)"
+                   class="avatar-text avatar-md btn-view-contact"
+                   data-bs-toggle="modal"
+                   data-bs-target="#viewContactModal">
+                    <i class="feather feather-eye"></i>
+                </a>
+            </div>';
+            })
+
+            ->rawColumns(['checkbox', 'company', 'status', 'action'])
+            ->make(true);
     }
 }

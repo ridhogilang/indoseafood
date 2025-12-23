@@ -234,15 +234,7 @@
                                 <table class="table table-hover" id="leadList">
                                     <thead>
                                         <tr>
-                                            <th class="wd-30">
-                                                <div class="btn-group mb-1">
-                                                    <div class="custom-control custom-checkbox ms-1">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="checkAllLead">
-                                                        <label class="custom-control-label" for="checkAllLead"></label>
-                                                    </div>
-                                                </div>
-                                            </th>
+                                            <th class="wd-30"></th>
                                             <th>No</th>
                                             <th>Company</th>
                                             <th>Email</th>
@@ -253,141 +245,6 @@
                                             <th class="text-end">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach ($contacts as $contact)
-                                            <tr class="single-item">
-                                                <td>
-                                                    <div class="item-checkbox ms-1">
-                                                        <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input checkbox"
-                                                                id="checkBox_1">
-                                                            <label class="custom-control-label" for="checkBox_1"></label>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>
-                                                    <a href="javascript:void(0)" class="hstack gap-5 btn-view-contact"
-                                                        data-bs-toggle="modal" data-bs-target="#viewContactModal"
-                                                        data-company="{{ $contact->company }}"
-                                                        data-main_product="{{ $contact->main_product }}"
-                                                        data-website="{{ $contact->website }}"
-                                                        data-kirim="{{ $contact->kirim }}"
-                                                        data-country="{{ $contact->country }}"
-                                                        data-phone="{{ $contact->phone }}"
-                                                        data-whatsapp="{{ $contact->whatsapp }}"
-                                                        data-contact_person="{{ $contact->contact_person }}"
-                                                        data-notes="{{ $contact->notes }}"
-                                                        data-status="{{ $contact->status }}">
-                                                        <div>
-                                                            <span
-                                                                class="text-truncate-1-line">{{ $contact->company }}</span>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td>{{ trim($contact->kirim) ?: '-' }}</td>
-                                                <td><a href="javascript:void(0)" class="btn-view-contact" data-bs-toggle="modal"
-                                                        data-bs-target="#viewContactModal"
-                                                        data-company="{{ $contact->company }}"
-                                                        data-main_product="{{ $contact->main_product }}"
-                                                        data-website="{{ $contact->website }}"
-                                                        data-kirim="{{ $contact->kirim }}"
-                                                        data-country="{{ $contact->country }}"
-                                                        data-phone="{{ $contact->phone }}"
-                                                        data-whatsapp="{{ $contact->whatsapp }}"
-                                                        data-contact_person="{{ $contact->contact_person }}"
-                                                        data-notes="{{ $contact->notes }}"
-                                                        data-status="{{ $contact->status }}">{{ $contact->country }}</a>
-                                                </td>
-                                                <td>{{ $contact->contact_person ?? '-' }}</td>
-                                                <td class="truncate-text">{{ $contact->main_product ?? '-' }}</td>
-                                                @php
-                                                    $status = $contact->status; // active / inactive
-
-                                                    $statusMap = [
-                                                        'active' => [
-                                                            'label' => 'Active',
-                                                            'color' => 'bg-success',
-                                                        ],
-                                                        'inactive' => [
-                                                            'label' => 'Inactive',
-                                                            'color' => 'bg-danger',
-                                                        ],
-                                                    ];
-                                                @endphp
-                                                <td>
-                                                    <span class="d-inline-flex align-items-center gap-2">
-                                                        <span class="status-dot {{ $statusMap[$status]['color'] }}"
-                                                            style="width:10px; height:10px; border-radius:50%; display:inline-block;"></span>
-
-                                                        {{ $statusMap[$status]['label'] }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <div class="hstack gap-2 justify-content-end">
-                                                        <a href="javascript:void(0)"
-                                                            class="avatar-text avatar-md btn-view-contact"
-                                                            data-bs-toggle="modal" data-bs-target="#viewContactModal"
-                                                            data-company="{{ $contact->company }}"
-                                                            data-main_product="{{ $contact->main_product }}"
-                                                            data-website="{{ $contact->website }}"
-                                                            data-kirim="{{ $contact->kirim }}"
-                                                            data-country="{{ $contact->country }}"
-                                                            data-phone="{{ $contact->phone }}"
-                                                            data-whatsapp="{{ $contact->whatsapp }}"
-                                                            data-contact_person="{{ $contact->contact_person }}"
-                                                            data-notes="{{ $contact->notes }}"
-                                                            data-status="{{ $contact->status }}">
-                                                            <i class="feather feather-eye"></i>
-                                                        </a>
-                                                        <div class="dropdown">
-                                                            <a href="javascript:void(0)" class="avatar-text avatar-md"
-                                                                data-bs-toggle="dropdown" data-bs-offset="0,21">
-                                                                <i class="feather feather-more-horizontal"></i>
-                                                            </a>
-                                                            <ul class="dropdown-menu">
-                                                                <li>
-                                                                    <a class="dropdown-item btn-edit-contact"
-                                                                        href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#editContactModal"
-                                                                        data-update-url="{{ route('leads.update', $contact->id) }}"
-                                                                        data-id="{{ $contact->id }}"
-                                                                        data-company="{{ $contact->company }}"
-                                                                        data-main_product="{{ $contact->main_product }}"
-                                                                        data-website="{{ $contact->website }}"
-                                                                        data-kirim="{{ $contact->kirim }}"
-                                                                        data-country="{{ $contact->country }}"
-                                                                        data-phone="{{ $contact->phone }}"
-                                                                        data-whatsapp="{{ $contact->whatsapp }}"
-                                                                        data-contact_person="{{ $contact->contact_person }}"
-                                                                        data-notes="{{ $contact->notes }}"
-                                                                        data-status="{{ $contact->status }}">
-                                                                        <i class="feather feather-edit-3 me-3"></i>
-                                                                        <span>Edit</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <form
-                                                                        action="{{ route('leads.destroy', $contact->id) }}"
-                                                                        method="POST"
-                                                                        class="delete-contact-form m-0 p-0">
-                                                                        @csrf
-                                                                        @method('DELETE')
-
-                                                                        <a href="javascript:void(0)"
-                                                                            class="dropdown-item btn-delete-contact">
-                                                                            <i class="feather feather-trash-2 me-3"></i>
-                                                                            <span>Delete</span>
-                                                                        </a>
-                                                                    </form>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -987,6 +844,63 @@
                     }
                 });
             });
+        });
+    </script>
+    <script>
+        $(function() {
+
+            if ($.fn.DataTable.isDataTable('#leadList')) {
+                $('#leadList').DataTable().destroy();
+            }
+
+            $('#leadList').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('leads.datatable') }}",
+                pageLength: 10,
+
+                // ❗ JANGAN ORDER BY DT_RowIndex
+                order: [
+                    [2, 'asc']
+                ], // company (AMAN)
+
+                columns: [{
+                        data: 'checkbox',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'company'
+                    },
+                    {
+                        data: 'email'
+                    },
+                    {
+                        data: 'country'
+                    },
+                    {
+                        data: 'contact_person'
+                    },
+                    {
+                        data: 'main_product'
+                    },
+                    {
+                        data: 'status',
+                        orderable: false
+                    },
+                    {
+                        data: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
+
         });
     </script>
 @endpush

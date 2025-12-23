@@ -45,6 +45,8 @@ Route::prefix('admin')->group(function () {
 
         //Lead Route
         Route::get('/leads', [LeadController::class, 'index'])->name('leads');
+        Route::get('/leads/datatable', [LeadController::class, 'datatable'])
+            ->name('leads.datatable');
         Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
         Route::put('/leads/{email_contact}', [LeadController::class, 'update'])
             ->name('leads.update');
@@ -85,7 +87,14 @@ Route::prefix('admin')->group(function () {
         //Article Route
         Route::get('/article-list', [ArticleController::class, 'index'])->name('article.list');
         Route::get('/article-new', [ArticleController::class, 'new'])->name('article.new');
+        Route::get('/article-category', [ArticleController::class, 'category'])->name('article.category');
         Route::get('/article/{slug}/edit', [ArticleController::class, 'edit'])->name('article.edit');
         Route::post('/article/store', [ArticleController::class, 'store'])->name('article.store');
+        Route::post('/article/{article}/upload-image', [ArticleController::class, 'uploadImage'])->name('article.upload-image');
+        Route::post('/article/delete-image', [ArticleController::class, 'deleteImage'])->name('article.delete-image');
+        Route::put('/article/{article}', [ArticleController::class, 'update'])->name('article.update');
+        Route::delete('/article/{article}', [ArticleController::class, 'destroy'])->name('article.destroy');
+        Route::delete('/article-category/{category}', [ArticleController::class, 'category_destroy'])->name('article-category.destroy');
+        Route::post('/article-category', [ArticleController::class, 'store_category'])->name('article-category.store');
     });
 });

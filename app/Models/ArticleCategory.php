@@ -15,7 +15,6 @@ class ArticleCategory extends Model
         'name',
         'slug',
         'description',
-        'is_active',
     ];
 
     // Relasi: 1 kategori punya banyak artikel

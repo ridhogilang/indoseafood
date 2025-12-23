@@ -168,8 +168,7 @@
                                                     </div>
                                                     <input type="text" class="form-control" id="meta_description"
                                                         name="meta_description" value="{{ old('meta_description') }}"
-                                                        placeholder="Meta description can be entered manually or generated automatically by the system."
-                                                        required>
+                                                        placeholder="Meta description can be entered manually or generated automatically by the system.">
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 mb-4 align-items-center">
@@ -187,8 +186,7 @@
                                                     </div>
                                                     <input type="text" class="form-control" id="meta_keywords"
                                                         name="meta_keywords" value="{{ old('meta_keywords') }}"
-                                                        placeholder="Meta keywords can be entered manually or generated automatically by the system."
-                                                        required>
+                                                        placeholder="Meta keywords can be entered manually or generated automatically by the system.">
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 mb-4 align-items-center">
@@ -238,15 +236,15 @@
 @endsection
 
 @section('modal')
-    <div class="modal fade-scale" id="AddCategory" tabindex="-1" aria-labelledby="AddCategory" aria-hidden="true"
+    <div class="modal fade-scale" id="AddCategory" data-mode="add"  tabindex="-1" aria-labelledby="AddCategory" aria-hidden="true"
         data-bs-dismiss="ou">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <!--! BEGIN: [modal-header] !-->
                 <div class="modal-header">
                     <h2 class="d-flex flex-column mb-0">
-                        <span class="fs-18 fw-bold mb-1">Category Article</span>
-                        <small class="d-block fs-11 fw-normal text-muted">Add new category</small>
+                        <span class="fs-18 fw-bold mb-1">Category</span>
+                        <small class="d-block fs-11 fw-normal text-muted">Add Category Form</small>
                     </h2>
                     <a href="javascript:void(0)" class="avatar-text avatar-md bg-soft-danger close-icon"
                         data-bs-dismiss="modal">
@@ -255,7 +253,7 @@
                 </div>
                 <!--! BEGIN: [modal-body] !-->
                 <div class="modal-body p-0">
-                    <form action="" method="POST">
+                    <form action="{{ route('article-category.store') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-lg-12">
@@ -263,111 +261,45 @@
                                     <div class="card-body lead-status">
                                         <div class="row">
                                             <div class="col-lg-6 mb-4 align-items-center">
-                                                <label class="form-label">Company Name</label>
+                                                <label class="form-label">Category Name</label>
                                                 <div class="input-group">
-                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    <div class="input-group-text"><i class="fa-solid fa-heading"></i>
                                                     </div>
-                                                    <input type="text" class="form-control" id="company_name"
-                                                        name="company_name" placeholder="Company Name" readonly>
+                                                    <input type="text" class="form-control category-name"
+                                                        id="category-name" name="name" placeholder="Category Name"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 mb-4 align-items-center">
-                                                <label class="form-label">Email</label>
+                                                <label class="form-label">Slug</label>
                                                 <div class="input-group">
-                                                    <div class="input-group-text"><i class="feather-mail"></i></div>
-                                                    <input type="email" class="form-control" id="email"
-                                                        name="email" placeholder="Email" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 mb-4 align-items-center">
-                                                <label class="form-label">Whatsapp</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-text"><i class="feather-user"></i>
+                                                    <div class="input-group-text"><i class="fa-solid fa-quote-left"></i>
                                                     </div>
-                                                    <input type="text" class="form-control" id="whatsapp"
-                                                        name="whatsapp" placeholder="Whatsapp Number">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 mb-4 align-items-center">
-                                                <label class="form-label">Phone</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-text"><i class="feather-user"></i>
-                                                    </div>
-                                                    <input type="text" class="form-control" id="phone"
-                                                        name="phone" placeholder="Phone Number">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 mb-4 align-items-center">
-                                                <label class="form-label">Fish Name</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-text"><i class="feather-user"></i>
-                                                    </div>
-                                                    <input type="text" class="form-control" id="fish_name"
-                                                        name="fish_name" placeholder="Fish Name">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 mb-4 align-items-center">
-                                                <label class="form-label">Latin Name</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-text"><i class="feather-user"></i>
-                                                    </div>
-                                                    <input type="text" class="form-control" id="latin_name"
-                                                        name="latin_name" placeholder="Latin Fish Name">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 mb-4 align-items-center">
-                                                <label class="form-label">Freezing Method</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-text"><i class="feather-user"></i>
-                                                    </div>
-                                                    <input type="text" class="form-control" id="freezing_method"
-                                                        name="freezing_method" placeholder="Freezing Method">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 mb-4 align-items-center">
-                                                <label class="form-label">Size</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-text"><i class="feather-user"></i>
-                                                    </div>
-                                                    <input type="text" class="form-control" id="size"
-                                                        name="size" placeholder="Size of Fish">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 mb-4 align-items-center">
-                                                <label class="form-label">Quantity</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-text"><i class="feather-user"></i>
-                                                    </div>
-                                                    <input type="text" class="form-control" id="qty"
-                                                        name="qty" placeholder="Quantity of Fish">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 mb-4 align-items-center">
-                                                <label class="form-label">Port Destination</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-text"><i class="feather-user"></i>
-                                                    </div>
-                                                    <input type="text" class="form-control" id="port_of_destination"
-                                                        name="port_of_destination" placeholder="Port Destination">
+                                                    <input type="text" class="form-control category-slug"
+                                                        id="category-slug" name="slug" placeholder="Category Slug"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 mb-4">
-                                                <label class="form-label">Status</label>
-                                                <select class="form-control" name="status"
-                                                    data-select2-selector="status">
-                                                    <option value="new" data-bg="bg-success">New</option>
-                                                    <option value="read" data-bg="bg-warning">Read</option>
-                                                    <option value="potential" data-bg="bg-primary">Lead Potential</option>
-                                                    <option value="archived" data-bg="bg-danger">Archived</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-6 mb-4">
-                                                <label class="form-label">Note</label>
-                                                <textarea rows="6" class="form-control" id="InquiryNote" placeholder="Note"></textarea>
+                                                <label class="form-label">Description</label>
+                                                <textarea rows="6" class="form-control" id="category-description" placeholder="Category Description"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <a href="">
+                                    <span class="btn btn-light-danger" data-bs-trigger="hover"
+                                        title="Send Message">Close</span>
+                                </a>
+                                <button type="submit" id="btn-submit" class="btn btn-primary">
+                                    Submit
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -388,30 +320,65 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
     <script>
-        ClassicEditor.create(document.querySelector('#body-editor'), {
-                licenseKey: 'YOUR_LICENSE_KEY',
+        const ARTICLE_ID = '{{ $article->id ?? null }}'; // null jika artikel baru
+        const USER_ID = '{{ auth()->id() }}'; // id user saat ini
 
+        // Tentukan folder upload draft per user
+        const uploadFolder = ARTICLE_ID ? 'articles/' + ARTICLE_ID : 'articles/draft/' + USER_ID;
+
+        class MyUploadAdapter {
+            constructor(loader) {
+                this.loader = loader;
+            }
+
+            upload() {
+                return this.loader.file
+                    .then(file => new Promise((resolve, reject) => {
+                        const data = new FormData();
+                        data.append('upload', file);
+                        data.append('folder', uploadFolder);
+
+                        fetch('/admin/article/' + (ARTICLE_ID || 'draft') + '/upload-image', {
+                                method: 'POST',
+                                body: data,
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                }
+                            })
+                            .then(res => res.json())
+                            .then(res => {
+                                if (res.url) {
+                                    resolve({
+                                        default: res.url
+                                    });
+                                } else {
+                                    reject(res.message || 'Upload failed');
+                                }
+                            })
+                            .catch(() => reject('Upload failed'));
+                    }));
+            }
+
+            abort() {}
+        }
+
+        function MyCustomUploadAdapterPlugin(editor) {
+            editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                return new MyUploadAdapter(loader);
+            };
+        }
+
+        ClassicEditor.create(document.querySelector('#body-editor'), {
+                licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3OTc0NjU1OTksImp0aSI6IjRlMWUwOGEyLWQ3YzAtNGM5MS1hYWNmLTRjZmRmZWI3NzFhNyIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCIsIkUyUCIsIkUyVyJdLCJyZW1vdmVGZWF0dXJlcyI6WyJQQiIsIlJGIiwiU0NIIiwiVENQIiwiVEwiLCJUQ1IiLCJJUiIsIlNVQSIsIkI2NEEiLCJMUCIsIkhFIiwiUkVEIiwiUEZPIiwiV0MiLCJGQVIiLCJCS00iLCJGUEgiLCJNUkUiXSwidmMiOiJiYWFhN2FkNyJ9.8vzjZPaokEDTVlxxC985CZKjaZiDDM3dNiB_jY6mYFutpyWNUIWcHXdnJDPRTWAprGTxN7-iygSGu5uqR0kt8w',
                 toolbar: {
                     items: [
-                        'heading',
-                        '|',
-                        'bold', 'italic', 'underline', 'strikethrough',
-                        'link',
-                        '|',
-                        'bulletedList', 'numberedList',
-                        'outdent', 'indent',
-                        '|',
-                        'alignment',
-                        'blockQuote', 'codeBlock',
-                        'horizontalLine',
-                        'insertTable',
-                        'imageUpload',
-                        '|',
-                        'undo', 'redo'
+                        'heading', '|', 'bold', 'italic', 'underline', 'strikethrough',
+                        'link', '|', 'bulletedList', 'numberedList', 'outdent', 'indent', '|',
+                        'alignment', 'blockQuote', 'codeBlock', 'horizontalLine',
+                        'insertTable', 'imageUpload', 'mediaEmbed', '|', 'undo', 'redo'
                     ],
                     shouldNotGroupWhenFull: true
                 },
-
                 image: {
                     toolbar: [
                         'imageTextAlternative',
@@ -421,34 +388,22 @@
                         'imageStyle:side'
                     ]
                 },
-
                 table: {
-                    contentToolbar: [
-                        'tableColumn',
-                        'tableRow',
-                        'mergeTableCells'
-                    ]
+                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
                 },
-
                 alignment: {
                     options: ['left', 'center', 'right', 'justify']
                 },
-
-                simpleUpload: {
-                    uploadUrl: '',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                },
-
-                placeholder: 'Write your article content here...'
+                placeholder: 'Write your article content here...',
+                extraPlugins: [MyCustomUploadAdapterPlugin]
             })
             .then(editor => {
-
+                // Update hidden input setiap kali konten berubah
                 editor.model.document.on('change:data', () => {
                     document.getElementById('body-html-hidden').value = editor.getData();
                 });
-            });
+            })
+            .catch(error => console.error(error));
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -557,9 +512,30 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             const form = document.getElementById('campaign-form');
-            const addCategoryBtn = document.querySelector('[data-bs-target="#AddCategory"]');
+            const addCategoryBtn = document.getElementById('addCategoryBtn');
 
-            addCategoryBtn.addEventListener('click', function(e) {
+            function isFormEmpty(form) {
+                const inputs = form.querySelectorAll('input, textarea');
+
+                for (let input of inputs) {
+                    // skip hidden & csrf
+                    if (input.type === 'hidden' || input.name === '_token') continue;
+
+                    if (input.value && input.value.trim() !== '') {
+                        return false; // ADA ISI
+                    }
+                }
+                return true; // KOSONG SEMUA
+            }
+
+            addCategoryBtn.addEventListener('click', async function(e) {
+
+                // kalau form masih kosong → langsung buka modal
+                if (isFormEmpty(form)) {
+                    return; // JANGAN preventDefault
+                }
+
+                // kalau sudah ada isi → tahan modal
                 e.preventDefault();
 
                 Swal.fire({
@@ -572,26 +548,173 @@
 
                     if (!result.isConfirmed) return;
 
+                    isAutoDraft = true;
+                    isFormDirty = false;
+                    isSubmitting = true;
+
                     const formData = new FormData(form);
                     formData.append('auto_draft', 1);
 
-                    const response = await fetch("{{ route('article.store') }}", {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                        },
-                        body: formData
-                    });
+                    try {
+                        const response = await fetch("{{ route('article.store') }}", {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                            },
+                            body: formData
+                        });
 
-                    const data = await response.json();
+                        const data = await response.json();
 
-                    if (data.success && data.redirect) {
-                        window.location.href = data.redirect;
-                    } else {
-                        Swal.fire('Error', 'Failed to save draft', 'error');
+                        if (data.success && data.redirect) {
+                            window.location.href = data.redirect;
+                        } else {
+                            Swal.fire('Error', 'Failed to save draft', 'error');
+                        }
+                    } catch (err) {
+                        Swal.fire('Error', 'Server error', 'error');
                     }
                 });
             });
+
+        });
+    </script>
+    <script>
+        let isFormDirty = false;
+        let isSubmitting = false;
+        let isAutoDraft = false;
+
+        // deteksi perubahan form
+        document.querySelectorAll('input, textarea, select').forEach(el => {
+            el.addEventListener('change', () => {
+                if (!isAutoDraft) isFormDirty = true;
+            });
+            el.addEventListener('keyup', () => {
+                if (!isAutoDraft) isFormDirty = true;
+            });
+        });
+
+        // MATIKAN dirty saat submit manual
+        document.querySelectorAll('button[type="submit"]').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                isSubmitting = true;
+                isFormDirty = false;
+            });
+        });
+
+        // submit fallback
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', () => {
+                isSubmitting = true;
+                isFormDirty = false;
+            });
+        });
+
+        // cegah close / reload
+        window.addEventListener('beforeunload', function(e) {
+            if (isAutoDraft) return; // 🔥 PENGECUALIAN
+            if (!isFormDirty || isSubmitting) return;
+
+            e.preventDefault();
+            e.returnValue = '';
+        });
+    </script>
+    <script>
+        document.querySelectorAll('a.protect-leave').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (!isFormDirty) return;
+
+                e.preventDefault();
+                const url = this.href;
+
+                Swal.fire({
+                    title: 'Are you sure you want to leave?',
+                    text: 'Your changes will not be saved.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, leave page',
+                    cancelButtonText: 'Stay on this page'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        isFormDirty = false;
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function(e) {
+            if (form.dataset.confirmed === 'true') return;
+
+            e.preventDefault();
+
+            const actionBtn = document.activeElement;
+            const action = actionBtn?.value;
+
+            if (!action) {
+                form.submit();
+                return;
+            }
+
+            Swal.fire({
+                title: action === 'publish' ? 'Publish article?' : 'Save as draft?',
+                text: action === 'publish' ?
+                    'This article will be visible to the public.' :
+                    'Your changes will be saved as a draft.',
+                icon: action === 'publish' ? 'warning' : 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Cancel'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    isFormDirty = false;
+                    form.dataset.confirmed = 'true';
+                    form.submit();
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            document.querySelectorAll('.modal').forEach(modal => {
+
+                modal.addEventListener('shown.bs.modal', function() {
+
+                    const nameInput = modal.querySelector('.category-name');
+                    const slugInput = modal.querySelector('.category-slug');
+
+                    if (!nameInput || !slugInput) return;
+
+                    let slugTouched = false;
+
+                    // reset state tiap buka modal
+                    slugTouched = false;
+
+                    slugInput.addEventListener('input', () => {
+                        slugTouched = true;
+                    });
+
+                    nameInput.addEventListener('input', () => {
+                        if (slugTouched) return;
+                        slugInput.value = generateSlug(nameInput.value);
+                    });
+
+                });
+
+            });
+
+            function generateSlug(text) {
+                return text
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+            }
 
         });
     </script>

@@ -51,9 +51,9 @@ class Article extends Model
             $this->attributes['excerpt'] = Str::limit(strip_tags($value), 160);
         }
     }
-    
-    public function user()
+
+    public function author()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
