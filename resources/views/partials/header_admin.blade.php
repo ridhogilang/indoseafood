@@ -321,77 +321,84 @@
                          </div>
                          <div class="dropdown-divider mt-0"></div>
                          <div class="search-items-wrapper">
-                             <div class="users-result px-4 py-2">
+                             @if ($countAll > 0)
                                  @if ($expiredCampaignsCount > 0)
-                                     <h4 class="fs-13 fw-normal text-gray-600 mb-3">Campaign Failed <span
-                                             class="badge small bg-gray-200 rounded ms-1 text-danger">{{ $expiredCampaignsCount }}</span>
-                                     </h4>
-                                     @foreach ($expiredCampaigns as $campaign)
-                                         <div class="d-flex align-items-center justify-content-between mb-4">
-                                             <div class="d-flex align-items-center gap-3">
-                                                 <div>
-                                                     <a href="{{ route('status.campaign') }}"
-                                                         class="font-body fw-bold d-block mb-1"> Company :
-                                                         {{ $campaign->contact->company ?? 'Unknown Company' }}
-                                                         <br>
-                                                         {{ $campaign->contact->kirim ?? 'Unknown Email' }}
-                                                     </a>
-                                                     <p class="fs-11 text-muted mb-0">
-                                                         {{ $campaign->sent_at->diffForHumans() }}
-                                                         <span class="badge bg-soft-danger text-danger">Failed</span>
-                                                     </p>
+                                     <div class="users-result px-4 py-2">
+                                         <h4 class="fs-13 fw-normal text-gray-600 mb-3">Campaign Failed <span
+                                                 class="badge small bg-gray-200 rounded ms-1 text-danger">{{ $expiredCampaignsCount }}</span>
+                                         </h4>
+                                         @foreach ($expiredCampaigns as $campaign)
+                                             <div class="d-flex align-items-center justify-content-between mb-4">
+                                                 <div class="d-flex align-items-center gap-3">
+                                                     <div>
+                                                         <a href="{{ route('status.campaign') }}"
+                                                             class="font-body fw-bold d-block mb-1"> Company :
+                                                             {{ $campaign->contact->company ?? 'Unknown Company' }}
+                                                             <br>
+                                                             {{ $campaign->contact->kirim ?? 'Unknown Email' }}
+                                                         </a>
+                                                         <p class="fs-11 text-muted mb-0">
+                                                             {{ $campaign->sent_at->diffForHumans() }}
+                                                             <span
+                                                                 class="badge bg-soft-danger text-danger">Failed</span>
+                                                         </p>
+                                                     </div>
                                                  </div>
+                                                 <a href="{{ route('status.campaign') }}"
+                                                     class="avatar-text avatar-md">
+                                                     <i class="feather-chevron-right"></i>
+                                                 </a>
                                              </div>
-                                             <a href="{{ route('status.campaign') }}" class="avatar-text avatar-md">
-                                                 <i class="feather-chevron-right"></i>
-                                             </a>
-                                         </div>
-                                     @endforeach
-                                 @else
+                                         @endforeach
+                                     </div>
+                                     <div class="dropdown-divider my-3"></div>
+                                 @endif
+                                 @if ($userDraftCount > 0)
+                                     <div class="users-result px-4 py-2">
+                                         <h4 class="fs-13 fw-normal text-gray-600 mb-3">Article Draft <span
+                                                 class="badge small bg-gray-200 rounded ms-1 text-warning">{{ $userDraftCount }}</span>
+                                         </h4>
+                                         @foreach ($userArticles as $article)
+                                             <div class="d-flex align-items-center justify-content-between mb-4">
+                                                 <div class="d-flex align-items-center gap-3">
+                                                     <div>
+                                                         <a href="{{ route('article.edit', ['slug' => $article->slug]) }}"
+                                                             class="font-body d-block mb-1 text-decoration-none">
+                                                             <span class="fw-bold">
+                                                                 {{ $article->title ?? 'Unknown Title' }}
+                                                             </span>
+                                                             <br>
+                                                             <span class="small text-muted">
+                                                                 Category :
+                                                                 {{ $article->category->name ?? 'Unknown Category' }}
+                                                             </span>
+                                                         </a>
+
+                                                         <p class="fs-11 text-muted mb-0">
+                                                             {{ $article->created_at->diffForHumans() }}
+                                                             <span
+                                                                 class="badge bg-soft-warning text-warning">Draft</span>
+                                                         </p>
+                                                     </div>
+                                                 </div>
+                                                 <a href="{{ route('article.edit', ['slug' => $article->slug]) }}"
+                                                     class="avatar-text avatar-md">
+                                                     <i class="feather-chevron-right"></i>
+                                                 </a>
+                                             </div>
+                                         @endforeach
+                                     </div>
+                                     <div class="dropdown-divider mt-1 mb-3"></div>
+                                 @endif
+                             @else
+                                 <div class="users-result px-4 py-2">
                                      <div
                                          class="d-flex justify-content-between align-items-center flex-column timesheets-body">
                                          <i class="feather-bell-off fs-1 mb-4 mt-4"></i>
-                                         <p class="text-muted mb-4">No Campaign notifications!</p>
+                                         <p class="text-muted mb-4">No Timesheet notifications!</p>
                                      </div>
-                                 @endif
-                             </div>
-                             <div class="dropdown-divider my-3"></div>
-                             <div class="users-result px-4 py-2">
-                                 @if ($userDraftCount > 0)
-                                     <h4 class="fs-13 fw-normal text-gray-600 mb-3">Article Draft <span
-                                             class="badge small bg-gray-200 rounded ms-1 text-danger">{{ $userDraftCount }}</span>
-                                     </h4>
-                                     @foreach ($userArticles as $article)
-                                         <div class="d-flex align-items-center justify-content-between mb-4">
-                                             <div class="d-flex align-items-center gap-3">
-                                                 <div>
-                                                     <a href="{{ route('article.edit', ['slug' => $article->slug]) }}"
-                                                         class="font-body d-block mb-1 text-decoration-none">
-                                                         <span class="fw-bold">
-                                                             {{ $article->title ?? 'Unknown Title' }}
-                                                         </span>
-                                                         <br>
-                                                         <span class="small text-muted">
-                                                             Category :
-                                                             {{ $article->category->name ?? 'Unknown Category' }}
-                                                         </span>
-                                                     </a>
-
-                                                     <p class="fs-11 text-muted mb-0">
-                                                         {{ $article->created_at->diffForHumans() }}
-                                                         <span class="badge bg-soft-warning text-warning">Draft</span>
-                                                     </p>
-                                                 </div>
-                                             </div>
-                                             <a href="{{ route('article.edit', ['slug' => $article->slug]) }}" class="avatar-text avatar-md">
-                                                 <i class="feather-chevron-right"></i>
-                                             </a>
-                                         </div>
-                                     @endforeach
-                                 @else
-                                 @endif
-                             </div>
-                             <div class="dropdown-divider mt-1 mb-3"></div>
+                                 </div>
+                             @endif
                          </div>
                      </div>
                  </div>

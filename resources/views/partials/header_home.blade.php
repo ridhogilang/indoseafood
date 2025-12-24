@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="col-md-auto d-flex align-items-center text-center">
-                    <div class="dropdown">
+                    {{-- <div class="dropdown">
                         <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
                             data-bs-toggle="dropdown" aria-expanded="false"
                             style="display:flex; align-items:center; gap:8px;">
@@ -139,7 +139,7 @@
                         <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
                         <a href="#"><i class="fa fa-linkedin"></i></a>
                         <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

@@ -171,6 +171,7 @@ class OTPController extends Controller
         Mail::to($user->email)->send(new OTPMail([
             'id'  => $user->id,
             'otp' => $otp,
+            'name' => $user->name,
         ]));
 
         // Pastikan otp_user_id tetap di session

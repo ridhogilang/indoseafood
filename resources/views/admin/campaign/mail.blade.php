@@ -33,16 +33,16 @@
                             </a>
                         </div>
                         <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-                            <a href="javascript:void(0);" class="btn btn-light-brand" data-bs-toggle="offcanvas"
-                                data-bs-target="#proposalSent">
-                                <i class="feather-layers me-2"></i>
-                                <span>Save & Send</span>
-                            </a>
-                            <button type="submit" class="btn btn-primary"
-                                @if ($hasFutureScheduled) disabled @endif>
-                                <i class="feather-send me-2"></i>
-                                Update Email
-                            </button>
+                            <span data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                title="You cannot update email because there is a future scheduled campaign."
+                                class="d-inline-block">
+                                <button type="submit" class="btn btn-primary"
+                                    @if ($hasFutureScheduled) disabled @endif style="pointer-events: none;">
+                                    <i class="feather-send me-2"></i>
+                                    Update Email
+                                </button>
+                            </span>
+
                         </div>
                     </div>
                     <div class="d-md-none d-flex align-items-center">
@@ -115,28 +115,33 @@
     <script src="{{ asset('') }}admin/vendors/js/select2.min.js"></script>
     <script src="{{ asset('') }}admin/vendors/js/select2-active.min.js"></script>
     <script src="{{ asset('') }}admin/js/proposal-view-init.min.js"></script>
-    <script src="https://cdn.tiny.cloud/1/xhsi78ltsyv1yceicuk60tx3t06uo2di7mba3isrp20sa4f8/tinymce/6/tinymce.min.js"
-        referrerpolicy="origin"></script>
+    <script src="{{ asset('') }}admin/tinymce/tinymce.min.js"></script>
     @verbatim
         <script>
             document.addEventListener('DOMContentLoaded', function() {
 
                 tinymce.init({
                     selector: '#body-editor',
+                    license_key: 'gpl',
                     menubar: false,
                     height: 500,
                     plugins: 'link lists',
-                    toolbar: 'undo redo | bold italic underline | bullist numlist | link | insertCompany insertName insertEmail insertWhatsapp',
+                    toolbar: 'undo redo | bold italic underline | bullist numlist | link | insertCompany',
                     branding: false,
                     convert_newlines_to_brs: false,
                     forced_root_block: 'p',
                     content_style: `
-            body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
-            p { margin: 0 0 8px 0; line-height: 1.5; }
+            body {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                font-size: 14px;
+            }
+            p {
+                margin: 0 0 8px 0;
+                line-height: 1.5;
+            }
         `,
-
                     setup: function(editor) {
-                        // {{ company }}
+
                         editor.ui.registry.addButton('insertCompany', {
                             text: 'Company Name',
                             tooltip: 'Insert {{ company }} placeholder',
@@ -144,15 +149,17 @@
                                 editor.insertContent('{{ $company }}');
                             }
                         });
-                    },
+
+                    }
                 });
 
-                // Saat submit → ambil HTML dari TinyMCE, masukkan ke hidden input
                 const form = document.getElementById('campaign-form');
-                form.addEventListener('submit', function() {
-                    const html = tinymce.get('body-editor').getContent();
-                    document.getElementById('body-html-hidden').value = html;
-                });
+                if (form) {
+                    form.addEventListener('submit', function() {
+                        const html = tinymce.get('body-editor').getContent();
+                        document.getElementById('body-html-hidden').value = html;
+                    });
+                }
 
             });
         </script>
