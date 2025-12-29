@@ -2,7 +2,7 @@
     <div class="vs-menu-area text-center">
         <button class="vs-menu-toggle"><i class="fa fa-times"></i></button>
         <div class="mobile-logo">
-            <a href="index.html"><img src="{{ asset('home/img/logo.png') }}" alt="Marino"></a>
+            <a href="{{ route('home') }}"><img src="{{ asset('home/img/logo.png') }}" alt="IndoSeafood"></a>
         </div>
         <div class="vs-mobile-menu">
             <ul>
@@ -34,7 +34,7 @@
 <div class="preloader">
     <button class="vs-btn preloaderCls">Cancel Preloader </button>
     <div class="preloader-inner text-center">
-        <img src="{{ asset('home/img/logo.png') }}" alt="Marino">
+        <img src="{{ asset('home/img/logo.png') }}" alt="IndoSeafood">
         <span class="loader"></span>
     </div>
 </div>
@@ -54,7 +54,7 @@
                                     14440</a>
                             </li>
                             <li>
-                                <a href="mailto:info@indoseafood.com"><i class="fa fa-envelope"></i>
+                                <a href="mailto:info@indoseafoods.com"><i class="fa fa-envelope"></i>
                                     info@indoseafood.com </a>
                             </li>
                         </ul>
@@ -151,8 +151,8 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <div class="vs-logo">
-                                <a href="index.html"><img src="{{ asset('home/img/logo.png') }}" alt="logo"></a>
-                                <a href="index.html" class="sticky-logo"><img src="{{ asset('home/img/logo.png') }}"
+                                <a href="{{ route('home') }}"><img src="{{ asset('home/img/logo.png') }}" alt="logo"></a>
+                                <a href="{{ route('home') }}" class="sticky-logo"><img src="{{ asset('home/img/logo.png') }}"
                                         alt="logo"></a>
                             </div>
                         </div>

@@ -32,10 +32,13 @@ class OTPMail extends Mailable
         // Tambahkan field untuk template email
         $data['judul']        = 'Kode OTP Anda';
         $data['kata-kata'] = 'Below is your One-Time Password (OTP) for email verification or secure login to your account. Please enter this code to complete your authentication process and ensure the protection of your account and personal information.';
-        $data['kode']         = $data['otp']; // ini yang ditampilkan
+        $data['kode']         = $data['otp'];
         $data['name']       = $data['name'];
 
-        return $this->subject('OTP Verifikasi')
+        return $this->mailer('noreply')
+            ->subject('Your One-Time Password (OTP)')
+            ->from('noreply@indoseafoods.com', 'IndoSeafood System')
+            ->replyTo('support@indoseafoods.com', 'IndoSeafood Support')
             ->view('auth.otpmail')
             ->with('data', $data);
     }

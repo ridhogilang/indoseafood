@@ -21,14 +21,18 @@ class HomeController extends Controller
             ->get();
 
         $articles = Article::with('category')
+            ->where('is_published', true)
+            ->where('status', 'published')
             ->orderBy('created_at', 'desc')
             ->take(7)
             ->get();
 
         return view('home.home', [
-            "title"  => "Home",
             "produk" => $produk,
             "articles" => $articles,
+            "title"  => "Indonesia Seafood Export Company | Global Fish Supplier",
+            "description" => "IndoSeafood is an Indonesian seafood exporter supplying wild-caught fresh and frozen fish, processed under HACCP standards for global markets.",
+            "keywords" => "indonesian seafood exporter, fish supplier indonesia, frozen fish export, fresh seafood indonesia, wild caught fish supplier, seafood export company",
         ]);
     }
 
@@ -56,31 +60,39 @@ class HomeController extends Controller
             ->withQueryString(); // biar ?category=... tetap ikut saat pindah halaman
 
         return view('home.product', [
-            'title'            => 'Products',
+            "title" => "Seafood Products from Indonesia | Wild-Caught Fish Export",
             'produk'           => $produk,
             'categories'       => $categories,
             'selectedCategory' => $selectedCategory,
+            "description" => "Explore IndoSeafood’s range of wild-caught seafood products from Indonesia, including fresh and frozen fish processed under international standards.",
+            "keywords" => "indonesian seafood products, fish export indonesia, frozen fish supplier, fresh seafood indonesia, wild caught fish exporter, seafood catalogue indonesia",
         ]);
     }
 
     public function about()
     {
         return view('home.about', [
-            "title"  => "About Us",
+            "title" => "About IndoSeafood | Indonesian Seafood Exporter",
+            "description" => "Learn about IndoSeafood, an Indonesian seafood exporter supplying wild-caught fish with certified processing, quality control, and export-ready standards.",
+            "keywords" => "about indoseafood, indonesian seafood exporter, seafood export company indonesia, HACCP seafood supplier, fish exporter indonesia",
         ]);
     }
 
     public function workflow()
     {
         return view('home.workflow', [
-            "title"  => "Workflow",
+            "title" => "Seafood Export Workflow | From Catch to Global Shipping",
+            "description" => "Discover IndoSeafood’s seafood export workflow, from wild catching and processing to frozen packing and international shipment.",
+            "keywords" => "seafood export process, fish processing workflow, seafood supply chain indonesia, frozen fish shipment, seafood export workflow",
         ]);
     }
 
     public function quote()
     {
         return view('home.qoute', [
-            "title"  => "Qoute",
+            "title" => "Get a Seafood Export Quote | Indonesian Fish Supplier",
+            "description" => "Request a seafood export quotation from IndoSeafood for wild-caught fresh and frozen fish supplied to global markets.",
+            "keywords" => "seafood export quote, fish supplier quotation, indonesian seafood exporter quote, frozen fish pricing, seafood rfq indonesia",
         ]);
     }
 
@@ -111,21 +123,26 @@ class HomeController extends Controller
     public function contact()
     {
         return view('home.contact', [
-            "title"  => "Contact Us",
+            "title" => "Contact IndoSeafood | Indonesian Seafood Exporter",
+            "description" => "Contact IndoSeafood, an Indonesian seafood exporter supplying wild-caught fresh and frozen fish for international buyers.",
+            "keywords" => "contact indonesian seafood exporter, seafood supplier indonesia contact, fish export company indonesia, seafood exporter contact",
         ]);
     }
 
     public function article()
     {
         $articles = Article::with('category')
+            ->where('is_published', true)
+            ->where('status', 'published')
             ->orderByDesc('published_at')
             ->orderByDesc('created_at')
-            ->paginate(8); // 8 artikel per halaman
+            ->paginate(8);
 
         return view('home.article', [
-            "title"  => "Article",
             'articles' => $articles,
-
+            "title" => "Seafood Export Insights | Indonesian Fish Industry Articles",
+            "description" => "Read articles and insights about Indonesian seafood export, fish processing, global markets, and sustainable wild-caught practices.",
+            "keywords" => "seafood export articles, indonesian fish industry, seafood processing insights, fish export market, seafood supplier knowledge",
         ]);
     }
 
@@ -158,13 +175,33 @@ class HomeController extends Controller
             ->get();
 
         return view('home.articleshow', [
-            "title" => $article->title,
+            "title" => $article->meta_title,
             "article" => $article,
             "date" => $date,
             "prev" => $prev,
             "next" => $next,
             'categories'   => $categories,
             'recentPosts'  => $recentPosts,
+            "description" => $article->meta_description,
+            "keywords" => $article->meta_keywords,
+        ]);
+    }
+
+    public function privacy()
+    {
+        return view('home.privacy', [
+            "title" => "Privacy Policy | IndoSeafood",
+            "description" => "Privacy Policy for IndoSeafood, an Indonesian seafood exporter.",
+            "keywords" => "privacy policy indonesian seafood exporter, seafood export privacy policy, indonesian fish export privacy",
+        ]);
+    }
+
+    public function terms()
+    {
+        return view('home.term', [
+            "title" => "Terms and Conditions | IndoSeafood",
+            "description" => "Terms and Conditions for IndoSeafood, an Indonesian seafood exporter.",
+            "keywords" => "terms and conditions indonesian seafood exporter, seafood export terms, indonesian fish export conditions",
         ]);
     }
 }

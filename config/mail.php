@@ -49,6 +49,33 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
 
+        'noreply' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST'),
+            'port' => env('MAIL_PORT'),
+            'encryption' => env('MAIL_ENCRYPTION'),
+            'username' => 'noreply@indoseafoods.com',
+            'password' => env('MAIL_PASSWORD_NOREPLY'),
+        ],
+
+        'business' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST'),
+            'port' => env('MAIL_PORT'),
+            'encryption' => env('MAIL_ENCRYPTION'),
+            'username' => 'business@indoseafoods.com',
+            'password' => env('MAIL_PASSWORD_BUSINESS'),
+        ],
+
+        'support' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST'),
+            'port' => env('MAIL_PORT'),
+            'encryption' => env('MAIL_ENCRYPTION'),
+            'username' => 'support@indoseafoods.com',
+            'password' => env('MAIL_PASSWORD_SUPPORT'),
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],

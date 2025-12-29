@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><!--[if !mso]><!-- -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" /><!--<![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
     <meta name="x-apple-disable-message-reformatting" />
-    <link href="https://fonts.googleapis.com/css?family=Inter:ital,wght@0,400" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:ital,wght@0,400;0,800" rel="stylesheet" />
-    <title>Untitled</title><!-- Made with Postcards Email Builder by Designmodo -->
+    <link href="https://fonts.googleapis.com/css?family=Inter:ital,wght@0,400;0,700;0,800" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:ital,wght@0,400" rel="stylesheet" />
+    <title>Reset Passsword</title>
     <style>
         html,
         body {
@@ -130,14 +130,6 @@
                 padding-right: 0 !important;
             }
 
-            .pc-w620-font-size-18px {
-                font-size: 18px !important;
-            }
-
-            .pc-w620-line-height-26px {
-                line-height: 26px !important;
-            }
-
             .pc-w620-itemsVSpacings-0 {
                 padding-top: 0 !important;
                 padding-bottom: 0 !important;
@@ -214,21 +206,28 @@
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
-            src: url('https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZFhjg.woff') format('woff'), url('https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZFhiA.woff2') format('woff2');
+            src: url('https://fonts.gstatic.com/l/font?kit=UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZFhjg&skey=c491285d6722e4fa&v=v20') format('woff'), url('https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZFhiA.woff2') format('woff2');
         }
 
         @font-face {
-            font-family: 'Nunito Sans';
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+            src: url('https://fonts.gstatic.com/l/font?kit=UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuFuYAZFhjg&skey=c491285d6722e4fa&v=v20') format('woff'), url('https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuFuYAZFhiA.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Inter';
             font-style: normal;
             font-weight: 800;
-            src: url('https://fonts.gstatic.com/s/nunitosans/v15/pe1mMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp5F5bxqqtQ1yiU4GVi5XvVUj.woff') format('woff'), url('https://fonts.gstatic.com/s/nunitosans/v15/pe1mMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp5F5bxqqtQ1yiU4GVi5XvVUl.woff2') format('woff2');
+            src: url('https://fonts.gstatic.com/l/font?kit=UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuDyYAZFhjg&skey=c491285d6722e4fa&v=v20') format('woff'), url('https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuDyYAZFhiA.woff2') format('woff2');
         }
 
         @font-face {
             font-family: 'Nunito Sans';
             font-style: normal;
             font-weight: 400;
-            src: url('https://fonts.gstatic.com/s/nunitosans/v15/pe1mMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp5F5bxqqtQ1yiU4G1ilXvVUj.woff') format('woff'), url('https://fonts.gstatic.com/s/nunitosans/v15/pe1mMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp5F5bxqqtQ1yiU4G1ilXvVUl.woff2') format('woff2');
+            src: url('https://fonts.gstatic.com/l/font?kit=pe1mMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp5F5bxqqtQ1yiU4G1ilXvVUj&skey=60bfdc605ddb00b1&v=v19') format('woff'), url('https://fonts.gstatic.com/s/nunitosans/v19/pe1mMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp5F5bxqqtQ1yiU4G1ilXvVUl.woff2') format('woff2');
         }
     </style>
     <!--<![endif]--><!--[if mso]><style type="text/css">.pc-font-alt{font-family:Arial,Helvetica,sans-serif !important;}</style><![endif]--><!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
@@ -290,23 +289,25 @@
                                                             <td align="left" valign="top"
                                                                 style="padding:0 0 40px;height:auto">
                                                                 <table border="0" cellpadding="0" cellspacing="0"
-                                                                    role="presentation" width="100%">
+                                                                    role="presentation" width="100%"
+                                                                    style="margin-right:auto;margin-left:auto">
                                                                     <tr>
-                                                                        <td valign="top" align="left">
+                                                                        <td valign="top" align="center"
+                                                                            style="padding:20px 0 0;height:auto">
                                                                             <div class="pc-font-alt"
                                                                                 style="text-decoration:none">
                                                                                 <div
-                                                                                    style="font-size:42px;line-height:107%;text-align:left;text-align-last:left;color:#000a28;font-family:'Inter',Arial,Helvetica,sans-serif;font-style:normal;letter-spacing:-0.2px">
+                                                                                    style="font-size:42px;line-height:107%;text-align:center;text-align-last:center;color:#000a28;font-family:'Inter',Arial,Helvetica,sans-serif;font-style:normal;letter-spacing:-0.2px">
                                                                                     <div
                                                                                         style="font-family:'Inter',Arial,Helvetica,sans-serif">
                                                                                         <span
-                                                                                            style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:42px;line-height:107%">Verify
-                                                                                            your identity</span></div>
+                                                                                            style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:700;font-size:42px;line-height:107%">Forgot
+                                                                                            Your Password?</span></div>
                                                                                     <div
                                                                                         style="font-family:'Inter',Arial,Helvetica,sans-serif">
                                                                                         <span
-                                                                                            style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:42px;line-height:107%">in
-                                                                                            seconds</span></div>
+                                                                                            style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:700;font-size:42px;line-height:107%">Let's
+                                                                                            Fix That!</span></div>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
@@ -351,25 +352,66 @@
                                                                                                                     align="left">
                                                                                                                     <div class="pc-font-alt"
                                                                                                                         style="text-decoration:none">
-                                                                                                                        <div class="pc-w620-font-size-18px pc-w620-line-height-26px"
+                                                                                                                        <div
                                                                                                                             style="font-size:16px;line-height:160%;text-align:left;text-align-last:left;color:#000;font-family:'Inter',Arial,Helvetica,sans-serif;letter-spacing:-0.2px;font-style:normal">
                                                                                                                             <div
                                                                                                                                 style="font-family:'Inter',Arial,Helvetica,sans-serif">
                                                                                                                                 <span
                                                                                                                                     style="font-family:'Inter',Arial,Helvetica,sans-serif;font-size:16px;line-height:160%;font-weight:400">Hi
-                                                                                                                                    {{ $data['name'] }}
+                                                                                                                                     {{ $data['name'] }}
                                                                                                                                     👋🏼
                                                                                                                                     ,</span>
                                                                                                                             </div>
                                                                                                                             <div
                                                                                                                                 style="font-family:'Inter',Arial,Helvetica,sans-serif;letter-spacing:0">
                                                                                                                                 <span
-                                                                                                                                    style="font-family:'Inter',Arial,Helvetica,sans-serif;font-size:16px;line-height:160%;font-weight:400"
-                                                                                                                                    class="pc-w620-font-size-18px pc-w620-line-height-26px">Your
-                                                                                                                                    one-time
+                                                                                                                                    style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:16px;line-height:160%">Forgot
+                                                                                                                                    your
+                                                                                                                                    password?
+                                                                                                                                    No
+                                                                                                                                    problem
+                                                                                                                                    —
+                                                                                                                                    we’ve
+                                                                                                                                    got
+                                                                                                                                    you
+                                                                                                                                    covered!
+                                                                                                                                    Click
+                                                                                                                                    the
+                                                                                                                                    button
+                                                                                                                                    below
+                                                                                                                                    to
+                                                                                                                                    reset
+                                                                                                                                    your
                                                                                                                                     password
-                                                                                                                                    (OTP)
-                                                                                                                                    is:</span>
+                                                                                                                                    and
+                                                                                                                                    regain
+                                                                                                                                    access
+                                                                                                                                    to
+                                                                                                                                    your
+                                                                                                                                    account.</span>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                style="font-family:'Inter',Arial,Helvetica,sans-serif;letter-spacing:0">
+                                                                                                                                <span
+                                                                                                                                    style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:16px;line-height:160%"></span>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                style="font-family:'Inter',Arial,Helvetica,sans-serif;letter-spacing:0">
+                                                                                                                                <span
+                                                                                                                                    style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:16px;line-height:160%">Your
+                                                                                                                                    security
+                                                                                                                                    is
+                                                                                                                                    our
+                                                                                                                                    top
+                                                                                                                                    priority,
+                                                                                                                                    so
+                                                                                                                                    this
+                                                                                                                                    link
+                                                                                                                                    will
+                                                                                                                                    expire
+                                                                                                                                    in
+                                                                                                                                    60
+                                                                                                                                    minutes.</span>
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
@@ -459,7 +501,7 @@
                                                                                                                                                                                             <tr>
                                                                                                                                                                                                 <td align="center"
                                                                                                                                                                                                     valign="middle"
-                                                                                                                                                                                                    style="padding:24px 20px;height:auto;background-color:#ebebeb;border-radius:8px 8px 8px 8px">
+                                                                                                                                                                                                    style="padding:24px 20px;height:auto;background-color:#ebebeb00;border-radius:8px 8px 8px 8px">
                                                                                                                                                                                                     <table
                                                                                                                                                                                                         width="100%"
                                                                                                                                                                                                         border="0"
@@ -470,26 +512,26 @@
                                                                                                                                                                                                             <td align="center"
                                                                                                                                                                                                                 valign="top">
                                                                                                                                                                                                                 <table
+                                                                                                                                                                                                                    width="100%"
                                                                                                                                                                                                                     border="0"
                                                                                                                                                                                                                     cellpadding="0"
                                                                                                                                                                                                                     cellspacing="0"
                                                                                                                                                                                                                     role="presentation"
-                                                                                                                                                                                                                    align="center">
+                                                                                                                                                                                                                    style="min-width:100%">
                                                                                                                                                                                                                     <tr>
-                                                                                                                                                                                                                        <td valign="top"
-                                                                                                                                                                                                                            align="center">
-                                                                                                                                                                                                                            <div class="pc-font-alt"
-                                                                                                                                                                                                                                style="text-decoration:none">
-                                                                                                                                                                                                                                <div
-                                                                                                                                                                                                                                    style="font-size:30px;line-height:140%;text-align:center;text-align-last:center;color:#333;font-family:'Nunito Sans',Arial,Helvetica,sans-serif;letter-spacing:20px;font-style:normal">
-                                                                                                                                                                                                                                    <div
-                                                                                                                                                                                                                                        style="font-family:'Nunito Sans',Arial,Helvetica,sans-serif">
-                                                                                                                                                                                                                                        <span
-                                                                                                                                                                                                                                            style="font-family:'Nunito Sans',Arial,Helvetica,sans-serif;font-size:30px;line-height:140%;font-weight:800">{{ $data['kode'] }}</span>
-                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                        <th valign="top"
+                                                                                                                                                                                                                            align="center"
+                                                                                                                                                                                                                            style="text-align:center;font-weight:normal">
+                                                                                                                                                                                                                            <!--[if mso]><table border="0" cellpadding="0" cellspacing="0" role="presentation" align="center" style="border-collapse:separate;border-spacing:0;margin-right:auto;margin-left:auto"><tr><td valign="middle" align="center" style="border-radius:8px;background-color:#125b90;text-align:center;color:#fff;padding:8px 30px;mso-padding-left-alt:0;margin-left:30px" bgcolor="#125b90"><a class="pc-font-alt" style="display:inline-block;text-decoration:none;text-align:center" href="https://postcards.email/" target="_blank"><span style="font-size:16px;line-height:150%;color:#fff;font-family:'Inter',Arial,Helvetica,sans-serif;letter-spacing:-0.2px;font-style:normal;display:inline-block;vertical-align:top"><span style="font-family:'Inter',Arial,Helvetica,sans-serif;display:inline-block"><span style="font-family:'Inter',Arial,Helvetica,sans-serif;font-size:16px;line-height:150%;font-weight:800">Reset My Password</span></span></span></a></td></tr></table><![endif]--><!--[if !mso]><!-- --><a
+                                                                                                                                                                                                                                style="display:inline-block;box-sizing:border-box;border-radius:8px;background-color:#125b90;padding:8px 30px;vertical-align:top;text-align:center;text-align-last:center;text-decoration:none;-webkit-text-size-adjust:none"
+                                                                                                                                                                                                                                href=" {{ $data['url'] }}"
+                                                                                                                                                                                                                                target="_blank"><span
+                                                                                                                                                                                                                                    style="font-size:16px;line-height:150%;color:#fff;font-family:'Inter',Arial,Helvetica,sans-serif;letter-spacing:-0.2px;font-style:normal;display:inline-block;vertical-align:top"><span
+                                                                                                                                                                                                                                        style="font-family:'Inter',Arial,Helvetica,sans-serif;display:inline-block"><span
+                                                                                                                                                                                                                                            style="font-family:'Inter',Arial,Helvetica,sans-serif;font-size:16px;line-height:150%;font-weight:800">Reset
+                                                                                                                                                                                                                                            My
+                                                                                                                                                                                                                                            Password</span></span></span></a><!--<![endif]-->
+                                                                                                                                                                                                                        </th>
                                                                                                                                                                                                                     </tr>
                                                                                                                                                                                                                 </table>
                                                                                                                                                                                                             </td>
@@ -541,21 +583,27 @@
                                                                         <div
                                                                             style="font-family:'Inter',Arial,Helvetica,sans-serif">
                                                                             <span
-                                                                                style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:16px;line-height:160%">This
-                                                                                code is valid for the
-                                                                                next&nbsp;</span><span
-                                                                                style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:700;font-size:16px;line-height:160%">5
-                                                                                minutes.</span></div>
+                                                                                style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:16px;line-height:160%">If
+                                                                                you didn’t request this change, please
+                                                                                ignore this email or contact
+                                                                                our&nbsp;</span><a
+                                                                                href="mailto:support@indoseafoods.com"
+                                                                                target="_blank" rel="noreferrer"
+                                                                                style="text-decoration:none;color:inherit;color:rgb(20,149,231);font-family:'Inter',Arial,Helvetica,sans-serif"><span
+                                                                                    style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:700;font-size:16px;line-height:160%;text-decoration:underline">support</span></a><span
+                                                                                style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:16px;line-height:160%">&nbsp;team
+                                                                                immediately.</span></div>
                                                                         <div><br></div>
                                                                         <div
                                                                             style="font-family:'Inter',Arial,Helvetica,sans-serif">
                                                                             <span
-                                                                                style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:16px;line-height:160%">Please
-                                                                                use it to complete your verification
-                                                                                process. For security purposes, never
-                                                                                share this code with anyone. If you
-                                                                                didn’t request this, please contact our
-                                                                                support team immediately.</span></div>
+                                                                                style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:16px;line-height:160%">Stay
+                                                                                secure,</span></div>
+                                                                        <div
+                                                                            style="font-family:'Inter',Arial,Helvetica,sans-serif">
+                                                                            <span
+                                                                                style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:16px;line-height:160%">IndoSeafood
+                                                                                Team</span></div>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -591,19 +639,19 @@
                                                                                 <div
                                                                                     style="font-size:14px;line-height:20px;text-align:left;text-align-last:left;color:#000a28;font-family:'Nunito Sans',Arial,Helvetica,sans-serif;letter-spacing:-0.2px;font-style:normal">
                                                                                     <div
-                                                                                        style="font-family:'Inter',Arial,Helvetica,sans-serif">
+                                                                                        style="font-family:'Nunito Sans',Arial,Helvetica,sans-serif">
                                                                                         <span
-                                                                                            style="font-family:'Inter',Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;font-weight:400">Indonesia
+                                                                                            style="font-family:'Nunito Sans',Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;font-weight:400">Indonesia
                                                                                             Seafood</span></div>
                                                                                     <div
-                                                                                        style="font-family:'Inter',Arial,Helvetica,sans-serif">
+                                                                                        style="font-family:'Nunito Sans',Arial,Helvetica,sans-serif">
                                                                                         <span
-                                                                                            style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:20px">Penjaringan,
+                                                                                            style="font-family:'Nunito Sans',Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:20px">Penjaringan,
                                                                                             Jakarta Utara,</span></div>
                                                                                     <div
-                                                                                        style="font-family:'Inter',Arial,Helvetica,sans-serif">
+                                                                                        style="font-family:'Nunito Sans',Arial,Helvetica,sans-serif">
                                                                                         <span
-                                                                                            style="font-family:'Inter',Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:20px">DKI
+                                                                                            style="font-family:'Nunito Sans',Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:20px">DKI
                                                                                             Jakarta 14440</span></div>
                                                                                 </div>
                                                                             </div>

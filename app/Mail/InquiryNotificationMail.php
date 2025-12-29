@@ -27,6 +27,7 @@ class InquiryNotificationMail extends Mailable
         $data['message'] = 'A new inquiry has been submitted through the Indoseafood platform. Please review the details below and follow up as necessary.';
 
         return $this->subject('New Inquiry Notification')
+            ->from('noreply@indoseafoods.com', 'IndoSeafood System')
             ->view('admin.inquiry.mail')
             ->with('data', $data)
             ->withSymfonyMessage(function ($message) {

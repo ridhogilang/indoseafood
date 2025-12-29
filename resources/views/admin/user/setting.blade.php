@@ -95,7 +95,9 @@
                                     </div>
                                     <div class="row g-0 mb-4">
                                         <div class="col-sm-6 text-muted">Date of Birth:</div>
-                                        <div class="col-sm-6 fw-semibold">{{ $user->created_at ? $user->created_at->translatedFormat('d F Y') : '-' }}</div>
+                                        <div class="col-sm-6 fw-semibold">
+                                            {{ $user->created_at ? $user->created_at->translatedFormat('d F Y') : '-' }}
+                                        </div>
                                     </div>
                                     <div class="row g-0 mb-4">
                                         <div class="col-sm-6 text-muted">Whatsapp:</div>
@@ -145,8 +147,40 @@
                                         </div>
                                     </div>
                                 @else
-                                    <br><br><br><br><br><br><br><br><br>
                                 @endif
+                                <hr class="my-0">
+                                <div class="mb-4 mt-4 d-flex align-items-center justify-content-between">
+                                    <h5 class="fw-bold mb-0 me-4">
+                                        <span class="d-block mb-2">Allow Notification:</span>
+                                        <small class="fs-12 text-muted fw-normal">Manage your notification
+                                            preferences</small>
+                                    </h5>
+                                </div>
+                                <div
+                                    class="hstack justify-content-between p-4 mb-3 border border-dashed border-gray-3 rounded-1">
+                                    <div class="hstack me-4">
+                                        <div class="avatar-text">
+                                            <i class="feather-mail"></i>
+                                        </div>
+                                        <div class="ms-4">
+                                            <a href="javascript:void(0);" class="fw-bold mb-1 text-truncate-1-line">
+                                                Receive email notifications
+                                            </a>
+                                            <div class="fs-12 text-muted text-truncate-1-line">
+                                                Enable this option to receive important updates and notifications directly
+                                                to your email.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-check form-switch form-switch-sm">
+                                        <input class="form-check-input c-pointer" type="checkbox"
+                                            id="formSwitchNotification" {{ $user->is_notification ? 'checked' : '' }}
+                                            onchange="toggleNotification(this)">
+                                        <label class="form-check-label fw-500 text-dark c-pointer"
+                                            for="formSwitchNotification">
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -389,5 +423,45 @@
                 icon.classList.add('feather-eye');
             }
         });
+    </script>
+    <script>
+        function toggleNotification(el) {
+            fetch("{{ route('user.notification.toggle') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        is_notification: el.checked ? 1 : 0
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: el.checked ?
+                                'Email notifications enabled' :
+                                'Email notifications disabled',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true
+                        });
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(() => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Update failed',
+                        text: 'Unable to update notification settings. Please try again.',
+                    });
+                    el.checked = !el.checked;
+                });
+        }
     </script>
 @endpush

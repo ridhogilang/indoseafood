@@ -23,7 +23,7 @@
         <div class="auth-cover-content-inner">
             <div class="auth-cover-content-wrapper">
                 <div class="auth-img">
-                    <img src="{{ asset('') }}admin/images/auth/auth-cover-login-bg.svg" alt=""
+                    <img src="{{ asset('admin/images/login.png') }}" alt=""
                         class="img-fluid">
                 </div>
             </div>
@@ -76,7 +76,7 @@
                             </div>
 
                             <div>
-                                <a href="" class="fs-11 text-primary">
+                                <a href="{{ route('forgot.password') }}" class="fs-11 text-primary">
                                     Forget password?
                                 </a>
                             </div>

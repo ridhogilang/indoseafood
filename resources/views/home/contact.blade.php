@@ -7,7 +7,7 @@
     <!--==============================
                         Breadcumb
                         ============================== -->
-    <div class="breadcumb-wrapper" data-bg-src="assets/img/breadcrumb/breadcrumb-1-1.png">
+    <div class="breadcumb-wrapper" data-bg-src="{{ asset('home/img/banner/banner-contact.png') }}">
         <div class="container">
             <div class="breadcumb-content">
                 <h1 class="breadcumb-title">Contact Us</h1>
@@ -50,7 +50,13 @@
                                 <p class="media-info">
                                     Email:
                                     <a class="text-inherit" href="mailto:info@indoseafood.com">
-                                        info@indoseafood.com
+                                        info@indoseafoods.com
+                                    </a>
+                                </p>
+                                <p class="media-info">
+                                    Sales:
+                                    <a class="text-inherit" href="mailto:ridho@indoseafoods.com">
+                                        ridho@indoseafoods.com
                                     </a>
                                 </p>
 

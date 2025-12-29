@@ -4,9 +4,6 @@
 @endpush
 
 @section('main')
-    <!--==============================
-                    Breadcumb
-                    ============================== -->
     <div class="breadcumb-wrapper" data-bg-src="{{ asset('home/img/banner/banner-workflow.png') }}">
         <div class="container">
             <div class="breadcumb-content">
@@ -20,9 +17,6 @@
             </div>
         </div>
     </div>
-    <!--==============================
-                 Service Details Area
-                ==============================-->
     <section class="space-top">
         <div class="container">
             <div class="row">

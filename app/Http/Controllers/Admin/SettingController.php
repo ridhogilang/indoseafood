@@ -42,7 +42,7 @@ class SettingController extends Controller
             $request->is_active == 0
         ) {
             return response()->json([
-                'message' => 'Anda tidak dapat menonaktifkan akun yang sedang login'
+                'message' => 'You cannot disable an account that is currently logged in.'
             ], 403);
         }
 
@@ -52,7 +52,7 @@ class SettingController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Status berhasil diperbarui'
+            'message' => 'Status successfully updated'
         ]);
     }
 
@@ -76,7 +76,7 @@ class SettingController extends Controller
 
         return redirect()
             ->back()
-            ->with('success', 'User berhasil ditambahkan');
+            ->with('success', 'User successfully added');
     }
 
     public function updateAdmin(Request $request, $id)
@@ -107,7 +107,7 @@ class SettingController extends Controller
 
         return redirect()
             ->back()
-            ->with('success', 'User berhasil diperbarui');
+            ->with('success', 'User updated successfully');
     }
 
     public function update(Request $request)
@@ -189,5 +189,22 @@ class SettingController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Profile updated successfully');
+    }
+
+    public function toggleNotification(Request $request)
+    {
+        $request->validate([
+            'is_notification' => 'required|boolean',
+        ]);
+
+        $user = Auth::user();
+
+        $user->is_notification = $request->is_notification;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'status'  => $user->is_notification,
+        ]);
     }
 }

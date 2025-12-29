@@ -73,6 +73,10 @@ class ArticleController extends Controller
             'meta_description' => 'nullable|string|max:255',
             'meta_keywords' => 'nullable|string|max:255',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+        ], [
+            'thumbnail.image' => 'The thumbnail must be an image file.',
+            'thumbnail.mimes' => 'The thumbnail must be a file of type: JPG, JPEG, or PNG.',
+            'thumbnail.max'   => 'The thumbnail size may not be greater than 5 MB.',
         ]);
 
         $isPublish = $request->action === 'publish';
@@ -158,7 +162,14 @@ class ArticleController extends Controller
 
     public function uploadImage(Request $request, $articleId = null)
     {
-        $request->validate(['upload' => 'required|image|mimes:jpg,jpeg,png|max:5120']);
+        $request->validate(
+            ['upload' => 'required|image|mimes:jpg,jpeg,png|max:5120'],
+            [
+                'upload.image' => 'File harus berupa gambar.',
+                'upload.mimes' => 'Format gambar harus JPG, JPEG, atau PNG.',
+                'upload.max'   => 'Ukuran gambar maksimal 5 MB.',
+            ]
+        );
 
         // Tentukan folder
         // <-- ini harus membaca folder dari request, bukan cuma draft global
@@ -197,16 +208,23 @@ class ArticleController extends Controller
 
     public function update(Request $request, Article $article)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:articles,slug,' . $article->id,
-            'article_category_id' => 'nullable|exists:article_categories,id',
-            'body' => 'nullable',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:255',
-            'meta_keywords' => 'nullable|string|max:255',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
-        ]);
+        $request->validate(
+            [
+                'title' => 'required|string|max:255',
+                'slug' => 'required|string|max:255|unique:articles,slug,' . $article->id,
+                'article_category_id' => 'nullable|exists:article_categories,id',
+                'body' => 'nullable',
+                'meta_title' => 'nullable|string|max:255',
+                'meta_description' => 'nullable|string|max:255',
+                'meta_keywords' => 'nullable|string|max:255',
+                'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            ],
+            [
+                'thumbnail.image' => 'The thumbnail must be an image file.',
+                'thumbnail.mimes' => 'The thumbnail must be a file of type: JPG, JPEG, or PNG.',
+                'thumbnail.max'   => 'The thumbnail size may not be greater than 5 MB.',
+            ]
+        );
 
         $isPublish = $request->action === 'publish';
 

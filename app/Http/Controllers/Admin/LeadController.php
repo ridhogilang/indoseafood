@@ -61,7 +61,7 @@ class LeadController extends Controller
 
         EmailContact::create($validated);
 
-        return back()->with('success', 'Lead berhasil ditambahkan.');
+        return back()->with('success', 'Lead successfully added.');
     }
 
     public function import(Request $request)

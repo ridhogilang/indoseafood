@@ -480,7 +480,7 @@
             const bodyRaw = document.getElementById('body-html-hidden').value;
 
             if (!title || !bodyRaw) {
-                alert('Judul dan artikel wajib diisi');
+                alert('Title and body article are required.');
                 return;
             }
 

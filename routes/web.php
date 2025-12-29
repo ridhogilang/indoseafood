@@ -1,15 +1,18 @@
 <?php
 
-use App\Http\Controllers\Admin\ArticleController;
-use App\Http\Controllers\Admin\CampaignController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\InquiryController;
-use App\Http\Controllers\Admin\LeadController;
-use App\Http\Controllers\Admin\SettingController;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\OTPController;
+use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\InquiryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\CampaignController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
@@ -20,7 +23,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/contact', 'contact')->name('contact');
     Route::get('/article', 'article')->name('article');
     Route::get('/article/{slug}', 'article_show')->name('article_show');
-
+    Route::get('/article', 'article')->name('article');
+    Route::get('/privacy', 'privacy')->name('privacy');
+    Route::get('/terms-and-conditions', 'terms')->name('terms');
     //Post Route
     Route::post('/getaqoute', 'quote_store')->name('quote.store');
 });
@@ -31,6 +36,12 @@ Route::prefix('system')->group(function () {
     Route::group(['middleware' => ['guest']], function () {
         Route::get('/login', [LoginController::class, 'index'])->name('login');
         Route::post('/login', [LoginController::class, 'login'])->name('login.perform');
+
+        //Reset Password Route
+        Route::get('/forgot-password', [ResetPasswordController::class, 'index'])->name('forgot.password');
+        Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+        Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+        Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
         Route::get('/otp/verify', [OTPController::class, 'index'])->name('otp.verify.form');
         Route::post('/otp/verify', [OTPController::class, 'verify'])->name('otp.verify');
@@ -79,6 +90,9 @@ Route::prefix('admin')->group(function () {
         Route::put('/users/{id}', [SettingController::class, 'updateAdmin'])->name('users.updateAdmin');
         Route::put('/profile/update', [SettingController::class, 'update'])
             ->name('profile.update');
+        Route::post('/user/notification-toggle', [SettingController::class, 'toggleNotification'])
+            ->name('user.notification.toggle');
+
 
         //Inquiry Route
         Route::get('/inquiry-list', [InquiryController::class, 'index'])->name('inquiry.list');
@@ -100,5 +114,17 @@ Route::prefix('admin')->group(function () {
         Route::delete('/article/{article}', [ArticleController::class, 'destroy'])->name('article.destroy');
         Route::delete('/article-category/{category}', [ArticleController::class, 'category_destroy'])->name('article-category.destroy');
         Route::post('/article-category', [ArticleController::class, 'store_category'])->name('article-category.store');
+
+        //Product Route
+        Route::get('/products', [ProductController::class, 'index'])->name('product.list');
+        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+        Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::post('/products/{product}/toggle-active', [ProductController::class, 'toggleActive'])->name('products.toggle-active');
+        Route::post('/products/{product}/change-category', [ProductController::class, 'changeCategory'])->name('products.change-category');
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::get('/products-category', [ProductController::class, 'category'])->name('product.category');
+        Route::post('/product-category/store',  [ProductController::class, 'storeCategory'])->name('product-category.store');
+        Route::put('/product-category/{productCategory}/update', [ProductController::class, 'updateCategory'])->name('product-category.update');
+        Route::delete('/product-category/{productCategory}', [ProductController::class, 'destroyCategory'])->name('product-category.destroy');
     });
 });

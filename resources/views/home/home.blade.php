@@ -121,9 +121,9 @@
                         <p class="hero-text">Supplying high-quality tuna, mackerel, sardine, and Indonesian wild-caught
                             seafood to global markets with consistent volume and HACCP-certified processing.</p>
                         <div class="hero-btns">
-                            <a href="about.html" class="vs-btn me-3">About Us <i class="fa fa-arrow-right"></i></a>
-                            <a href="https://www.youtube.com/watch?v=EGW2HS2tqAQ" class="play-btn1 popup-video"><i
-                                    class="fa fa-play"></i></a>
+                            <a href="{{ route('about') }}" class="vs-btn me-3">About Us <i class="fa fa-arrow-right"></i></a>
+                            {{-- <a href="https://www.youtube.com/watch?v=EGW2HS2tqAQ" class="play-btn1 popup-video"><i
+                                    class="fa fa-play"></i></a> --}}
                         </div>
                     </div>
                 </div>
@@ -140,9 +140,9 @@
                         <p class="hero-text">From blast-frozen tuna loins to whole round sardines, we ensure top-grade
                             quality, reliable supply, and fast loading for international shipments.</p>
                         <div class="hero-btns">
-                            <a href="course.html" class="vs-btn me-3">About Us <i class="fa fa-arrow-right"></i></a>
-                            <a href="https://www.youtube.com/watch?v=EGW2HS2tqAQ" class="play-btn1 popup-video"><i
-                                    class="fa fa-play"></i></a>
+                            <a href="{{ route('workflow') }}" class="vs-btn me-3">Our Workflow <i class="fa fa-arrow-right"></i></a>
+                            {{-- <a href="https://www.youtube.com/watch?v=EGW2HS2tqAQ" class="play-btn1 popup-video"><i
+                                    class="fa fa-play"></i></a> --}}
                         </div>
                     </div>
                 </div>
@@ -159,9 +159,9 @@
                         <p class="hero-text">We deliver certified, sustainable, and well-handled seafood products directly
                             from Indonesian waters to importers, distributors, and wholesalers worldwide.</p>
                         <div class="hero-btns">
-                            <a href="course.html" class="vs-btn me-3">About Us <i class="fa fa-arrow-right"></i></a>
-                            <a href="https://www.youtube.com/watch?v=EGW2HS2tqAQ" class="play-btn1 popup-video"><i
-                                    class="fa fa-play"></i></a>
+                            <a href="{{ route('about') }}" class="vs-btn me-3">About Us <i class="fa fa-arrow-right"></i></a>
+                            {{-- <a href="https://www.youtube.com/watch?v=EGW2HS2tqAQ" class="play-btn1 popup-video"><i
+                                    class="fa fa-play"></i></a> --}}
                         </div>
                     </div>
                 </div>
@@ -187,12 +187,12 @@
                         <div class="service-img"><img src="{{ asset('home/img/why/why1.jpg') }}" alt="service thumbnail">
                         </div>
                         <div class="service-icon"><i class="fa-solid fa-fish-fins" style="color: #74C0FC;"></i></div>
-                        <h3 class="service-title h6"><a class="text-inherit" href="service-details.html">Ocean Freshness</a>
+                        <h3 class="service-title h6"><a class="text-inherit" href="#">Ocean Freshness</a>
                         </h3>
                         <p class="service-text">Wild-caught from Indonesian waters, delivering naturally fresher and firmer
                             seafood.</p>
                         {{-- <div class="link-btn">
-                            <a href="service-details.html">Read More <i class="fa fa-arrow-right"></i></a>
+                            <a href="#">Read More <i class="fa fa-arrow-right"></i></a>
                         </div> --}}
                     </div>
                 </div>
@@ -201,12 +201,12 @@
                         <div class="service-img"><img src="{{ asset('home/img/why/why2.jpg') }}" alt="service thumbnail">
                         </div>
                         <div class="service-icon"><i class="fa-solid fa-shield-halved" style="color: #74C0FC;"></i></div>
-                        <h3 class="service-title h6"><a class="text-inherit" href="service-details.html">Certified
+                        <h3 class="service-title h6"><a class="text-inherit" href="#">Certified
                                 Processing</a></h3>
                         <p class="service-text">Handled in HACCP-certified facilities following strict international
                             food-safety standards.</p>
                         {{-- <div class="link-btn">
-                            <a href="service-details.html">Read More <i class="fa fa-arrow-right"></i></a>
+                            <a href="#">Read More <i class="fa fa-arrow-right"></i></a>
                         </div> --}}
                     </div>
                 </div>
@@ -216,12 +216,12 @@
                         </div>
                         <div class="service-icon"><i class="fa-solid fa-snowflake" style="color: #74C0FC;"></i>
                         </div>
-                        <h3 class="service-title h6"><a class="text-inherit" href="service-details.html">Cold Chain</a>
+                        <h3 class="service-title h6"><a class="text-inherit" href="#">Cold Chain</a>
                         </h3>
                         <p class="service-text">Maintained through blast freezing and –20°C storage to preserve peak
                             quality.</p>
                         {{-- <div class="link-btn">
-                            <a href="service-details.html">Read More <i class="fa fa-arrow-right"></i></a>
+                            <a href="#">Read More <i class="fa fa-arrow-right"></i></a>
                         </div> --}}
                     </div>
                 </div>
@@ -231,12 +231,12 @@
                         </div>
                         <div class="service-icon"><i class="fa-solid fa-repeat" style="color: #74C0FC;"></i>
                         </div>
-                        <h3 class="service-title h6"><a class="text-inherit" href="service-details.html">Stable
+                        <h3 class="service-title h6"><a class="text-inherit" href="#">Stable
                                 Supply</a></h3>
                         <p class="service-text">Reliable large-scale volumes suitable for importers, distributors, and
                             container shipments.</p>
                         {{-- <div class="link-btn">
-                            <a href="service-details.html">Read More <i class="fa fa-arrow-right"></i></a>
+                            <a href="#">Read More <i class="fa fa-arrow-right"></i></a>
                         </div> --}}
                     </div>
                 </div>
@@ -246,12 +246,12 @@
                                 alt="service thumbnail"></div>
                         <div class="service-icon"><i class="fa-solid fa-hand-holding-dollar" style="color: #74C0FC;"></i>
                         </div>
-                        <h3 class="service-title h6"><a class="text-inherit" href="service-details.html">Competitive
+                        <h3 class="service-title h6"><a class="text-inherit" href="#">Competitive
                                 Pricing</a></h3>
                         <p class="service-text">Efficient sourcing and processing ensure consistent, globally competitive
                             export prices.</p>
                         {{-- <div class="link-btn">
-                            <a href="service-details.html">Read More <i class="fa fa-arrow-right"></i></a>
+                            <a href="#">Read More <i class="fa fa-arrow-right"></i></a>
                         </div> --}}
                     </div>
                 </div>

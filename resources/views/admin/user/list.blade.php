@@ -402,7 +402,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Anda tidak dapat menonaktifkan akun yang sedang login',
+                    text: 'You cannot disable an account that is currently logged in.',
                     confirmButtonText: 'OK'
                 })
                 select.val(oldValue)
@@ -410,12 +410,12 @@
             }
 
             Swal.fire({
-                title: 'Yakin?',
-                text: 'Status user akan diubah',
+                title: 'Are you sure?',
+                text: 'The user status will be changed.',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, ubah',
-                cancelButtonText: 'Batal'
+                confirmButtonText: 'Yes, change it',
+                cancelButtonText: 'Cancel'
             }).then((result) => {
 
                 if (!result.isConfirmed) {

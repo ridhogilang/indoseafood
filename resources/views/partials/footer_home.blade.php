@@ -54,7 +54,7 @@
                         <div class="vs-widget-about">
                             <p class="footer-address"><i class="fa fa-map-marker-alt"></i>Penjaringan, Jakarta Utara, DKI Jakarta
                                     14440</p>
-                            <p class="footer-address"><a class="text-inherit" href="mailto:info@indoseafood.com"><i
+                            <p class="footer-address"><a class="text-inherit" href="mailto:info@indoseafoods.com"><i
                                         class="fa fa-envelope"></i>info@indoseafood.com</a>
                             </p>
                             <p class="footer-address">
@@ -72,15 +72,15 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="text-center col-lg-auto">
                         <p class="copyright-text text-white"><i class="fa fa-copyright"></i> Copyright 2025 - <a
-                                href="index.html" class="text-secondary">Indonesia Seafood</a> Designed by
-                            <a href="https://themeforest.net/user/vecuro_themes" class="text-secondary">Team
+                                href="#" class="text-secondary">Indonesia Seafood</a> Designed by
+                            <a href="#" class="text-secondary">Team
                                 IndoSeafood</a>
                         </p>
                     </div>
                     <div class="terms-condition  col-lg-auto">
                         <ul class="list-unstyled mb-0">
-                            <li class="d-inline"><a href="#">Privacy</a></li>
-                            <li class="d-inline"><a href="#">Terms & Condition</a></li>
+                            <li class="d-inline"><a href="{{ route('privacy') }}">Privacy</a></li>
+                            <li class="d-inline"><a href="{{ route('terms') }}">Terms & Condition</a></li>
                         </ul>
                     </div>
                 </div>
