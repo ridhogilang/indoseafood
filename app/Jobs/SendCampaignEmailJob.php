@@ -55,12 +55,13 @@ class SendCampaignEmailJob implements ShouldQueue
                 'country' => $contact->country,
             ]);
 
-            Mail::mailer('business')->send([], [], function ($message) use ($contact, $subject, $bodyHtml) {
-                $message->from('business@indoseafoods.com', 'IndoSeafood Export Team')
+            Mail::mailer('smtp')->send([], [], function ($message) use ($contact, $subject, $bodyHtml) {
+                $message
+                    ->from('business@indoseafoods.com', 'IndoSeafood Export Team')
                     ->replyTo('business@indoseafoods.com')
                     ->to($contact->kirim, $contact->company)
                     ->subject($subject)
-                    ->setBody($bodyHtml, 'text/html');
+                    ->html($bodyHtml);
             });
 
             $campaignContact->status = 'sent';

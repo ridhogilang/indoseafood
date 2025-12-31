@@ -4,9 +4,10 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Models\Inquiry;
-use App\Mail\InquiryNotificationMail;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\InquiryNotificationMail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,15 +29,17 @@ class SendInquiryNotificationJob implements ShouldQueue
         $users = User::where('is_notification', true)->get();
 
         foreach ($users as $user) {
-            Mail::to($user->email)->queue(
-                new InquiryNotificationMail([
-                    'company_name' => $this->inquiry->company_name,
-                    'email'        => $this->inquiry->email,
-                    'fish_name'    => $this->inquiry->fish_name,
-                    'qty'          => $this->inquiry->qty,
-                    'destination'  => $this->inquiry->port_of_destination,
-                ])
-            );
+            Mail::mailer('smtp')
+                ->to($user->email)
+                ->queue(
+                    new InquiryNotificationMail([
+                        'company_name' => $this->inquiry->company_name,
+                        'email'        => $this->inquiry->email,
+                        'fish_name'    => $this->inquiry->fish_name,
+                        'qty'          => $this->inquiry->qty,
+                        'destination'  => $this->inquiry->port_of_destination,
+                    ])
+                );
         }
     }
 }

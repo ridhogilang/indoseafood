@@ -33,16 +33,21 @@
                             </a>
                         </div>
                         <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-                            <span data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                title="You cannot update email because there is a future scheduled campaign."
-                                class="d-inline-block">
-                                <button type="submit" class="btn btn-primary"
-                                    @if ($hasFutureScheduled) disabled @endif style="pointer-events: none;">
+                            @if ($hasFutureScheduled)
+                                <span data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                    title="You cannot update email because there is a future scheduled campaign."
+                                    class="d-inline-block">
+                                    <button type="submit" class="btn btn-primary" disabled style="pointer-events: none;">
+                                        <i class="feather-send me-2"></i>
+                                        Update Email
+                                    </button>
+                                </span>
+                            @else
+                                <button type="submit" class="btn btn-primary">
                                     <i class="feather-send me-2"></i>
                                     Update Email
                                 </button>
-                            </span>
-
+                            @endif
                         </div>
                     </div>
                     <div class="d-md-none d-flex align-items-center">

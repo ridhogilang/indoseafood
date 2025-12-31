@@ -28,13 +28,8 @@ class InquiryNotificationMail extends Mailable
 
         return $this->subject('New Inquiry Notification')
             ->from('noreply@indoseafoods.com', 'IndoSeafood System')
+            ->replyTo('support@indoseafoods.com', 'IndoSeafood Support')
             ->view('admin.inquiry.mail')
-            ->with('data', $data)
-            ->withSymfonyMessage(function ($message) {
-                $message->getHeaders()->addTextHeader(
-                    'Content-Transfer-Encoding',
-                    'quoted-printable'
-                );
-            });
+            ->with('data', $data);
     }
 }

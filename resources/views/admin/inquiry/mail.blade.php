@@ -267,7 +267,7 @@
                                                         <tr>
                                                             <td align="center" valign="top"
                                                                 style="padding:20px 0 30px;height:auto"><a
-                                                                    class="pc-font-alt" href="https://postcards.email/"
+                                                                    class="pc-font-alt" href="{{ route('home') }}"
                                                                     target="_blank"
                                                                     style="text-decoration:none;display:inline-block;vertical-align:top"><img
                                                                         src="{{ asset('home/img/logo.png') }}"

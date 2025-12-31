@@ -55,7 +55,7 @@
                             </li>
                             <li>
                                 <a href="mailto:info@indoseafoods.com"><i class="fa fa-envelope"></i>
-                                    info@indoseafood.com </a>
+                                    info@indoseafoods.com </a>
                             </li>
                         </ul>
                     </div>
@@ -200,7 +200,7 @@
                                         <div class="media-body">
                                             <span class="header-info_label">Call Now</span>
                                             <div class="header-info_link">
-                                                <a href="https://wa.me/6285771876270">(+62) 857-7187-6270</a>
+                                                <a href="https://wa.me/6285771876270" target="_blank">(+62) 857-7187-6270</a>
                                             </div>
                                         </div>
                                     </div>

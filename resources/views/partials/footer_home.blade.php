@@ -58,7 +58,7 @@
                                         class="fa fa-envelope"></i>info@indoseafood.com</a>
                             </p>
                             <p class="footer-address">
-                                <a class="text-inherit" href="https://wa.me/6285771876270"><i class="fa-brands fa-whatsapp"></i>(+62) 857-7187-6270 </a>
+                                <a class="text-inherit" href="https://wa.me/6285771876270" target="_blank"><i class="fa-brands fa-whatsapp"></i>(+62) 857-7187-6270 </a>
                             </p>
                         </div>
                     </div>
