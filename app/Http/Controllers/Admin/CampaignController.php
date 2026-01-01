@@ -325,6 +325,25 @@ class CampaignController extends Controller
             })
 
             ->rawColumns(['checkbox', 'status', 'action'])
+            ->filter(function ($query) {
+
+                if ($search = request('search.value')) {
+
+                    $query->where(function ($q) use ($search) {
+
+                        // kolom utama
+                        $q->where('status', 'LIKE', "%{$search}%")
+                            ->orWhere('sent_at', 'LIKE', "%{$search}%");
+
+                        // kolom relasi contact
+                        $q->orWhereHas('contact', function ($qc) use ($search) {
+                            $qc->where('company', 'LIKE', "%{$search}%")
+                                ->orWhere('kirim', 'LIKE', "%{$search}%")
+                                ->orWhere('country', 'LIKE', "%{$search}%");
+                        });
+                    });
+                }
+            })
             ->make(true);
     }
 

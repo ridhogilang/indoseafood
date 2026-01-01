@@ -240,6 +240,27 @@ class LeadController extends Controller
             })
 
 
+            ->filter(function ($query) {
+
+                if (request()->has('search') && request('search')['value'] !== '') {
+
+                    $search = request('search')['value'];
+
+                    $query->where(function ($q) use ($search) {
+
+                        $q->where('company', 'LIKE', "%{$search}%")
+                            ->orWhere('kirim', 'LIKE', "%{$search}%")          // email
+                            ->orWhere('country', 'LIKE', "%{$search}%")
+                            ->orWhere('contact_person', 'LIKE', "%{$search}%")
+                            ->orWhere('main_product', 'LIKE', "%{$search}%")
+                            ->orWhere('website', 'LIKE', "%{$search}%")
+                            ->orWhere('phone', 'LIKE', "%{$search}%")
+                            ->orWhere('whatsapp', 'LIKE', "%{$search}%")
+                            ->orWhere('notes', 'LIKE', "%{$search}%")
+                            ->orWhere('status', 'LIKE', "%{$search}%");
+                    });
+                }
+            })
             ->rawColumns(['checkbox', 'company', 'status', 'action'])
             ->make(true);
     }

@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Middleware\Authenticate;
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\TrackPageViews;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
@@ -14,6 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth'  => \Illuminate\Auth\Middleware\Authenticate::class,
             'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        ]);
+
+        $middleware->web(append: [
+            TrackPageViews::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

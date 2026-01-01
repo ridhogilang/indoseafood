@@ -28,40 +28,6 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/terms-and-conditions', 'terms')->name('terms');
     //Post Route
     Route::post('/getaqoute', 'quote_store')->name('quote.store');
-
-
-Route::get('/test-email-brevo', function () {
-
-    Mail::send([], [], function ($message) {
-        $message
-            ->from('info@indoseafoods.com', 'IndoSeafood Test')
-            ->to('ridhogilang693@gmail.com')
-            ->subject('Brevo Test Email')
-            ->html('<p>This email is sent via <b>Brevo SMTP</b>.</p>');
-    });
-
-    return 'Test email sent. Check inbox & email headers.';
-});
-
-Route::get('/test-mail', function () {
-    Mail::raw('Brevo AUTH OK', function ($m) {
-        $m->to('ridhogilang693@gmail.com')
-          ->subject('SMTP Auth Test');
-    });
-
-    return 'sent';
-});
-
-Route::get('/debug-mail', function () {
-    dd([
-        'MAIL_MAILER' => config('mail.default'),
-        'MAIL_HOST' => config('mail.mailers.smtp.host'),
-        'MAIL_PORT' => config('mail.mailers.smtp.port'),
-        'MAIL_USERNAME' => config('mail.mailers.smtp.username'),
-        'MAIL_PASSWORD_STARTS_WITH' => substr(config('mail.mailers.smtp.password'), 0, 10),
-    ]);
-});
-
 });
 
 Route::prefix('system')->group(function () {
@@ -87,6 +53,7 @@ Route::prefix('admin')->group(function () {
     Route::group(['middleware' => ['auth']], function () {
         //Dashboard Route
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/dashboard/filter', [DashboardController::class, 'filter'])->name('dashboard.filter');
 
         //Lead Route
         Route::get('/leads', [LeadController::class, 'index'])->name('leads');
