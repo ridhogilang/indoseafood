@@ -17,6 +17,9 @@ class SendInquiryNotificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 3;
+    public $timeout = 120;
+
     public Inquiry $inquiry;
 
     public function __construct(Inquiry $inquiry)

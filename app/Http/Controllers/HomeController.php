@@ -113,7 +113,8 @@ class HomeController extends Controller
 
         $inquiry = Inquiry::create($validated);
 
-        SendInquiryNotificationJob::dispatch($inquiry);
+        SendInquiryNotificationJob::dispatch($inquiry)
+            ->onQueue('inquiry');
 
         return redirect()
             ->back()

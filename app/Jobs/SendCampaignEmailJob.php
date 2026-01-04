@@ -18,9 +18,8 @@ class SendCampaignEmailJob implements ShouldQueue
 
     protected int $campaignContactId;
 
-    // ⬇️ optional: atur batas waktu job ini (detik)
-    public $timeout = 120;   // 2 menit
-    public $tries   = 3;     // coba ulang max 3x sebelum dianggap failed
+    public $tries = 3;
+    public $timeout = 120;
 
     public function __construct(int $campaignContactId)
     {

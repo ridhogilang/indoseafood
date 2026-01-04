@@ -122,6 +122,7 @@ class CampaignController extends Controller
 
                 // 6) Dispatch job to actually send email at scheduled time
                 SendCampaignEmailJob::dispatch($campaignContact->id)
+                    ->onQueue('campaign')
                     ->delay($sentAt);
             }
         });
