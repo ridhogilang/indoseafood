@@ -121,7 +121,8 @@
                         <p class="hero-text">Supplying high-quality tuna, mackerel, sardine, and Indonesian wild-caught
                             seafood to global markets with consistent volume and HACCP-certified processing.</p>
                         <div class="hero-btns">
-                            <a href="{{ route('about') }}" class="vs-btn me-3">About Us <i class="fa fa-arrow-right"></i></a>
+                            <a href="{{ route('about') }}" class="vs-btn me-3">About Us <i
+                                    class="fa fa-arrow-right"></i></a>
                             {{-- <a href="https://www.youtube.com/watch?v=EGW2HS2tqAQ" class="play-btn1 popup-video"><i
                                     class="fa fa-play"></i></a> --}}
                         </div>
@@ -140,7 +141,8 @@
                         <p class="hero-text">From blast-frozen tuna loins to whole round sardines, we ensure top-grade
                             quality, reliable supply, and fast loading for international shipments.</p>
                         <div class="hero-btns">
-                            <a href="{{ route('workflow') }}" class="vs-btn me-3">Our Workflow <i class="fa fa-arrow-right"></i></a>
+                            <a href="{{ route('workflow') }}" class="vs-btn me-3">Our Workflow <i
+                                    class="fa fa-arrow-right"></i></a>
                             {{-- <a href="https://www.youtube.com/watch?v=EGW2HS2tqAQ" class="play-btn1 popup-video"><i
                                     class="fa fa-play"></i></a> --}}
                         </div>
@@ -159,7 +161,8 @@
                         <p class="hero-text">We deliver certified, sustainable, and well-handled seafood products directly
                             from Indonesian waters to importers, distributors, and wholesalers worldwide.</p>
                         <div class="hero-btns">
-                            <a href="{{ route('about') }}" class="vs-btn me-3">About Us <i class="fa fa-arrow-right"></i></a>
+                            <a href="{{ route('about') }}" class="vs-btn me-3">About Us <i
+                                    class="fa fa-arrow-right"></i></a>
                             {{-- <a href="https://www.youtube.com/watch?v=EGW2HS2tqAQ" class="play-btn1 popup-video"><i
                                     class="fa fa-play"></i></a> --}}
                         </div>
@@ -169,8 +172,8 @@
         </div>
     </div>
     <!--==============================
-                     Service Area
-                 ==============================-->
+                         Service Area
+                     ==============================-->
     <section class="space service-area">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -227,7 +230,8 @@
                 </div>
                 <div class="col-auto">
                     <div class="service-style1">
-                        <div class="service-img"><img src="{{ asset('home/img/why/why4.jpg') }}" alt="service thumbnail">
+                        <div class="service-img"><img src="{{ asset('home/img/why/why4.jpg') }}"
+                                alt="service thumbnail">
                         </div>
                         <div class="service-icon"><i class="fa-solid fa-repeat" style="color: #74C0FC;"></i>
                         </div>
@@ -259,8 +263,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                                     Shop Area
-                                                                                                     ==============================-->
+                                                                                                         Shop Area
+                                                                                                         ==============================-->
     <section class="bg-title space">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -313,8 +317,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                                     Sertificate Area
-                                                                                                     ==============================-->
+                                                                                                         Sertificate Area
+                                                                                                         ==============================-->
     <section class="space sertificate">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -351,8 +355,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                                     Team Galeri
-                                                                                                     ==============================-->
+                                                                                                         Team Galeri
+                                                                                                         ==============================-->
     <section class="space bg-smoke">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">
@@ -368,8 +372,8 @@
                         <div class="team-style1">
                             <div class="team-img">
                                 <a href="{{ asset('home/galeri/file ' . $i . '.jpg') }}" class="popup-image">
-                                    <img src="{{ asset('home/galeri/file ' . $i . '.jpg') }}"
-                                        alt="galeri {{ $i }}">
+                                    <img src="{{ asset('home/galeri/file ' . $i . '.jpg') }}" loading="lazy"
+                                        decoding="async" alt="galeri {{ $i }}">
                                 </a>
                             </div>
                         </div>
@@ -379,8 +383,8 @@
         </div>
     </section>
     <!--==============================
-                                                                                                     BLog Area
-                                                                                                     ==============================-->
+                                                                                                         BLog Area
+                                                                                                         ==============================-->
     <section class="space blog">
         <div class="container">
             <div class="title-area text-center wow fadeInUp wow-animated" data-wow-delay="0.3s">

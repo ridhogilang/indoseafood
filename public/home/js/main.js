@@ -30,19 +30,29 @@
   ==================================*/
 
   /*---------- 01. On Load Function ----------*/
-  $(window).on("load", function () {
-    $(".preloader").fadeOut();
-  });
+  $(function () {
 
-  /*---------- 02. Preloader ----------*/
-  if ($(".preloader").length > 0) {
-    $(".preloaderCls").each(function () {
-      $(this).on("click", function (e) {
-        e.preventDefault();
-        $(".preloader").css("display", "none");
+    const hidePreloader = () => {
+      const $preloader = $('.preloader');
+      if (!$preloader.length) return;
+
+      $preloader.fadeOut(500, function () {
+        $(this).remove();
       });
+    };
+
+    $(document).ready(function () {
+      setTimeout(hidePreloader, 300);
     });
-  }
+
+    $('.preloaderCls').on('click', function (e) {
+      e.preventDefault();
+      hidePreloader();
+    });
+
+    setTimeout(hidePreloader, 4000);
+
+  });
 
   /*---------- 03. Mobile Menu Active ----------*/
   $.fn.vsmobilemenu = function (options) {
