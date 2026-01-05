@@ -34,7 +34,7 @@ class SendInquiryNotificationJob implements ShouldQueue
         foreach ($users as $user) {
             Mail::mailer('smtp')
                 ->to($user->email)
-                ->queue(
+                ->send(
                     new InquiryNotificationMail([
                         'company_name' => $this->inquiry->company_name,
                         'email'        => $this->inquiry->email,
