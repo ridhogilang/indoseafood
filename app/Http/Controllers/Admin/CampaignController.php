@@ -65,55 +65,31 @@ class CampaignController extends Controller
 
         DB::transaction(function () use ($eligibleContacts, $campaignId) {
 
-            // 3) Scheduling logic for sent_at
+            // ============================
+            // ✅ UPDATED SCHEDULING LOGIC
+            // ============================
 
-            // How many contacts are already scheduled in ANY campaign?
-            // (Global scheduling: 20 per day total)
-            $existingCount = EmailCampaignContact::count();
+            // Ambil campaign contact TERAKHIR (ID terbesar)
+            $lastCampaignContact = EmailCampaignContact::orderByDesc('id')->first();
 
-            // Find the very first scheduled sent_at, if any
-            $first = EmailCampaignContact::orderBy('sent_at', 'asc')->first();
-
-            if ($first && $first->sent_at) {
-                // Campaign system has already been started before
-                $base = Carbon::parse($first->sent_at)->seconds(0);
+            if ($lastCampaignContact && $lastCampaignContact->sent_at) {
+                // Mulai 30 menit setelah email terakhir
+                $nextSentAt = Carbon::parse($lastCampaignContact->sent_at)
+                    ->addMinutes(30)
+                    ->seconds(0);
             } else {
-                // First time ever → start from now (uses app timezone, e.g. Asia/Jakarta)
-                $base = Carbon::now()->seconds(0);
+                // Belum pernah ada campaign sama sekali
+                $nextSentAt = Carbon::now()->seconds(0);
             }
 
-            // We'll use:
-            // - campaignStartDate: the date we started scheduling
-            // - campaignStartTime: the time (hour:minute) we started scheduling
-            $campaignStartDate = $base->copy()->startOfDay();
-            $campaignStartTime = $base->copy();
-
-            foreach ($eligibleContacts as $index => $contact) {
-                // Global index across ALL scheduled records in email_campaign_contacts
-                $globalIndex = $existingCount + $index;
-
-                // Rules:
-                // - 20 contacts per day
-                // - 30 minutes apart
-                $dayOffset = intdiv($globalIndex, 20);  // 0,1,2,... each 20 contacts → next day
-                $slotInDay = $globalIndex % 20;        // 0..19 position in the day
-
-                $sentAt = $campaignStartDate
-                    ->copy()
-                    ->addDays($dayOffset)
-                    ->setTime(
-                        $campaignStartTime->hour,
-                        $campaignStartTime->minute,
-                        0
-                    )
-                    ->addMinutes($slotInDay * 30);
+            foreach ($eligibleContacts as $contact) {
 
                 // 4) Insert into email_campaign_contacts
                 $campaignContact = EmailCampaignContact::create([
                     'email_campaign_id' => $campaignId,
                     'email_contact_id'  => $contact->id,
-                    'status'            => 'pending',   // default
-                    'sent_at'           => $sentAt,
+                    'status'            => 'pending',
+                    'sent_at'           => $nextSentAt,
                 ]);
 
                 // 5) Mark contact as already used in campaign
@@ -123,7 +99,10 @@ class CampaignController extends Controller
                 // 6) Dispatch job to actually send email at scheduled time
                 SendCampaignEmailJob::dispatch($campaignContact->id)
                     ->onQueue('campaign')
-                    ->delay($sentAt);
+                    ->delay($nextSentAt);
+
+                // 👉 next email = +30 minutes
+                $nextSentAt = $nextSentAt->copy()->addMinutes(30);
             }
         });
 
@@ -247,6 +226,34 @@ class CampaignController extends Controller
         return back()->with('success', 'Campaign contact has been deleted successfully.');
     }
 
+    public function bulkDelete(Request $request)
+    {
+        $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'exists:email_campaign_contacts,id',
+        ]);
+
+        DB::transaction(function () use ($request) {
+
+            $items = EmailCampaignContact::whereIn('id', $request->ids)->get();
+
+            foreach ($items as $item) {
+                $contactId = $item->email_contact_id;
+                $item->delete();
+
+                if ($contactId) {
+                    EmailContact::where('id', $contactId)
+                        ->update(['is_campaign' => false]);
+                }
+            }
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Selected campaign contacts have been deleted successfully.'
+        ]);
+    }
+
     public function datatable()
     {
         $query = EmailCampaignContact::with('contact')
@@ -258,11 +265,17 @@ class CampaignController extends Controller
 
             // checkbox
             ->addColumn('checkbox', fn($c) => '
-            <div class="custom-control custom-checkbox ms-1">
-                <input type="checkbox" class="custom-control-input checkbox" id="checkBox_' . $c->id . '">
+             <div class="custom-control custom-checkbox ms-1">
+                 <input
+            type="checkbox"
+            class="custom-control-input checkbox checkbox-user"
+            id="checkBox_' . $c->id . '"
+            value="' . $c->id . '"
+                 >
                 <label class="custom-control-label" for="checkBox_' . $c->id . '"></label>
-            </div>
-        ')
+             </div>
+                ')
+
 
             ->addColumn(
                 'company',
@@ -366,11 +379,17 @@ class CampaignController extends Controller
 
             // checkbox
             ->addColumn('checkbox', fn($c) => '
-            <div class="custom-control custom-checkbox ms-1">
-                <input type="checkbox" class="custom-control-input checkbox" id="checkBox_' . $c->id . '">
-                <label class="custom-control-label" for="checkBox_' . $c->id . '"></label>
-            </div>
-        ')
+                <div class="custom-control custom-checkbox ms-1">
+                 <input
+            type="checkbox"
+            class="custom-control-input checkbox checkbox-user"
+            id="checkBox_' . $c->id . '"
+            value="' . $c->id . '"
+             >
+               <label class="custom-control-label" for="checkBox_' . $c->id . '"></label>
+               </div>
+            ')
+
 
             // company
             ->addColumn('company', fn($c) => optional($c->contact)->company ?: '-')

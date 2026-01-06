@@ -153,10 +153,19 @@
                     <div class="card stretch stretch-full">
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="leadList">
+                                <div id="leadBulkActionWrapper" class="d-none">
+                                    <button class="btn btn-danger btn-sm" id="btnLeadBulkDelete">Delete</button>
+                                </div>
+                                <table class="table table-hover" id="LeadTable">
                                     <thead>
                                         <tr>
-                                            <th class="wd-30"></th>
+                                            <th class="wd-30">
+                                                <div class="custom-control custom-checkbox ms-1">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="checkAllLeadTable">
+                                                    <label class="custom-control-label" for="checkAllLeadTable"></label>
+                                                </div>
+                                            </th>
                                             <th>No</th>
                                             <th>Company</th>
                                             <th>Email</th>
@@ -705,7 +714,6 @@
             }
         });
     </script>
-
     <script>
         document.addEventListener('click', function(e) {
             const btn = e.target.closest('.btn-edit-contact');
@@ -741,60 +749,152 @@
             }
         });
     </script>
-
     <script>
-        $(function() {
+        $('#LeadTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('leads.datatable') }}",
+            order: [
+                [2, 'asc']
+            ],
 
-            if ($.fn.DataTable.isDataTable('#leadList')) {
-                $('#leadList').DataTable().destroy();
+            /* SAMA PERSIS DENGAN CAMPAIGN */
+            dom: "<'row align-items-center mb-3 px-3'" +
+                "<'col-md-6'l>" +
+                "<'col-md-6 d-flex align-items-center justify-content-end'f<'bulk-actions ms-3'>>" +
+                ">" +
+                "t" +
+                "<'row mt-3 px-3'" +
+                "<'col-md-6'i>" +
+                "<'col-md-6 d-flex justify-content-end'p>" +
+                ">",
+
+            columns: [{
+                    data: 'checkbox',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'company'
+                },
+                {
+                    data: 'email'
+                },
+                {
+                    data: 'country'
+                },
+                {
+                    data: 'contact_person'
+                },
+                {
+                    data: 'main_product'
+                },
+                {
+                    data: 'status',
+                    orderable: false
+                },
+                {
+                    data: 'action',
+                    orderable: false,
+                    searchable: false
+                }
+            ],
+
+            drawCallback: function() {
+                toggleLeadBulkButton();
+            }
+        });
+
+        /* PINDAHKAN BULK BUTTON (SAMA PERSIS DENGAN CAMPAIGN) */
+        if ($('#leadBulkActionWrapper').length) {
+            $('.bulk-actions').append($('#leadBulkActionWrapper'));
+        }
+    </script>
+    <script>
+        "use strict";
+
+        $(document).ready(function() {
+
+            function getSelectedLeadIds() {
+                return $('.checkbox-user:checked').map(function() {
+                    return $(this).val();
+                }).get();
             }
 
-            $('#leadList').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('leads.datatable') }}",
-                pageLength: 10,
+            function toggleLeadBulkButton() {
+                $('#leadBulkActionWrapper').toggleClass(
+                    'd-none',
+                    getSelectedLeadIds().length === 0
+                );
+            }
 
-                // ❗ JANGAN ORDER BY DT_RowIndex
-                order: [
-                    [2, 'asc']
-                ], // company (AMAN)
+            function csrf() {
+                return $('meta[name="csrf-token"]').attr('content');
+            }
 
-                columns: [{
-                        data: 'checkbox',
-                        orderable: false,
-                        searchable: false
+            /* CHECK ALL — SCOPED KE TABLE */
+            $(document).on('change', '#checkAllLeadTable', function() {
+                $(this)
+                    .closest('table')
+                    .find('.checkbox-user')
+                    .prop('checked', this.checked);
+
+                toggleLeadBulkButton();
+            });
+
+            /* SINGLE CHECKBOX */
+            $(document).on('change', '.checkbox-user', function() {
+                const table = $(this).closest('table');
+
+                table.find('#checkAllLeadTable').prop(
+                    'checked',
+                    table.find('.checkbox-user').length ===
+                    table.find('.checkbox-user:checked').length
+                );
+
+                toggleLeadBulkButton();
+            });
+
+            /* BULK DELETE */
+            $('#btnLeadBulkDelete').on('click', function() {
+                const ids = getSelectedLeadIds();
+                if (!ids.length) return;
+
+                Swal.fire({
+                    title: 'Delete selected leads?',
+                    text: `You are about to delete ${ids.length} lead(s). This action cannot be undone.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete',
+                    cancelButtonText: 'Cancel',
+                    customClass: {
+                        confirmButton: 'btn btn-danger me-2',
+                        cancelButton: 'btn btn-secondary'
                     },
-                    {
-                        data: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'company'
-                    },
-                    {
-                        data: 'email'
-                    },
-                    {
-                        data: 'country'
-                    },
-                    {
-                        data: 'contact_person'
-                    },
-                    {
-                        data: 'main_product'
-                    },
-                    {
-                        data: 'status',
-                        orderable: false
-                    },
-                    {
-                        data: 'action',
-                        orderable: false,
-                        searchable: false
-                    }
-                ]
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (!result.isConfirmed) return;
+
+                    $.ajax({
+                        url: "{{ route('leads.bulk-delete') }}",
+                        type: "POST",
+                        data: {
+                            ids: ids,
+                            _token: csrf()
+                        },
+                        success: function(res) {
+                            Swal.fire('Deleted', res.message, 'success');
+                            $('#checkAllLeadTable').prop('checked', false);
+                            $('#leadBulkActionWrapper').addClass('d-none');
+                            $('#LeadTable').DataTable().ajax.reload(null, false);
+                        }
+                    });
+                });
             });
 
         });

@@ -125,6 +125,22 @@ class LeadController extends Controller
         return back()->with('success', 'Contact deleted successfully.');
     }
 
+    public function bulkDelete(Request $request)
+    {
+        $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'exists:email_contacts,id',
+        ]);
+
+        EmailContact::whereIn('id', $request->ids)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Selected leads deleted successfully.'
+        ]);
+    }
+
+
     public function datatable()
     {
         $query = EmailContact::query();
@@ -132,15 +148,21 @@ class LeadController extends Controller
         return DataTables::eloquent($query)
             ->addIndexColumn()
 
-            ->addColumn('checkbox', function () {
-                return '
-            <div class="item-checkbox ms-1">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input checkbox">
-                    <label class="custom-control-label"></label>
-                </div>
-            </div>';
-            })
+            ->addColumn('checkbox', function ($c) {
+    return '
+        <div class="item-checkbox ms-1">
+            <div class="custom-control custom-checkbox">
+                <input
+                    type="checkbox"
+                    class="custom-control-input checkbox checkbox-user"
+                    id="checkBox_' . $c->id . '"
+                    value="' . $c->id . '"
+                >
+                <label class="custom-control-label" for="checkBox_' . $c->id . '"></label>
+            </div>
+        </div>';
+})
+
 
             ->addColumn('company', function ($c) {
                 return '

@@ -65,6 +65,9 @@ Route::prefix('admin')->group(function () {
         Route::delete('/leads/{email_contact}', [LeadController::class, 'destroy'])
             ->name('leads.destroy');
         Route::post('/leads/import', [LeadController::class, 'import'])->name('leads.import');
+        Route::post('/leads/bulk-delete', [LeadController::class, 'bulkDelete'])
+            ->name('leads.bulk-delete');
+
 
         //Campaign Route
         Route::get('/campaign', [CampaignController::class, 'index'])->name('campaign');
@@ -80,6 +83,9 @@ Route::prefix('admin')->group(function () {
             ->name('update_mail.campaign');
         Route::delete('/campaign-contact/{id}', [CampaignController::class, 'deleteCampaignContact'])
             ->name('delete.campaign');
+        Route::post('/campaign/bulk-delete', [CampaignController::class, 'bulkDelete'])
+            ->name('campaign.bulk-delete');
+
 
 
         //Settings Route
@@ -93,6 +99,9 @@ Route::prefix('admin')->group(function () {
             ->name('profile.update');
         Route::post('/user/notification-toggle', [SettingController::class, 'toggleNotification'])
             ->name('user.notification.toggle');
+        Route::post('/users/bulk-status', [SettingController::class, 'bulkUpdateStatus'])
+            ->name('user.bulk-status');
+
 
 
         //Inquiry Route

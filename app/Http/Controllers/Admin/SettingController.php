@@ -56,6 +56,32 @@ class SettingController extends Controller
         ]);
     }
 
+    public function bulkUpdateStatus(Request $request)
+    {
+        $request->validate([
+            'user_ids'  => 'required|array',
+            'user_ids.*' => 'exists:users,id',
+            'is_active' => 'required|boolean',
+        ]);
+
+        if (
+            in_array(Auth::id(), $request->user_ids) &&
+            $request->is_active == 0
+        ) {
+            return response()->json([
+                'message' => 'You cannot deactivate your own account.'
+            ], 403);
+        }
+
+        User::whereIn('id', $request->user_ids)
+            ->update(['is_active' => $request->is_active]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User status successfully updated'
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

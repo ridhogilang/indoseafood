@@ -18,6 +18,33 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        /* Pastikan search & bulk sejajar */
+        .dataTables_filter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Paksa bulk button horizontal */
+        .bulk-actions {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Paksa button tidak jadi block */
+        .bulk-actions .btn {
+            display: inline-flex;
+            white-space: nowrap;
+        }
+
+        /* Rapikan input search */
+        .dataTables_filter input {
+            width: 220px;
+            min-width: 220px;
+        }
     </style>
 @endpush
 
@@ -65,6 +92,10 @@
                     <div class="card stretch stretch-full">
                         <div class="card-body p-0">
                             <div class="table-responsive">
+                                <div id="bulkActionWrapper" class="d-none">
+                                    <button class="btn btn-success btn-sm" id="btnBulkActivate">Activate</button>
+                                    <button class="btn btn-warning btn-sm" id="btnBulkDeactivate">Deactivate</button>
+                                </div>
                                 <table class="table table-hover" id="leadList">
                                     <thead>
                                         <tr>
@@ -91,9 +122,12 @@
                                                 <td>
                                                     <div class="item-checkbox ms-1">
                                                         <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input checkbox"
-                                                                id="checkBox_1">
-                                                            <label class="custom-control-label" for="checkBox_1"></label>
+                                                            <input type="checkbox"
+                                                                class="checkbox-user custom-control-input checkbox"
+                                                                id="checkBox_{{ $user->id }}"
+                                                                value="{{ $user->id }}">
+                                                            <label class="custom-control-label"
+                                                                for="checkBox_{{ $user->id }}"></label>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -526,6 +560,130 @@
                 icon.classList.remove('feather-eye-off');
                 icon.classList.add('feather-eye');
             }
+        });
+    </script>
+    <script>
+        "use strict";
+
+        $(document).ready(function() {
+
+            /* ===============================
+               UTIL
+            =============================== */
+            function getSelectedUsers() {
+                return $('.checkbox-user:checked').map(function() {
+                    return $(this).val();
+                }).get();
+            }
+
+            function toggleBulkButton() {
+                const selected = getSelectedUsers().length;
+                $('#bulkActionWrapper').toggleClass('d-none', selected === 0);
+            }
+
+            function csrf() {
+                return $('meta[name="csrf-token"]').attr('content');
+            }
+
+            function confirmAction(title, text, confirmText, callback) {
+                Swal.fire({
+                    title: title,
+                    text: text,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: confirmText,
+                    cancelButtonText: 'Cancel',
+                    customClass: {
+                        confirmButton: 'btn btn-danger me-2',
+                        cancelButton: 'btn btn-secondary'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.isConfirmed) callback();
+                });
+            }
+
+            function ajaxAction(url, data) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': csrf()
+                    },
+                    success: function(res) {
+                        Swal.fire('Success', res.message, 'success')
+                            .then(() => location.reload());
+                    },
+                    error: function(xhr) {
+                        Swal.fire(
+                            'Error',
+                            xhr.responseJSON?.message || 'Something went wrong',
+                            'error'
+                        );
+                    }
+                });
+            }
+
+            /* ===============================
+               CHECKBOX HANDLING
+            =============================== */
+
+            // Check all
+            $('#checkAllLead').on('change', function() {
+                $('.checkbox-user').prop('checked', this.checked);
+                toggleBulkButton();
+            });
+
+            // Single checkbox
+            $(document).on('change', '.checkbox-user', function() {
+                $('#checkAllLead').prop(
+                    'checked',
+                    $('.checkbox-user').length === $('.checkbox-user:checked').length
+                );
+                toggleBulkButton();
+            });
+
+            /* ===============================
+               BULK ACTIVATE
+            =============================== */
+            $('#btnBulkActivate').on('click', function() {
+                const ids = getSelectedUsers();
+                if (!ids.length) return;
+
+                confirmAction(
+                    'Activate users?',
+                    `Activate ${ids.length} selected users.`,
+                    'Yes, activate',
+                    function() {
+                        ajaxAction("{{ route('user.bulk-status') }}", {
+                            user_ids: ids,
+                            is_active: 1
+                        });
+                    }
+                );
+            });
+
+            /* ===============================
+               BULK DEACTIVATE
+            =============================== */
+            $('#btnBulkDeactivate').on('click', function() {
+                const ids = getSelectedUsers();
+                if (!ids.length) return;
+
+                confirmAction(
+                    'Deactivate users?',
+                    `Deactivate ${ids.length} selected users.`,
+                    'Yes, deactivate',
+                    function() {
+                        ajaxAction("{{ route('user.bulk-status') }}", {
+                            user_ids: ids,
+                            is_active: 0
+                        });
+                    }
+                );
+            });
+
         });
     </script>
 @endpush

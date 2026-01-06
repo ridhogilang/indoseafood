@@ -18,6 +18,33 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        /* Pastikan search & bulk sejajar */
+        .dataTables_filter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Paksa bulk button horizontal */
+        .bulk-actions {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Paksa button tidak jadi block */
+        .bulk-actions .btn {
+            display: inline-flex;
+            white-space: nowrap;
+        }
+
+        /* Rapikan input search */
+        .dataTables_filter input {
+            width: 220px;
+            min-width: 220px;
+        }
     </style>
 @endpush
 
@@ -126,6 +153,9 @@
                     <div class="card stretch stretch-full">
                         <div class="card-body p-0">
                             <div class="table-responsive">
+                                <div id="bulkActionWrapper" class="d-none">
+                                    <button class="btn btn-danger btn-sm" id="btnBulkDelete">Delete</button>
+                                </div>
                                 <table class="table table-hover" id="StatusCampaignTable">
                                     <thead>
                                         <tr>
@@ -216,6 +246,18 @@
             order: [
                 [1, 'asc']
             ],
+
+            /* 🔑 SLOT BULK ACTION */
+            dom: "<'row align-items-center mb-3 px-3'" +
+                "<'col-md-6'l>" +
+                "<'col-md-6 d-flex align-items-center justify-content-end'f<'bulk-actions ms-3'>>" +
+                ">" +
+                "t" +
+                "<'row mt-3 px-3'" +
+                "<'col-md-6'i>" +
+                "<'col-md-6 d-flex justify-content-end'p>" +
+                ">",
+
             columns: [{
                     data: 'checkbox',
                     orderable: false,
@@ -248,7 +290,110 @@
                     orderable: false,
                     searchable: false
                 }
-            ]
+            ],
+
+            drawCallback: function() {
+                if (typeof toggleBulkButton === 'function') {
+                    toggleBulkButton();
+                }
+            }
+        });
+
+        /* PINDAHKAN BULK BUTTON */
+        if ($('#bulkActionWrapper').length) {
+            $('.bulk-actions').append($('#bulkActionWrapper'));
+        }
+    </script>
+    <script>
+        "use strict";
+
+        $(document).ready(function() {
+
+            function getSelectedIds() {
+                return $('.checkbox-user:checked').map(function() {
+                    return $(this).val();
+                }).get();
+            }
+
+            function toggleBulkButton() {
+                $('#bulkActionWrapper').toggleClass(
+                    'd-none',
+                    getSelectedIds().length === 0
+                );
+            }
+
+            function csrf() {
+                return $('meta[name="csrf-token"]').attr('content');
+            }
+
+            // check all (scoped per table)
+            $(document).on('change', '#checkAllLead', function() {
+                $(this)
+                    .closest('table')
+                    .find('.checkbox-user')
+                    .prop('checked', this.checked);
+
+                toggleBulkButton();
+            });
+
+            // single checkbox
+            $(document).on('change', '.checkbox-user', function() {
+                const table = $(this).closest('table');
+
+                table.find('#checkAllLead').prop(
+                    'checked',
+                    table.find('.checkbox-user').length === table.find('.checkbox-user:checked').length
+                );
+
+                toggleBulkButton();
+            });
+
+            // BULK DELETE
+            $('#btnBulkDelete').on('click', function() {
+                const ids = getSelectedIds();
+                if (!ids.length) return;
+
+                Swal.fire({
+                    title: 'Delete selected campaigns?',
+                    text: `You are about to delete ${ids.length} campaign(s). This action cannot be undone.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete',
+                    cancelButtonText: 'Cancel',
+                    customClass: {
+                        confirmButton: 'btn btn-danger me-2',
+                        cancelButton: 'btn btn-secondary'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (!result.isConfirmed) return;
+
+                    $.ajax({
+                        url: "{{ route('campaign.bulk-delete') }}",
+                        type: "POST",
+                        data: {
+                            ids: ids,
+                            _token: csrf()
+                        },
+                        success: function(res) {
+                            Swal.fire('Deleted', res.message, 'success');
+                            $('#checkAllLead').prop('checked', false);
+                            $('#bulkActionWrapper').addClass('d-none');
+
+                            // 🔥 reload table aktif
+                            $('.dataTable').DataTable().ajax.reload(null, false);
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Error',
+                                xhr.responseJSON?.message || 'Something went wrong',
+                                'error'
+                            );
+                        }
+                    });
+                });
+            });
+
         });
     </script>
 @endpush
