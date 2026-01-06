@@ -26,6 +26,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/article', 'article')->name('article');
     Route::get('/privacy', 'privacy')->name('privacy');
     Route::get('/terms-and-conditions', 'terms')->name('terms');
+    Route::get('/catalogue/seafood-export', function () {
+        return view('home.pdfcatalog');
+    });
     //Post Route
     Route::post('/getaqoute', 'quote_store')->name('quote.store');
 });
