@@ -23,8 +23,7 @@
         <div class="auth-cover-content-inner">
             <div class="auth-cover-content-wrapper">
                 <div class="auth-img">
-                    <img src="{{ asset('admin/images/login.png') }}" alt=""
-                        class="img-fluid">
+                    <img src="{{ asset('admin/images/login.png') }}" alt="" class="img-fluid">
                 </div>
             </div>
         </div>
@@ -61,7 +60,13 @@
                         </div>
 
                         <div class="mb-3">
-                            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                            <div class="input-group">
+                                <input type="password" name="password" class="form-control" placeholder="Password"
+                                    required>
+                                <div class="input-group-text border-start bg-gray-2 c-pointer show-pass1">
+                                    <i class="feather-eye"></i>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="d-flex align-items-center justify-content-between">
@@ -92,10 +97,35 @@
                 </div>
             </div>
         </div>
-    </main>   
+    </main>
     <script src="{{ asset('admin/vendors/js/vendors.min.js') }}"></script>
     <script src="{{ asset('admin/js/common-init.min.js') }}"></script>
     <script src="{{ asset('admin/js/theme-customizer-init.min.js') }}"></script>
+    <script>
+        document.addEventListener('click', function(e) {
+            const toggle = e.target.closest('.show-pass1');
+            if (!toggle) return;
+
+            const input = toggle.closest('.input-group').querySelector('input');
+            const icon = toggle.querySelector('i');
+
+            if (!input) return;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+
+                // ganti icon → eye-off
+                icon.classList.remove('feather-eye');
+                icon.classList.add('feather-eye-off');
+            } else {
+                input.type = 'password';
+
+                // ganti icon → eye
+                icon.classList.remove('feather-eye-off');
+                icon.classList.add('feather-eye');
+            }
+        });
+    </script>
 </body>
 
 </html>
