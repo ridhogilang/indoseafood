@@ -496,7 +496,7 @@
                                     <div class="text-muted">Total Leads</div>
                                 </div>
                                 <div class="text-end">
-                                    <i class="feather-pie-chart fs-2"></i>
+                                    <i class="feather-users fs-2"></i>
                                 </div>
                             </div>
                         </div>
@@ -518,12 +518,12 @@
                             <div class="hstack justify-content-between">
                                 <div>
                                     <h4 class="text-primary">
-                                        {{ $campaignSuccessCurrent ?? ($campaignSuccessLast30Days ?? 0) }}
+                                        {{ $campaignSuccessTotal }}
                                     </h4>
                                     <div class="text-muted">Total Campaigns</div>
                                 </div>
                                 <div class="text-end">
-                                    <i class="feather-shopping-bag fs-2"></i>
+                                    <i class="feather-book fs-2"></i>
                                 </div>
                             </div>
                         </div>
@@ -550,7 +550,7 @@
                                     <div class="text-muted">Total Inquiries</div>
                                 </div>
                                 <div class="text-end">
-                                    <i class="feather-shopping-cart fs-2"></i>
+                                    <i class="feather-clipboard fs-2"></i>
                                 </div>
                             </div>
                         </div>

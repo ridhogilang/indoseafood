@@ -30,12 +30,20 @@ class LeadController extends Controller
         // 4) Inactive Leads = status = 'inactive'
         $inactiveLeads = EmailContact::where('status', 'inactive')->count();
 
+        $countries = EmailContact::whereNotNull('country')
+            ->where('country', '!=', '')
+            ->distinct()
+            ->orderBy('country')
+            ->pluck('country');
+
+
         return view('admin.leads', [
             'title'    => 'Leads',
             'totalLeads'        => $totalLeads,
             'potentialLeads'    => $potentialLeads,
             'nonPotentialLeads' => $nonPotentialLeads,
             'inactiveLeads'     => $inactiveLeads,
+            'countries'         => $countries,
         ]);
     }
 
@@ -149,7 +157,7 @@ class LeadController extends Controller
             ->addIndexColumn()
 
             ->addColumn('checkbox', function ($c) {
-    return '
+                return '
         <div class="item-checkbox ms-1">
             <div class="custom-control custom-checkbox">
                 <input
@@ -161,7 +169,7 @@ class LeadController extends Controller
                 <label class="custom-control-label" for="checkBox_' . $c->id . '"></label>
             </div>
         </div>';
-})
+            })
 
 
             ->addColumn('company', function ($c) {
@@ -264,14 +272,13 @@ class LeadController extends Controller
 
             ->filter(function ($query) {
 
+                /* 🔍 GLOBAL SEARCH (EXISTING – TIDAK DIUBAH) */
                 if (request()->has('search') && request('search')['value'] !== '') {
-
                     $search = request('search')['value'];
 
                     $query->where(function ($q) use ($search) {
-
                         $q->where('company', 'LIKE', "%{$search}%")
-                            ->orWhere('kirim', 'LIKE', "%{$search}%")          // email
+                            ->orWhere('kirim', 'LIKE', "%{$search}%")
                             ->orWhere('country', 'LIKE', "%{$search}%")
                             ->orWhere('contact_person', 'LIKE', "%{$search}%")
                             ->orWhere('main_product', 'LIKE', "%{$search}%")
@@ -281,6 +288,34 @@ class LeadController extends Controller
                             ->orWhere('notes', 'LIKE', "%{$search}%")
                             ->orWhere('status', 'LIKE', "%{$search}%");
                     });
+                }
+
+                /* 🎯 POTENTIAL LEADS */
+                if (request('potential_leads') == 1 && request('non_potential_leads') != 1) {
+                    $query->whereNotNull('company')
+                        ->where('company', '!=', '')
+                        ->whereNotNull('kirim')
+                        ->where('kirim', '!=', '');
+                }
+
+                /* 🚫 NON POTENTIAL LEADS */
+                if (request('non_potential_leads') == 1 && request('potential_leads') != 1) {
+                    $query->where(function ($q) {
+                        $q->whereNull('company')
+                            ->orWhere('company', '')
+                            ->orWhereNull('kirim')
+                            ->orWhere('kirim', '');
+                    });
+                }
+
+                /* 📢 CAMPAIGN / NON-CAMPAIGN */
+                if (request()->filled('is_campaign')) {
+                    $query->where('is_campaign', request('is_campaign'));
+                }
+
+                /* 🌍 COUNTRY FILTER */
+                if (request()->filled('country')) {
+                    $query->where('country', request('country'));
                 }
             })
             ->rawColumns(['checkbox', 'company', 'status', 'action'])

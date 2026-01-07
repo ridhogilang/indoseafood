@@ -43,6 +43,80 @@
                         </a>
                     </div>
                     <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+                        <div class="dropdown filter-dropdown">
+                            <a class="btn btn-md btn-light-brand" data-bs-toggle="dropdown" data-bs-offset="0, 10"
+                                data-bs-auto-close="outside">
+                                <i class="feather-filter me-2"></i>
+                                <span>Filter</span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end">
+
+                                <!-- POTENTIAL LEADS -->
+                                <div class="dropdown-item">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="filterPotential"
+                                            name="potential_leads" value="1" checked="checked" />
+                                        <label class="custom-control-label c-pointer" for="filterPotential">
+                                            Potential Leads
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- NON POTENTIAL LEADS -->
+                                <div class="dropdown-item">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="filterNonPotential"
+                                            name="non_potential_leads" value="1" checked="checked" />
+                                        <label class="custom-control-label c-pointer" for="filterNonPotential">
+                                            Non Potential Leads
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="dropdown-divider"></div>
+
+                                <!-- CAMPAIGN LEADS -->
+                                <div class="dropdown-item">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="filterCampaign"
+                                            name="is_campaign" value="1" checked="checked" />
+                                        <label class="custom-control-label c-pointer" for="filterCampaign">
+                                            Campaign Leads
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- NON CAMPAIGN LEADS -->
+                                <div class="dropdown-item">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="filterNonCampaign"
+                                            name="is_campaign" value="0" checked="checked" />
+                                        <label class="custom-control-label c-pointer" for="filterNonCampaign">
+                                            Non-Campaign Leads
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="dropdown-divider"></div>
+
+                                <!-- COUNTRY FILTER -->
+                                <div class="dropdown-item">
+                                    <select class="custom-control" data-select2-selector="status" id="filterCountry"
+                                        name="country">
+                                        <option value="" data-bg="bg-success" selected>
+                                            All Country
+                                        </option>
+                                        @foreach ($countries as $ItemCountries)
+                                            <option value="{{ $ItemCountries }}" data-bg="bg-warning">
+                                                {{ $ItemCountries }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
                         <a href="javascript:void(0);" class="btn btn-icon btn-light-brand" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne">
                             <i class="feather-bar-chart"></i>
@@ -750,15 +824,40 @@
         });
     </script>
     <script>
-        $('#LeadTable').DataTable({
+        const leadTable = $('#LeadTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('leads.datatable') }}",
+
+            ajax: {
+                url: "{{ route('leads.datatable') }}",
+                data: function(d) {
+
+                    /* POTENTIAL / NON POTENTIAL */
+                    d.potential_leads = $('#filterPotential').is(':checked') ? 1 : 0;
+                    d.non_potential_leads = $('#filterNonPotential').is(':checked') ? 1 : 0;
+
+                    /* CAMPAIGN / NON CAMPAIGN
+                       (jika dua-duanya dicentang → kirim null) */
+                    const campaignChecked = $('#filterCampaign').is(':checked');
+                    const nonCampaignChecked = $('#filterNonCampaign').is(':checked');
+
+                    if (campaignChecked && !nonCampaignChecked) {
+                        d.is_campaign = 1;
+                    } else if (!campaignChecked && nonCampaignChecked) {
+                        d.is_campaign = 0;
+                    } else {
+                        d.is_campaign = '';
+                    }
+
+                    /* COUNTRY */
+                    d.country = $('#filterCountry').val();
+                }
+            },
+
             order: [
                 [2, 'asc']
             ],
 
-            /* SAMA PERSIS DENGAN CAMPAIGN */
             dom: "<'row align-items-center mb-3 px-3'" +
                 "<'col-md-6'l>" +
                 "<'col-md-6 d-flex align-items-center justify-content-end'f<'bulk-actions ms-3'>>" +
@@ -810,11 +909,18 @@
             }
         });
 
-        /* PINDAHKAN BULK BUTTON (SAMA PERSIS DENGAN CAMPAIGN) */
+        /* TRIGGER RELOAD SAAT FILTER DIUBAH */
+        $('#filterPotential, #filterNonPotential, #filterCampaign, #filterNonCampaign, #filterCountry')
+            .on('change', function() {
+                leadTable.ajax.reload();
+            });
+
+        /* PINDAHKAN BULK BUTTON */
         if ($('#leadBulkActionWrapper').length) {
             $('.bulk-actions').append($('#leadBulkActionWrapper'));
         }
     </script>
+
     <script>
         "use strict";
 

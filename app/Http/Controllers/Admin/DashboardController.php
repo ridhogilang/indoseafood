@@ -221,16 +221,16 @@ class DashboardController extends Controller
             : 'feather-trending-down';
 
         //Campaign success
-        $campaignSuccessLast30Days = EmailCampaignContact::where('status', 'sukses')
-            ->whereBetween('created_at', [$start, $end])
-            ->count();
+        $campaignSuccessLast30Days = EmailCampaignContact::where('status', 'sent')
+            ->whereNotNull('sent_at')
+            ->whereBetween('sent_at', [$start, $end])->count();
 
         $prevStart = (clone $start)->subDays(30);
         $prevEnd   = (clone $start)->subSecond();
 
-        $campaignSuccessPrev30Days = EmailCampaignContact::where('status', 'sukses')
-            ->whereBetween('created_at', [$prevStart, $prevEnd])
-            ->count();
+        $campaignSuccessPrev30Days = EmailCampaignContact::where('status', 'sent')
+            ->whereNotNull('sent_at')
+            ->whereBetween('sent_at', [$prevStart, $prevEnd])->count();
 
         if ($campaignSuccessPrev30Days > 0) {
             $campaignPercentChange = (
@@ -299,7 +299,7 @@ class DashboardController extends Controller
             'totalLeadsPercentChange' => $totalLeadsPercentChange,
             'totalLeadsTrendText' => $totalLeadsTrendText,
             'totalLeadsTrendIcon' => $totalLeadsTrendIcon,
-            'campaignSuccessLast30Days' => $campaignSuccessLast30Days,
+            'campaignSuccessTotal' => $campaignSuccessLast30Days,
             'campaignPercentChange' => $campaignPercentChange,
             'campaignTrendIcon' => $campaignTrendIcon,
             'inquiriesLast30Days' => $inquiriesLast30Days,
@@ -542,13 +542,13 @@ class DashboardController extends Controller
         // Campaign success
         // =========================
 
-        $campaignSuccessCurrent = EmailCampaignContact::where('status', 'sukses')
-            ->whereBetween('created_at', [$start, $end])
-            ->count();
+        $campaignSuccessCurrent = EmailCampaignContact::where('status', 'sent')
+            ->whereNotNull('sent_at')
+            ->whereBetween('sent_at', [$start, $end])->count();
 
-        $campaignSuccessPrevious = EmailCampaignContact::where('status', 'sukses')
-            ->whereBetween('created_at', [$prevStart, $prevEnd])
-            ->count();
+        $campaignSuccessPrevious = EmailCampaignContact::where('status', 'sent')
+            ->whereNotNull('sent_at')
+            ->whereBetween('sent_at', [$prevStart, $prevEnd])->count();
 
         if ($campaignSuccessPrevious == 0 && $campaignSuccessCurrent > 0) {
             $campaignPercentChange = $campaignSuccessCurrent * 100;
