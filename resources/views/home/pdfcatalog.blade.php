@@ -92,14 +92,14 @@
         <h1>Indonesian Seafood Export Catalogue</h1>
 
         <div class="pdf-container">
-            <iframe src="{{ asset('home/pdf/Ikan Indonesia - Seafood Offering 2025.pdf') }}" loading="lazy">
+            <iframe src="{{ asset('home/pdf/Ikan Indonesia - Seafood Offering 2026.pdf') }}" loading="lazy">
             </iframe>
         </div>
         <div class="download" style="margin-top:12px;">
-            <a href="{{ asset('home/pdf/Ikan Indonesia - Seafood Offering 2025.pdf') }}" target="_blank" style="margin-right:10px;">
+            <a href="{{ asset('home/pdf/Ikan Indonesia - Seafood Offering 2026.pdf') }}" target="_blank" style="margin-right:10px;">
                 Open Full PDF
             </a>
-            <a href="{{ asset('home/pdf/Ikan Indonesia - Seafood Offering 2025.pdf') }}"  style="margin-right:10px;" download>
+            <a href="{{ asset('home/pdf/Ikan Indonesia - Seafood Offering 2026.pdf') }}"  style="margin-right:10px;" download>
                 Download Catalogue (PDF)
             </a>
             <a href="{{ route('home') }}">

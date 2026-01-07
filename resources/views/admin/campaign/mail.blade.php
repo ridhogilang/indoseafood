@@ -133,6 +133,11 @@
                     plugins: 'link lists',
                     toolbar: 'undo redo | bold italic underline | bullist numlist | link | insertCompany',
                     branding: false,
+
+                    relative_urls: false,
+                    remove_script_host: false,
+                    convert_urls: true,
+
                     convert_newlines_to_brs: false,
                     forced_root_block: 'p',
                     content_style: `
