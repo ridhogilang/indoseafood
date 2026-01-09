@@ -236,8 +236,8 @@
 @endsection
 
 @section('modal')
-    <div class="modal fade-scale" id="AddCategory" data-mode="add"  tabindex="-1" aria-labelledby="AddCategory" aria-hidden="true"
-        data-bs-dismiss="ou">
+    <div class="modal fade-scale" id="AddCategory" data-mode="add" tabindex="-1" aria-labelledby="AddCategory"
+        aria-hidden="true" data-bs-dismiss="ou">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <!--! BEGIN: [modal-header] !-->
@@ -318,7 +318,120 @@
     <script src="{{ asset('') }}admin/js/proposal-view-init.min.js"></script>
     <script src="{{ asset('') }}admin/js/customers-create-init.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <script src="{{ asset('admin/tinymce/tinymce.min.js') }}"></script>
+    <script>
+        const ARTICLE_ID = '{{ $article->id ?? null }}';
+        const USER_ID = '{{ auth()->id() }}';
+
+        const uploadFolder = ARTICLE_ID ?
+            'articles/' + ARTICLE_ID :
+            'articles/draft/' + USER_ID;
+
+        tinymce.init({
+            selector: '#body-editor',
+            license_key: 'gpl',
+            promotion: false,
+            height: 1000,
+            menubar: true,
+
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'help', 'wordcount', 'font', 'emoticons', 'print',
+                'pagebreak',
+            ],
+
+            toolbar: 'undo redo | blocks | fontfamily fontsize | ' +
+                'bold italic underline strikethrough | forecolor backcolor | ' +
+                'alignleft aligncenter alignright alignjustify lineheight | ' +
+                'bullist numlist outdent indent | ' +
+                'link image media table | ' +
+                'removeformat code emoticons charmap  pagebreak | ' + 'fullscreen preview print',
+            fontsize_formats: '4px 6px 8px 10px 12px 14px 16px 18px 20px 24px 28px 32px 36px 48px',
+
+            toolbar_mode: 'wrap',
+
+            font_family_formats: 'Arial=arial,helvetica,sans-serif;' +
+                'Courier New=courier new,courier,monospace;' +
+                'Georgia=georgia,palatino,serif;' +
+                'Times New Roman=times new roman,times,serif;' +
+                'Trebuchet MS=trebuchet ms,geneva,sans-serif;' +
+                'Verdana=verdana,geneva,sans-serif;' +
+                'Roboto=roboto,sans-serif;' +
+                'Poppins=poppins,sans-serif',
+
+            image_caption: true,
+            image_advtab: true,
+
+            file_picker_types: 'image',
+
+            /* ===============================
+               IMAGE UPLOAD (IDENTIK DENGAN CKEDITOR)
+            =============================== */
+            file_picker_callback: function(callback, value, meta) {
+                if (meta.filetype === 'image') {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = 'image/*';
+
+                    input.onchange = function() {
+                        const file = this.files[0];
+
+                        const formData = new FormData();
+                        formData.append('upload', file);
+                        formData.append('folder', uploadFolder);
+
+                        fetch('/admin/article/' + (ARTICLE_ID || 'draft') + '/upload-image', {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                credentials: 'same-origin' // 🔥 INI KUNCI
+                            })
+                            .then(res => res.json())
+                            .then(res => {
+                                if (res.url) {
+                                    callback(res.url, {
+                                        alt: file.name
+                                    });
+                                }
+                            })
+                            .catch(() => alert('Upload failed'));
+                    };
+
+                    input.click();
+                }
+            },
+
+            /* ===============================
+               SYNC KE INPUT HIDDEN (TETAP)
+            =============================== */
+            setup: function(editor) {
+                editor.on('change keyup', function() {
+                    document.getElementById('body-html-hidden').value = editor.getContent();
+                });
+            },
+
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+
+            content_style: `
+            @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                line-height: 1.7;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        `
+        });
+    </script>
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
     <script>
         const ARTICLE_ID = '{{ $article->id ?? null }}'; // null jika artikel baru
         const USER_ID = '{{ auth()->id() }}'; // id user saat ini
@@ -404,7 +517,7 @@
                 });
             })
             .catch(error => console.error(error));
-    </script>
+    </script> --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const titleInput = document.getElementById('title');

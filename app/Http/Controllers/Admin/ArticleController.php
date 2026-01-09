@@ -81,11 +81,17 @@ class ArticleController extends Controller
 
         $isPublish = $request->action === 'publish';
 
+        // ===============================
+        // THUMBNAIL (TIDAK DIUBAH)
+        // ===============================
         $thumbnailPath = null;
         if ($request->hasFile('thumbnail')) {
             $thumbnailPath = $request->file('thumbnail')->store('articles', 'public');
         }
 
+        // ===============================
+        // CREATE ARTICLE (DAPAT ID)
+        // ===============================
         $article = Article::create([
             'user_id' => Auth::id(),
             'article_category_id' => $request->article_category_id,
@@ -102,44 +108,69 @@ class ArticleController extends Controller
             'meta_keywords' => $request->meta_keywords,
         ]);
 
-        // ===== LOGIKA GAMBAR DRAFT PER USER =====
+        // ==================================================
+        // 🔥 LOGIKA GAMBAR DRAFT → ARTIKEL (FIXED)
+        // ==================================================
         $body = $request->body ?? '';
 
-        preg_match_all('/<img.*?src="(.*?)"/', $body, $matches);
+        // 1️⃣ Ambil semua SRC gambar dari body
+        preg_match_all('/<img[^>]+src="([^">]+)"/i', $body, $matches);
         $usedImages = $matches[1] ?? [];
 
+        // 2️⃣ Ambil filename yang dipakai (BUKAN URL)
+        $usedFilenames = collect($usedImages)
+            ->map(function ($url) {
+                return basename(parse_url($url, PHP_URL_PATH));
+            })
+            ->filter()
+            ->toArray();
+
         $userDraftFolder = 'articles/draft/' . Auth::id();
-        $articleFolder = 'articles/' . $article->id;
+        $articleFolder   = 'articles/' . $article->id;
 
-        // Hapus draft milik user yang tidak dipakai
-        $allUserDraftImages = Storage::disk('public')->files($userDraftFolder);
-        foreach ($allUserDraftImages as $file) {
-            $url = Storage::url($file);
-            if (!in_array($url, $usedImages)) {
-                Storage::disk('public')->delete($file);
-            }
-        }
+        // Pastikan folder artikel ada
+        Storage::disk('public')->makeDirectory($articleFolder);
 
-        // Buat folder artikel jika belum ada
-        if (!Storage::disk('public')->exists($articleFolder)) {
-            Storage::disk('public')->makeDirectory($articleFolder);
-        }
-
-        // Pindahkan gambar draft milik user yang dipakai ke folder artikel
+        // 3️⃣ PINDAHKAN gambar draft yang dipakai ke folder artikel
         foreach ($usedImages as $url) {
-            $path = str_replace('/storage/', '', $url);
+            $path = ltrim(parse_url($url, PHP_URL_PATH), '/'); // storage/articles/draft/1/a.png
+            $path = str_replace('storage/', '', $path);        // articles/draft/1/a.png
+
+            // Pastikan hanya proses file draft user
+            if (!str_starts_with($path, $userDraftFolder)) {
+                continue;
+            }
+
             $filename = basename($path);
+            $newPath  = $articleFolder . '/' . $filename;
+
             if (Storage::disk('public')->exists($path)) {
-                Storage::disk('public')->move($path, $articleFolder . '/' . $filename);
-                // update body
-                $body = str_replace($url, Storage::url($articleFolder . '/' . $filename), $body);
+                Storage::disk('public')->move($path, $newPath);
+
+                // Update URL di body
+                $body = str_replace(
+                    $url,
+                    Storage::url($newPath),
+                    $body
+                );
             }
         }
 
-        // Update body artikel
+        // 4️⃣ UPDATE BODY SETELAH PINDAH
         $article->update(['body' => $body]);
-        // ========================================
 
+        // 5️⃣ HAPUS SISA GAMBAR DRAFT YANG TIDAK DIPAKAI
+        if (Storage::disk('public')->exists($userDraftFolder)) {
+            $allDraftImages = Storage::disk('public')->files($userDraftFolder);
+
+            foreach ($allDraftImages as $file) {
+                $filename = basename($file);
+
+                if (!in_array($filename, $usedFilenames)) {
+                    Storage::disk('public')->delete($file);
+                }
+            }
+        }
         if ($request->auto_draft == 1) {
             return response()->json([
                 'success' => true,
@@ -167,22 +198,14 @@ class ArticleController extends Controller
             [
                 'upload.image' => 'File harus berupa gambar.',
                 'upload.mimes' => 'Format gambar harus JPG, JPEG, atau PNG.',
-                'upload.max'   => 'Ukuran gambar maksimal 5 MB.',
+                'upload.max' => 'Ukuran gambar maksimal 5 MB.',
             ]
         );
-
-        // Tentukan folder
-        // <-- ini harus membaca folder dari request, bukan cuma draft global
         $folder = $request->folder ?? ($articleId ? 'articles/' . $articleId : 'articles/draft');
-
         $file = $request->file('upload');
         $path = $file->store($folder, 'public');
-
         $url = Storage::url($path);
-
-        return response()->json([
-            'url' => $url
-        ]);
+        return response()->json(['url' => $url]);
     }
 
     public function deleteImage(Request $request)
@@ -228,15 +251,21 @@ class ArticleController extends Controller
 
         $isPublish = $request->action === 'publish';
 
+        // ===============================
+        // THUMBNAIL (TIDAK DIUBAH)
+        // ===============================
         if ($request->hasFile('thumbnail')) {
-            // Hapus thumbnail lama jika ada
             if ($article->thumbnail && Storage::disk('public')->exists($article->thumbnail)) {
                 Storage::disk('public')->delete($article->thumbnail);
             }
+
             $thumbnailPath = $request->file('thumbnail')->store('articles', 'public');
             $article->thumbnail = $thumbnailPath;
         }
 
+        // ===============================
+        // UPDATE DATA ARTIKEL (TIDAK DIUBAH)
+        // ===============================
         $article->update([
             'article_category_id' => $request->article_category_id,
             'title' => $request->title,
@@ -251,21 +280,39 @@ class ArticleController extends Controller
             'meta_keywords' => $request->meta_keywords,
         ]);
 
-        // ===== HAPUS GAMBAR YANG DIHAPUS USER =====
+        // ==========================================================
+        // 🔥 FIX UTAMA: HAPUS GAMBAR YANG TIDAK DIPAKAI (VERSI AMAN)
+        // ==========================================================
         $body = $request->body ?? '';
+
+        // Ambil semua src gambar dari body
         preg_match_all('/<img.*?src="(.*?)"/', $body, $matches);
         $usedImages = $matches[1] ?? [];
+
+        // 🔑 Ambil NAMA FILE yang dipakai (BUKAN URL)
+        $usedFilenames = collect($usedImages)
+            ->map(function ($url) {
+                return basename(parse_url($url, PHP_URL_PATH));
+            })
+            ->filter()
+            ->toArray();
 
         $articleFolder = 'articles/' . $article->id;
         $allImages = Storage::disk('public')->files($articleFolder);
 
         foreach ($allImages as $file) {
-            $url = Storage::url($file);
-            if (!in_array($url, $usedImages)) {
+            $filename = basename($file);
+
+            // ❗ HAPUS hanya jika BENAR-BENAR tidak dipakai di body
+            if (!in_array($filename, $usedFilenames)) {
                 Storage::disk('public')->delete($file);
             }
         }
+        // ===================== END FIX ============================
 
+        // ===============================
+        // RESPONSE (TIDAK DIUBAH)
+        // ===============================
         if ($request->auto_draft == 1 || $request->expectsJson()) {
             return response()->json([
                 'success' => true,

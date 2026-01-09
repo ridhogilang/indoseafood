@@ -325,14 +325,14 @@ class DashboardController extends Controller
         $prevEnd   = $start->copy()->subDay();
 
         //Campaign Statis
-        $totalCampaign = EmailCampaignContact::whereBetween('created_at', [$start, $end])
+        $totalCampaign = EmailCampaignContact::whereBetween('sent_at', [$start, $end])
             ->count();
 
-        $sentCampaign = EmailCampaignContact::whereBetween('created_at', [$start, $end])
+        $sentCampaign = EmailCampaignContact::whereBetween('sent_at', [$start, $end])
             ->where('status', 'sent')
             ->count();
 
-        $waitingCampaign = EmailCampaignContact::whereBetween('created_at', [$start, $end])
+        $waitingCampaign = EmailCampaignContact::whereBetween('sent_at', [$start, $end])
             ->whereIn('status', ['pending', 'failed'])
             ->count();
 
@@ -343,12 +343,10 @@ class DashboardController extends Controller
         // Article stats
         $articlePublished = Article::where('is_published', true)
             ->where('status', 'published')
-            ->whereBetween('created_at', [$start, $end])
             ->count();
 
         $articleWaiting = Article::where('is_published', false)
             ->where('status', 'draft')
-            ->whereBetween('created_at', [$start, $end])
             ->count();
 
         $articleTotal = $articlePublished + $articleWaiting;

@@ -1,6 +1,16 @@
 @extends('layout.main')
 
 @push('header')
+    <style>
+        .article-body blockquote {
+            border-left: 4px solid #3b82f6;
+            margin: 1.5rem 0;
+            padding: 0.75rem 1.25rem;
+            background: #f8fafc;
+            color: #334155;
+            font-style: italic;
+        }
+    </style>
 @endpush
 
 @section('main')

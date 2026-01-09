@@ -335,110 +335,119 @@
     <script src="{{ asset('') }}admin/js/proposal-view-init.min.js"></script>
     <script src="{{ asset('') }}admin/js/customers-create-init.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <script src="{{ asset('') }}admin/tinymce/tinymce.min.js"></script>
     <script>
-        const ARTICLE_ID = '{{ $article->id }}'; // artikel sudah ada ID
-        const uploadFolder = 'articles/' + ARTICLE_ID; // folder gambar langsung ke artikel ID
+        const ARTICLE_ID = '{{ $article->id }}';
+        const uploadFolder = 'articles/' + ARTICLE_ID;
 
-        class MyUploadAdapter {
-            constructor(loader) {
-                this.loader = loader;
-            }
+        tinymce.init({
+            selector: '#body-editor',
+            license_key: 'gpl',
+            promotion: false,
+            height: 600,
+            menubar: true,
 
-            upload() {
-                return this.loader.file
-                    .then(file => new Promise((resolve, reject) => {
-                        const data = new FormData();
-                        data.append('upload', file);
-                        data.append('folder', uploadFolder);
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'help', 'wordcount', 'font', 'emoticons', 'print', 
+                'pagebreak',
+            ],
+
+            toolbar: 'undo redo | blocks | fontfamily fontsize | ' +
+                'bold italic underline strikethrough | forecolor backcolor | ' +
+                'alignleft aligncenter alignright alignjustify lineheight | ' +
+                'bullist numlist outdent indent | ' +
+                'link image media table | ' +
+                'removeformat code emoticons charmap  pagebreak | ' + 'fullscreen preview print',
+            fontsize_formats: '4px 6px 8px 10px 12px 14px 16px 18px 20px 24px 28px 32px 36px 48px',
+
+            toolbar_mode: 'wrap',
+
+            font_family_formats: 'Arial=arial,helvetica,sans-serif;' +
+                'Courier New=courier new,courier,monospace;' +
+                'Georgia=georgia,palatino,serif;' +
+                'Times New Roman=times new roman,times,serif;' +
+                'Trebuchet MS=trebuchet ms,geneva,sans-serif;' +
+                'Verdana=verdana,geneva,sans-serif;' +
+                'Roboto=roboto,sans-serif;' +
+                'Poppins=poppins,sans-serif',
+
+            image_caption: true,
+            image_advtab: true,
+
+            file_picker_types: 'image',
+            file_picker_callback: function(callback, value, meta) {
+                if (meta.filetype === 'image') {
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+
+                    input.onchange = function() {
+                        const file = this.files[0];
+
+                        const formData = new FormData();
+                        formData.append('upload', file);
+                        formData.append('folder', uploadFolder);
 
                         fetch('/admin/article/' + ARTICLE_ID + '/upload-image', {
                                 method: 'POST',
-                                body: data,
                                 headers: {
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                }
+                                },
+                                body: formData
                             })
                             .then(res => res.json())
-                            .then(res => {
-                                if (res.url) {
-                                    resolve({
-                                        default: res.url
+                            .then(result => {
+                                if (result.url) {
+                                    callback(result.url, {
+                                        alt: file.name
                                     });
-                                } else {
-                                    reject(res.message || 'Upload failed');
                                 }
-                            })
-                            .catch(() => reject('Upload failed'));
-                    }));
-            }
+                            });
+                    };
 
-            abort() {}
-        }
+                    input.click();
+                }
+            },
 
-        function MyCustomUploadAdapterPlugin(editor) {
-            editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-                return new MyUploadAdapter(loader);
-            };
-        }
-
-        ClassicEditor.create(document.querySelector('#body-editor'), {
-                licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3OTc0NjU1OTksImp0aSI6IjRlMWUwOGEyLWQ3YzAtNGM5MS1hYWNmLTRjZmRmZWI3NzFhNyIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCIsIkUyUCIsIkUyVyJdLCJyZW1vdmVGZWF0dXJlcyI6WyJQQiIsIlJGIiwiU0NIIiwiVENQIiwiVEwiLCJUQ1IiLCJJUiIsIlNVQSIsIkI2NEEiLCJMUCIsIkhFIiwiUkVEIiwiUEZPIiwiV0MiLCJGQVIiLCJCS00iLCJGUEgiLCJNUkUiXSwidmMiOiJiYWFhN2FkNyJ9.8vzjZPaokEDTVlxxC985CZKjaZiDDM3dNiB_jY6mYFutpyWNUIWcHXdnJDPRTWAprGTxN7-iygSGu5uqR0kt8w',
-                toolbar: {
-                    items: [
-                        'heading', '|', 'bold', 'italic', 'underline', 'strikethrough',
-                        'link', '|', 'bulletedList', 'numberedList', 'outdent', 'indent', '|',
-                        'alignment', 'blockQuote', 'codeBlock', 'horizontalLine',
-                        'insertTable', 'imageUpload', 'mediaEmbed', '|', 'undo', 'redo'
-                    ],
-                    shouldNotGroupWhenFull: true
-                },
-                image: {
-                    styles: [
-                        'alignLeft',
-                        'alignCenter',
-                        'alignRight'
-                    ],
-                    resizeOptions: [{
-                            name: 'resizeImage:original',
-                            label: 'Original',
-                            value: null
-                        },
-                        {
-                            name: 'resizeImage:50',
-                            label: '50%',
-                            value: '50'
-                        },
-                        {
-                            name: 'resizeImage:75',
-                            label: '75%',
-                            value: '75'
-                        }
-                    ],
-                    toolbar: [
-                        'imageTextAlternative',
-                        'imageStyle:alignLeft',
-                        'imageStyle:alignCenter',
-                        'imageStyle:alignRight',
-                        'imageStyle:side'
-                    ]
-                },
-                table: {
-                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
-                },
-                alignment: {
-                    options: ['left', 'center', 'right', 'justify']
-                },
-                placeholder: 'Write your article content here...',
-                extraPlugins: [MyCustomUploadAdapterPlugin]
-            })
-            .then(editor => {
-                // Update hidden input setiap kali konten berubah
-                editor.model.document.on('change:data', () => {
-                    document.getElementById('body-html-hidden').value = editor.getData();
+            /* ===============================
+               CONTENT SYNC KE INPUT HIDDEN
+            =============================== */
+            setup: function(editor) {
+                editor.on('change keyup', function() {
+                    document.getElementById('body-html-hidden').value = editor.getContent();
                 });
-            })
-            .catch(error => console.error(error));
+            },
+
+            /* ===============================
+               KUALITAS OUTPUT HTML
+            =============================== */
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+
+            content_style: `
+                @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                line-height: 1.7;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+            blockquote {
+                border-left: 4px solid #ddd;
+                margin: 1.5em 0;
+                padding: 0.5em 1em;
+                color: #555;
+                font-style: italic;
+            }
+        `
+        });
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -481,9 +490,17 @@
         });
     </script>
     <script>
+        function decodeHtmlEntities(text) {
+            const textarea = document.createElement('textarea');
+            textarea.innerHTML = text;
+            return textarea.value;
+        }
+
         function cleanText(text) {
+            text = decodeHtmlEntities(text); // 🔑 FIX &nbsp; &amp; dll
+
             return text
-                .replace(/<[^>]*>/g, ' ') // hapus HTML
+                .replace(/<[^>]*>/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
         }
