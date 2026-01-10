@@ -66,7 +66,7 @@ class CampaignController extends Controller
         DB::transaction(function () use ($eligibleContacts, $campaignId) {
 
             // ============================
-            // ✅ UPDATED SCHEDULING LOGIC
+            // UPDATED SCHEDULING LOGIC
             // ============================
 
             // Ambil campaign contact TERAKHIR (ID terbesar)
@@ -101,7 +101,7 @@ class CampaignController extends Controller
                     ->onQueue('campaign')
                     ->delay($nextSentAt);
 
-                // 👉 next email = +30 minutes
+                // ðŸ‘‰ next email = +30 minutes
                 $nextSentAt = $nextSentAt->copy()->addMinutes(30);
             }
         });
@@ -181,7 +181,7 @@ class CampaignController extends Controller
 
     protected function normalizeBodyHtml(string $html): string
     {
-        // Kurangi margin yang terlalu besar (12px → 8px)
+        // Kurangi margin yang terlalu besar (12px â†’ 8px)
         $html = preg_replace(
             '/margin:\s*12px 0;/i',
             'margin:8px 0;',
@@ -216,7 +216,7 @@ class CampaignController extends Controller
         // Delete item campaign contact
         $item->delete();
 
-        // Update email_contacts → is_campaign = false
+        // Update email_contacts â†’ is_campaign = false
         $contact = EmailContact::find($contactId);
         if ($contact) {
             $contact->is_campaign = false;
@@ -256,9 +256,15 @@ class CampaignController extends Controller
 
     public function datatable()
     {
-        $query = EmailCampaignContact::with('contact')
-            ->where('status', 'pending')
-            ->orderBy('id', 'asc');
+        $query = EmailCampaignContact::query()
+            ->join(
+                'email_contacts',
+                'email_contacts.id',
+                '=',
+                'email_campaign_contacts.email_contact_id'
+            )
+            ->where('email_campaign_contacts.status', 'pending')
+            ->select('email_campaign_contacts.*');
 
         return DataTables::of($query)
             ->addIndexColumn()
@@ -334,30 +340,14 @@ class CampaignController extends Controller
             </div>';
             })
 
-            ->order(function ($query) {
-                $query->orderBy('id', 'asc');
-            })
+
+            ->orderColumn('company', 'email_contacts.company $1')
+            ->orderColumn('email', 'email_contacts.kirim $1')
+            ->orderColumn('country', 'email_contacts.country $1')
+            ->orderColumn('schedule', 'email_campaign_contacts.sent_at $1')
+            ->orderColumn('status', 'email_campaign_contacts.status $1')
 
             ->rawColumns(['checkbox', 'status', 'action'])
-            ->filter(function ($query) {
-
-                if ($search = request('search.value')) {
-
-                    $query->where(function ($q) use ($search) {
-
-                        // kolom utama
-                        $q->where('status', 'LIKE', "%{$search}%")
-                            ->orWhere('sent_at', 'LIKE', "%{$search}%");
-
-                        // kolom relasi contact
-                        $q->orWhereHas('contact', function ($qc) use ($search) {
-                            $qc->where('company', 'LIKE', "%{$search}%")
-                                ->orWhere('kirim', 'LIKE', "%{$search}%")
-                                ->orWhere('country', 'LIKE', "%{$search}%");
-                        });
-                    });
-                }
-            })
             ->make(true);
     }
 
@@ -365,14 +355,22 @@ class CampaignController extends Controller
     {
         $nowMinus3 = Carbon::now()->subMinutes(3);
 
-        $query = EmailCampaignContact::with('contact')
+        $query = EmailCampaignContact::query()
+            ->leftJoin('email_contacts as ec', 'ec.id', '=', 'email_campaign_contacts.email_contact_id')
             ->where(function ($q) use ($nowMinus3) {
-                $q->whereIn('status', ['failed', 'sent'])
+                $q->whereIn('email_campaign_contacts.status', ['failed', 'sent'])
                     ->orWhere(function ($q2) use ($nowMinus3) {
-                        $q2->where('status', 'pending')
-                            ->where('sent_at', '<', $nowMinus3);
+                        $q2->where('email_campaign_contacts.status', 'pending')
+                            ->where('email_campaign_contacts.sent_at', '<', $nowMinus3);
                     });
-            });
+            })
+            ->select(
+                'email_campaign_contacts.*',
+                'ec.company',
+                'ec.kirim',
+                'ec.country'
+            );
+
 
         return DataTables::of($query)
             ->addIndexColumn()
@@ -391,14 +389,9 @@ class CampaignController extends Controller
             ')
 
 
-            // company
-            ->addColumn('company', fn($c) => optional($c->contact)->company ?: '-')
-
-            // email
-            ->addColumn('email', fn($c) => trim(optional($c->contact)->kirim) ?: '-')
-
-            // country
-            ->addColumn('country', fn($c) => optional($c->contact)->country ?: '-')
+            ->editColumn('company', fn($c) => $c->company ?? '-')
+            ->editColumn('email', fn($c) => trim($c->kirim ?? '-'))
+            ->editColumn('country', fn($c) => $c->country ?? '-')
 
             // schedule
             ->addColumn('schedule', function ($c) {
@@ -428,7 +421,7 @@ class CampaignController extends Controller
                 return $html;
             })
 
-            // action (DELETE – TIDAK DIUBAH)
+            // action (DELETE â€“ TIDAK DIUBAH)
             ->addColumn('action', function ($c) {
                 return '
             <div class="hstack gap-2 justify-content-center">
@@ -441,10 +434,11 @@ class CampaignController extends Controller
             </div>';
             })
 
-            // FIX ERROR DT_RowIndex
-            ->order(function ($q) {
-                $q->orderBy('id', 'asc');
-            })
+            ->orderColumn('company', 'ec.company $1')
+            ->orderColumn('email', 'ec.kirim $1')
+            ->orderColumn('country', 'ec.country $1')
+            ->orderColumn('schedule', 'email_campaign_contacts.sent_at $1')
+            ->orderColumn('status', 'email_campaign_contacts.status $1')
 
             ->rawColumns(['checkbox', 'status', 'action'])
             ->make(true);

@@ -318,6 +318,13 @@ class LeadController extends Controller
                     $query->where('country', request('country'));
                 }
             })
+
+            ->orderColumn('company', 'company $1')
+            ->orderColumn('email', 'kirim $1')
+            ->orderColumn('contact_person', 'contact_person $1')
+            ->orderColumn('main_product', 'main_product $1')
+            ->orderColumn('status', 'status $1')
+            
             ->rawColumns(['checkbox', 'company', 'status', 'action'])
             ->make(true);
     }

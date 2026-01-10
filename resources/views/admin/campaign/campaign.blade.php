@@ -280,24 +280,28 @@
                     },
                     {
                         data: 'DT_RowIndex',
+                        orderable: false,
                         searchable: false
                     },
                     {
-                        data: 'company'
-                    },
+                        data: 'company',
+                        name: 'company'
+                    }, // ⬅️ WAJIB
                     {
-                        data: 'email'
-                    },
+                        data: 'email',
+                        name: 'email'
+                    }, // ⬅️ WAJIB
                     {
-                        data: 'country'
-                    },
+                        data: 'country',
+                        name: 'country'
+                    }, // ⬅️ WAJIB
                     {
                         data: 'schedule',
-                        orderable: false
+                        name: 'email_campaign_contacts.sent_at'
                     },
                     {
                         data: 'status',
-                        orderable: false
+                        orderable: true,
                     },
                     {
                         data: 'action',
@@ -305,6 +309,7 @@
                         searchable: false
                     }
                 ],
+
 
                 /* ✅ SUDAH ADA – TETAP */
                 drawCallback: function() {

@@ -268,23 +268,29 @@
                     orderable: false,
                     searchable: false
                 },
+
                 {
-                    data: 'company'
-                },
+                    data: 'company',
+                    name: 'company'
+                }, // ⬅️ TAMBAH
                 {
-                    data: 'email'
-                },
+                    data: 'email',
+                    name: 'email'
+                }, // ⬅️ TAMBAH
                 {
-                    data: 'country'
-                },
+                    data: 'country',
+                    name: 'country'
+                }, // ⬅️ TAMBAH
                 {
-                    data: 'schedule'
-                },
+                    data: 'schedule',
+                    name: 'email_campaign_contacts.sent_at'
+                }, // ⬅️ TAMBAH
+
                 {
                     data: 'status',
-                    orderable: false,
-                    searchable: false
+                    name: 'email_campaign_contacts.status'
                 },
+
                 {
                     data: 'action',
                     orderable: false,

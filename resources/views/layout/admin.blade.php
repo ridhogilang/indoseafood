@@ -10,7 +10,12 @@
     <meta name="author" content="flexilecode" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }}</title>
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('home/img/logo icon.png') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}admin/css/bootstrap.min.css" />
     @stack('header')
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}admin/css/theme.min.css" />

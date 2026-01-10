@@ -9,7 +9,12 @@
     <meta name="keyword" content="">
     <meta name="author" content="theme_ocean">
     <title>{{ $title }}</title>
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('home/img/logo icon.png') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/vendors/css/vendors.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/theme.min.css') }}">
@@ -42,7 +47,8 @@
                         <form action="{{ route('password.email') }}" method="POST" class="w-100 mt-4 pt-2">
                             @csrf
                             <div class="mb-4">
-                                <input type="email" class="form-control" placeholder="Enter your valid email" name="email" required>
+                                <input type="email" class="form-control" placeholder="Enter your valid email"
+                                    name="email" required>
                             </div>
                             <div class="mt-5">
                                 <button type="submit" class="btn btn-lg btn-primary w-100">Reset Now</button>
