@@ -342,7 +342,7 @@
             ],
 
             toolbar: 'undo redo | blocks | fontfamily fontsize | ' +
-                'bold italic underline strikethrough | forecolor backcolor | ' +
+                'bold italic underline strikethrough blockquote | forecolor backcolor | ' +
                 'alignleft aligncenter alignright alignjustify lineheight | ' +
                 'bullist numlist outdent indent | ' +
                 'link image media table | ' +

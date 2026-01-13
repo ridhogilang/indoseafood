@@ -10,6 +10,15 @@
             color: #334155;
             font-style: italic;
         }
+
+        .article-body ul {
+            padding-left: 1.25rem;
+            /* ≈ 20px */
+        }
+
+        .article-body li {
+            margin-bottom: 0.4rem;
+        }
     </style>
 @endpush
 
@@ -82,8 +91,8 @@
                                         @if ($prev)
                                             <div class="post-pagi-box prev">
                                                 <a href="{{ route('article_show', $prev->slug) }}">
-                                                    <img src="{{ asset($prev->thumbnail) }}" alt="{{ $prev->title }}"
-                                                        class="pagi-thumb">
+                                                    <img src="{{ $prev->thumbnail ? Storage::url($prev->thumbnail) : asset('assets/img/blog/default-thumb.jpg') }}"
+                                                        alt="{{ $prev->title }}" class="pagi-thumb">
                                                 </a>
                                                 <a href="{{ route('article_show', $prev->slug) }}"
                                                     class="pagi-title">Previous Post</a>
@@ -103,8 +112,8 @@
                                         @if ($next)
                                             <div class="post-pagi-box next">
                                                 <a href="{{ route('article_show', $next->slug) }}">
-                                                    <img src="{{ asset($next->thumbnail) }}" alt="{{ $next->title }}"
-                                                        class="pagi-thumb">
+                                                    <img src="{{ $next->thumbnail ? Storage::url($next->thumbnail) : asset('assets/img/blog/default-thumb.jpg') }}"
+                                                        alt="{{ $next->title }}" class="pagi-thumb">
                                                 </a>
                                                 <a href="{{ route('article_show', $next->slug) }}" class="pagi-title">Next
                                                     Post</a>
@@ -129,7 +138,7 @@
                                         <a href="{{ route('article', ['category' => $cat->slug]) }}">
                                             {{ $cat->name }}
                                         </a>
-                                        <span>({{ $cat->articles_count }})</span>
+                                        <span>({{ $cat->published_articles_count }})</span>
                                     </li>
                                 @endforeach
                             </ul>
@@ -142,7 +151,7 @@
                                     <div class="recent-post">
                                         <div class="media-img">
                                             <a href="{{ route('article_show', $post->slug) }}">
-                                                <img src="{{ $post->thumbnail ? asset($post->thumbnail) : asset('assets/img/blog/default-thumb.jpg') }}"
+                                                <img src="{{ $post->thumbnail ? Storage::url($post->thumbnail) : asset('assets/img/blog/default-thumb.jpg') }}"
                                                     alt="{{ $post->title }}">
                                             </a>
                                         </div>

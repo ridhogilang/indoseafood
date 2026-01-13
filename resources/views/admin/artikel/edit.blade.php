@@ -344,7 +344,7 @@
             selector: '#body-editor',
             license_key: 'gpl',
             promotion: false,
-            height: 600,
+            height: 1000,
             menubar: true,
 
             plugins: [
@@ -355,7 +355,7 @@
             ],
 
             toolbar: 'undo redo | blocks | fontfamily fontsize | ' +
-                'bold italic underline strikethrough | forecolor backcolor | ' +
+                'bold italic underline strikethrough blockquote | forecolor backcolor | ' +
                 'alignleft aligncenter alignright alignjustify lineheight | ' +
                 'bullist numlist outdent indent | ' +
                 'link image media table | ' +

@@ -157,20 +157,32 @@ class HomeController extends Controller
 
         // prev & next (kalau kamu sudah pakai ini sebelumnya)
         $prev = Article::where('id', '<', $article->id)
+            ->where('is_published', true)
+            ->where('status', 'published')
             ->orderBy('id', 'desc')
             ->first();
 
         $next = Article::where('id', '>', $article->id)
+            ->where('is_published', true)
+            ->where('status', 'published')
             ->orderBy('id', 'asc')
             ->first();
 
         // CATEGORIES + JUMLAH ARTIKEL
-        $categories = ArticleCategory::withCount('articles')
+        $categories = ArticleCategory::withCount([
+            'articles as published_articles_count' => function ($q) {
+                $q->where('status', 'published')
+                    ->where('is_published', 1);
+            }
+        ])
+            ->where('is_active', true)
             ->orderBy('name', 'asc')
             ->get();
 
         // RECENT POSTS (kecuali artikel yang sedang dibaca)
         $recentPosts = Article::where('id', '!=', $article->id)
+            ->where('is_published', true)
+            ->where('status', 'published')
             ->orderBy('created_at', 'desc')
             ->limit(3)
             ->get();
