@@ -72,13 +72,24 @@ class CampaignController extends Controller
             // Ambil campaign contact TERAKHIR (ID terbesar)
             $lastCampaignContact = EmailCampaignContact::orderByDesc('id')->first();
 
-            if ($lastCampaignContact && $lastCampaignContact->sent_at) {
-                // Mulai 30 menit setelah email terakhir
-                $nextSentAt = Carbon::parse($lastCampaignContact->sent_at)
-                    ->addMinutes(30)
-                    ->seconds(0);
+            if ($lastCampaignContact) {
+
+                if ($lastCampaignContact->status === 'sent') {
+                    // mulai dari sekarang
+                    $nextSentAt = Carbon::now()->seconds(0);
+                }
+                elseif ($lastCampaignContact->sent_at) {
+                    // lanjut 30 menit dari jadwal terakhir
+                    $nextSentAt = Carbon::parse($lastCampaignContact->sent_at)
+                        ->addMinutes(30)
+                        ->seconds(0);
+                }
+                // fallback aman
+                else {
+                    $nextSentAt = Carbon::now()->seconds(0);
+                }
             } else {
-                // Belum pernah ada campaign sama sekali
+                // benar-benar belum ada campaign sama sekali
                 $nextSentAt = Carbon::now()->seconds(0);
             }
 
@@ -264,7 +275,12 @@ class CampaignController extends Controller
                 'email_campaign_contacts.email_contact_id'
             )
             ->where('email_campaign_contacts.status', 'pending')
-            ->select('email_campaign_contacts.*');
+            ->select([
+                'email_campaign_contacts.*',
+                'email_contacts.company',
+                'email_contacts.kirim',
+                'email_contacts.country',
+            ]);
 
         return DataTables::of($query)
             ->addIndexColumn()
@@ -283,23 +299,9 @@ class CampaignController extends Controller
                 ')
 
 
-            ->addColumn(
-                'company',
-                fn($c) =>
-                trim($c->contact->company ?? '') ?: '-'
-            )
-
-            ->addColumn(
-                'email',
-                fn($c) =>
-                trim($c->contact->kirim ?? '') ?: '-'
-            )
-
-            ->addColumn(
-                'country',
-                fn($c) =>
-                trim($c->contact->country ?? '') ?: '-'
-            )
+            ->editColumn('company', fn($c) => trim($c->company) ?: '-')
+            ->editColumn('email', fn($c) => trim($c->kirim) ?: '-')
+            ->editColumn('country', fn($c) => trim($c->country) ?: '-')
 
             ->addColumn('schedule', function ($c) {
                 if (!$c->sent_at) return '-';
@@ -346,6 +348,18 @@ class CampaignController extends Controller
             ->orderColumn('country', 'email_contacts.country $1')
             ->orderColumn('schedule', 'email_campaign_contacts.sent_at $1')
             ->orderColumn('status', 'email_campaign_contacts.status $1')
+
+            ->filterColumn('company', function ($query, $keyword) {
+                $query->where('email_contacts.company', 'like', "%{$keyword}%");
+            })
+
+            ->filterColumn('email', function ($query, $keyword) {
+                $query->where('email_contacts.kirim', 'like', "%{$keyword}%");
+            })
+
+            ->filterColumn('country', function ($query, $keyword) {
+                $query->where('email_contacts.country', 'like', "%{$keyword}%");
+            })
 
             ->rawColumns(['checkbox', 'status', 'action'])
             ->make(true);
@@ -439,6 +453,22 @@ class CampaignController extends Controller
             ->orderColumn('country', 'ec.country $1')
             ->orderColumn('schedule', 'email_campaign_contacts.sent_at $1')
             ->orderColumn('status', 'email_campaign_contacts.status $1')
+
+            ->filterColumn('company', function ($query, $keyword) {
+                $query->where('ec.company', 'like', "%{$keyword}%");
+            })
+
+            ->filterColumn('email', function ($query, $keyword) {
+                $query->where('ec.kirim', 'like', "%{$keyword}%");
+            })
+
+            ->filterColumn('country', function ($query, $keyword) {
+                $query->where('ec.country', 'like', "%{$keyword}%");
+            })
+
+            ->filterColumn('status', function ($query, $keyword) {
+                $query->where('email_campaign_contacts.status', 'like', "%{$keyword}%");
+            })
 
             ->rawColumns(['checkbox', 'status', 'action'])
             ->make(true);
