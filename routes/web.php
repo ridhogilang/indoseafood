@@ -127,6 +127,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/article/{article}', [ArticleController::class, 'destroy'])->name('article.destroy');
         Route::delete('/article-category/{category}', [ArticleController::class, 'category_destroy'])->name('article-category.destroy');
         Route::post('/article-category', [ArticleController::class, 'store_category'])->name('article-category.store');
+        Route::put('/article-category/{category}', [ArticleController::class, 'category_update'])->name('article-category.update');
 
         //Product Route
         Route::get('/products', [ProductController::class, 'index'])->name('product.list');

@@ -6,6 +6,7 @@ use App\Models\Article;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ArticleCategory;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -48,16 +49,6 @@ class ArticleController extends Controller
         return view('admin.artikel.edit', [
             'title' => 'Edit Article',
             'article' => $article,
-            'category' => $category
-        ]);
-    }
-
-    public function category()
-    {
-        $category = ArticleCategory::withCount('articles')->get();
-
-        return view('admin.artikel.kategori', [
-            'title' => 'Article Category Management',
             'category' => $category
         ]);
     }
@@ -362,6 +353,16 @@ class ArticleController extends Controller
         }
     }
 
+    public function category()
+    {
+        $category = ArticleCategory::withCount('articles')->get();
+
+        return view('admin.artikel.kategori', [
+            'title' => 'Article Category Management',
+            'category' => $category
+        ]);
+    }
+
     public function category_destroy(ArticleCategory $category)
     {
         // 🔥 Cek apakah kategori masih dipakai artikel
@@ -406,5 +407,38 @@ class ArticleController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Category created successfully');
+    }
+
+    public function category_update(Request $request, ArticleCategory $category)
+    {
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'slug'        => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('article_categories', 'slug')->ignore($category->id),
+            ],
+            'description' => 'nullable|string',
+        ]);
+
+        $category->update([
+            'name'        => $request->name,
+            'slug'        => Str::slug($request->slug),
+            'description' => $request->description,
+        ]);
+
+        // response AJAX (modal edit)
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Category updated successfully',
+                'data'    => $category
+            ]);
+        }
+
+        return redirect()
+            ->back()
+            ->with('success', 'Category updated successfully');
     }
 }

@@ -176,7 +176,7 @@
                                             </div>
                                             <div class="col-lg-6 mb-4">
                                                 <label class="form-label">Description</label>
-                                                <textarea rows="6" class="form-control" id="category-description" placeholder="Category Description"></textarea>
+                                                <textarea rows="6" class="form-control" name="description" id="category-description" placeholder="Category Description"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -247,7 +247,7 @@
                                             </div>
                                             <div class="col-lg-6 mb-4">
                                                 <label class="form-label">Description</label>
-                                                <textarea rows="6" class="form-control" id="category-description" placeholder="Category Description"></textarea>
+                                                <textarea rows="6" class="form-control" name="description" id="category-description" placeholder="Category Description"></textarea>
                                             </div>
                                         </div>
                                     </div>
