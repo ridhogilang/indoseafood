@@ -64,7 +64,13 @@
                                     <div class="col-md-auto">
                                         <span class="share-links-title">Category:</span>
                                         <div class="tagcloud style1">
-                                            <a href="blog.html">{{ $article->category->name ?? 'Uncategorized' }}</a>
+                                            @if ($article->category && $article->category->is_active)
+                                                <a href="{{ route('category', $article->category->slug) }}">
+                                                    {{ $article->category->name }}
+                                                </a>
+                                            @else
+                                                <span>Uncategorized</span>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -135,7 +141,7 @@
                             <ul>
                                 @foreach ($categories as $cat)
                                     <li>
-                                        <a href="{{ route('article', ['category' => $cat->slug]) }}">
+                                        <a href="{{ route('category', $cat->slug) }}">
                                             {{ $cat->name }}
                                         </a>
                                         <span>({{ $cat->published_articles_count }})</span>

@@ -147,6 +147,23 @@ class HomeController extends Controller
         ]);
     }
 
+    public function byCategory(ArticleCategory $category)
+    {
+        abort_if(!$category->is_active, 404);
+
+        $articles = $category->publishedArticles()
+            ->latest('published_at')
+            ->paginate(8);
+
+        return view('home.article', [
+            'category' => $category,
+            'articles' => $articles,
+            "title" => "Seafood Export $category->name | Indonesian Fish Industry Articles",
+            "description" => "Read articles and insights about Indonesian seafood export, fish processing, global markets, and sustainable wild-caught practices.",
+            "keywords" => "seafood export articles, indonesian fish industry, seafood processing insights, fish export market, seafood supplier knowledge",
+        ]);
+    }
+
     public function article_show($slug)
     {
         // Ambil artikel berdasarkan slug
@@ -199,6 +216,7 @@ class HomeController extends Controller
             "keywords" => $article->meta_keywords,
         ]);
     }
+
 
     public function privacy()
     {

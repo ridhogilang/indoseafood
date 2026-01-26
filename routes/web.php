@@ -23,7 +23,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/contact', 'contact')->name('contact');
     Route::get('/article', 'article')->name('article');
     Route::get('/article/{slug}', 'article_show')->name('article_show');
-    Route::get('/article', 'article')->name('article');
+    Route::get('/article/category/{category:slug}', 'byCategory')->name('category');
     Route::get('/privacy', 'privacy')->name('privacy');
     Route::get('/terms-and-conditions', 'terms')->name('terms');
     Route::get('/catalogue/seafood-export', function () {

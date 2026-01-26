@@ -23,6 +23,11 @@ class ArticleCategory extends Model
         return $this->hasMany(Article::class, 'article_category_id');
     }
 
+    public function publishedArticles()
+    {
+        return $this->articles()->where('status', 'published');
+    }
+
     // Bikin slug otomatis ketika name di-set
     public function setNameAttribute($value)
     {

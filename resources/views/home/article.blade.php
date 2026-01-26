@@ -5,24 +5,35 @@
 
 @section('main')
     <!--==============================
-                    Breadcumb
-                    ============================== -->
+                                    Breadcumb
+                                    ============================== -->
     <div class="breadcumb-wrapper" data-bg-src="{{ asset('home/img/banner/banner-article.png') }}">
         <div class="container">
             <div class="breadcumb-content">
                 <h1 class="breadcumb-title">Article</h1>
                 <div class="breadcumb-menu-wrap">
                     <ul class="breadcumb-menu">
-                        <li><a href="{{ route('home') }}">Home</a></li>
-                        <li>Article</li>
+                        <li>
+                            <a href="{{ route('home') }}">Home</a>
+                        </li>
+                        @if (!empty($category))
+                            <li>
+                                <a href="{{ route('article') }}">Article</a>
+                            </li>
+                            <li>
+                                {{ $category->name }}
+                            </li>
+                        @else
+                            <li>Article</li>
+                        @endif
                     </ul>
                 </div>
             </div>
         </div>
     </div>
     <!--==============================
-                 BLog Area
-                 ==============================-->
+                                 BLog Area
+                                 ==============================-->
     <section class="space">
         <div class="container">
             <div class="row g-4">
@@ -31,17 +42,17 @@
                         // created_at selalu Carbon, jadi aman dipakai format()
                         $date = $article->created_at;
 
-                       // Ambil body, buang semua tag HTML
-    $raw = strip_tags($article->body);
+                        // Ambil body, buang semua tag HTML
+                        $raw = strip_tags($article->body);
 
-    // Ganti &nbsp; jadi spasi biasa
-    $raw = str_replace('&nbsp;', ' ', $raw);
+                        // Ganti &nbsp; jadi spasi biasa
+                        $raw = str_replace('&nbsp;', ' ', $raw);
 
-    // Rapikan spasi berulang (tab, newline, dll)
-    $raw = preg_replace('/\s+/', ' ', $raw);
+                        // Rapikan spasi berulang (tab, newline, dll)
+                        $raw = preg_replace('/\s+/', ' ', $raw);
 
-    // Batasi panjang kira-kira setara 1–2 paragraf
-    $excerpt = Str::limit(trim($raw), 100);
+                        // Batasi panjang kira-kira setara 1–2 paragraf
+                        $excerpt = Str::limit(trim($raw), 100);
                     @endphp
 
                     <div class="col-xl-4 col-lg-6 col-md-6">
@@ -61,7 +72,7 @@
                                         {{ $article->title }}
                                     </a>
                                 </h4>
-                                    <p class="blog-text">{{ $excerpt }}</p>
+                                <p class="blog-text">{{ $excerpt }}</p>
 
                                 <div class="blog-bottom">
                                     <div class="blog-author">
