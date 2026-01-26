@@ -13,21 +13,61 @@ use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::with(['author', 'category'])
+        $query = Article::with(['author', 'category']);
+
+        // cek apakah user sudah menyentuh filter status
+        $hasStatusFilter =
+            $request->has('draft_articles') ||
+            $request->has('published_articles') ||
+            $request->has('archived_articles');
+
+        if ($hasStatusFilter) {
+            $status = [];
+
+            if ($request->has('draft_articles')) {
+                $status[] = 'draft';
+            }
+
+            if ($request->has('published_articles')) {
+                $status[] = 'published';
+            }
+
+            if ($request->has('archived_articles')) {
+                $status[] = 'archived';
+            }
+
+            // jika ada status dipilih
+            if (!empty($status)) {
+                $query->whereIn('status', $status);
+            } else {
+                // semua status di-uncheck → kosongkan hasil
+                $query->whereRaw('1 = 0');
+            }
+        }
+
+        if ($request->filled('category')) {
+            $query->where('article_category_id', $request->category);
+        }
+
+        $articles = $query
             ->orderByRaw("
-                CASE 
-                    WHEN status = 'draft' THEN 0 
-                    ELSE 1 
-                END
-            ")
+            CASE 
+                WHEN status = 'draft' THEN 0
+                ELSE 1
+            END
+        ")
             ->orderBy('updated_at', 'desc')
             ->get();
 
+        $categories = ArticleCategory::orderBy('name')->get();
+
         return view('admin.artikel.list', [
-            'title' => 'Article Management',
-            'articles' => $articles
+            'title'      => 'Article Management',
+            'articles'   => $articles,
+            'categories' => $categories,
+            'filters'    => $request->all(),
         ]);
     }
 

@@ -43,6 +43,73 @@
                         </a>
                     </div>
                     <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+                        <div class="dropdown filter-dropdown">
+                            <form method="GET" action="{{ route('article.list') }}" id="filterForm">
+
+                                <a class="btn btn-md btn-light-brand" data-bs-toggle="dropdown" data-bs-offset="0, 10"
+                                    data-bs-auto-close="outside">
+                                    <i class="feather-filter me-2"></i>
+                                    <span>Filter</span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end">
+
+                                    <!-- POTENTIAL LEADS -->
+                                    <div class="dropdown-item">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="DraftArticles"
+                                                name="draft_articles" value="1"
+                                                {{ request()->has('draft_articles') || request()->query() == [] ? 'checked' : '' }} />
+                                            <label class="custom-control-label c-pointer" for="DraftArticles">
+                                                Draft Articles
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- NON POTENTIAL LEADS -->
+                                    <div class="dropdown-item">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="PublishedArticles"
+                                                name="published_articles" value="1"
+                                                {{ request()->has('published_articles') || request()->query() == [] ? 'checked' : '' }} />
+                                            <label class="custom-control-label c-pointer" for="PublishedArticles">
+                                                Published Articles
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="ArchivedArticles"
+                                                name="archived_articles" value="1"
+                                                {{ request()->has('archived_articles') || request()->query() == [] ? 'checked' : '' }} />
+                                            <label class="custom-control-label c-pointer" for="ArchivedArticles">
+                                                Archived Articles
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <!-- CATEGORY FILTER -->
+                                    <div class="dropdown-item">
+                                        <select class="custom-control" data-select2-selector="status" id="filterCategory"
+                                            name="category">
+                                            <option value="" data-bg="bg-success"
+                                                {{ request()->filled('category') ? '' : 'selected' }}>
+                                                All Categories
+                                            </option>
+                                            @foreach ($categories as $ItemCategories)
+                                                <option value="{{ $ItemCategories->id }}" data-bg="bg-warning"
+                                                    {{ request('category') == $ItemCategories->id ? 'selected' : '' }}>
+                                                    {{ $ItemCategories->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
                         <a href="{{ route('article.new') }}" class="btn btn-primary">
                             <i class="feather-plus me-2"></i>
                             Add New Article
@@ -91,7 +158,8 @@
                                                         <div class="custom-control custom-checkbox ms-1">
                                                             <input type="checkbox" class="custom-control-input"
                                                                 id="checkAllLead">
-                                                            <label class="custom-control-label" for="checkAllLead"></label>
+                                                            <label class="custom-control-label"
+                                                                for="checkAllLead"></label>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -202,6 +270,26 @@
                 });
             });
 
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const form = document.getElementById('filterForm');
+
+            // checkbox (native)
+            document.querySelectorAll('#filterForm input[type="checkbox"]').forEach(el => {
+                el.addEventListener('change', function() {
+                    form.submit();
+                });
+            });
+
+            // select2 (WAJIB pakai jQuery event)
+            if (window.jQuery) {
+                $('#filterCategory').on('change.select2', function() {
+                    form.submit();
+                });
+            }
         });
     </script>
 @endpush
